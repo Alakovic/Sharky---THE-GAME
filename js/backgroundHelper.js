@@ -44,17 +44,32 @@
             '../assets/images/background/light/2.png'
         ];
 
-
+/**
+ * Generates an array of background objects by repeating the given images horizontally
+ * between the specified X start and X end positions.
+ *
+ * The function cycles through the provided image paths and places each image at the given
+ * Y coordinate, with specified width and height. When the end of the image array is reached,
+ * it loops back to the first image.
+ *
+ * @param {string[]} images - Array of image paths to use for the background.
+ * @param {number} xStart - The starting X position for the first background object.
+ * @param {number} xEnd - The ending X position up to which the background is generated.
+ * @param {number} y - The Y position where the background objects will be placed.
+ * @param {number} width - The width of each background object.
+ * @param {number} height - The height of each background object.
+ * @returns {backgroundObject[]} An array of BackgroundObject instances representing the generated background.
+ */
 function generateBackground(images, xStart, xEnd, y, width, height) {
-    let water = [];
+    let backgroundObject = [];
     let imageCount = images.length;
 
     for (let x = xStart, i = 0; x <= xEnd; x += width, i++) {
         let imagePath = images[i % imageCount];
-        water.push(new BackgroundObject(imagePath, x, y, width, height));
+        backgroundObject.push(new BackgroundObject(imagePath, x, y, width, height));
     }
 
-    return water;
+    return backgroundObject;
 }
 
 const background1 = [
