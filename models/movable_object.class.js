@@ -15,19 +15,6 @@ class MovableObject extends DrawableObject {
         right:30
     }
     
-    applyGravity() {
-        setInterval(() => {
-            if(this.isAboveGround() || this.speedY > 0 ) {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
-            }
-        }, 1000 / 25)
-    }
-
-    isAboveGround() {
-        return this.y < 310;
-    }
-
     playAnimations(images) {
         if (this.currentAnimationImages !== images) {
         this.currentAnimationImages = images;
@@ -46,6 +33,14 @@ class MovableObject extends DrawableObject {
 
     moveLeft(){
         this.x -= this.speed; 
+    }
+
+    moveUp(){
+        this.y -= this.speed; 
+    }
+
+    moveDown() {
+        this.y += this.speed;
     }
 
     moveLeftRight(minX, maxX) {

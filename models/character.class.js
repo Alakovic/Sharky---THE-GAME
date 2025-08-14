@@ -55,6 +55,8 @@ class Character extends MovableObject {
     animate() {
         setInterval (() => {
             const maxX = this.world.level.end_level_x - this.width;
+            const maxY = 360;
+            const minY = -130;
             if(this.world.keyboard.RIGHT && this.x < maxX) {
             this.otherDirection = false;
             this.moveRight();
@@ -63,9 +65,14 @@ class Character extends MovableObject {
             this.otherDirection = true ;
             this.moveLeft();
         }
-            if(this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
-            }
+
+            if (this.world.keyboard.UP && this.y > minY) {
+            this.moveUp();
+        }
+            if (this.world.keyboard.DOWN && this.y < maxY) {
+            this.moveDown();
+        }
+
             const margin = 100; // Distance in pixels from the left edge of the screen where the character should be positioned
             const maxCameraX = -(this.world.level.end_level_x - this.world.canvas.width); // The furthest left the camera can scroll, so the right edge of the level aligns with the right edge of the screen
             let cameraX = -this.x + margin; // Calculate camera position so the character stays 100px from the left
@@ -81,11 +88,11 @@ class Character extends MovableObject {
         }, 1000 / 60 );
 
         setInterval(() => {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.animationFrameSpeed(1)
                 this.playAnimations(this.images_swim);
             } else {
-                this.animationFrameSpeed(2)
+                this.animationFrameSpeed(3)
                 this.playAnimations(this.images_idle);
             }
         }, 50);
