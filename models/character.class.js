@@ -1,0 +1,93 @@
+class Character extends MovableObject {
+
+    y=200
+    height = 300;
+    width = 350;
+    speed = 10 ;
+    world;
+    energy = 100;
+    coinCount = 0;
+
+    offset = {
+        top: 50,
+        bottom: 20,
+        left: 30,
+        right: 30
+    }
+
+    images_idle = [
+        '../assets/images/character/idle/1.png',
+        '../assets/images/character/idle/2.png',
+        '../assets/images/character/idle/3.png',
+        '../assets/images/character/idle/4.png',
+        '../assets/images/character/idle/5.png',
+        '../assets/images/character/idle/6.png',
+        '../assets/images/character/idle/7.png',
+        '../assets/images/character/idle/8.png',
+        '../assets/images/character/idle/9.png',
+        '../assets/images/character/idle/10.png',
+        '../assets/images/character/idle/11.png',
+        '../assets/images/character/idle/12.png',
+        '../assets/images/character/idle/13.png',
+        '../assets/images/character/idle/14.png',
+        '../assets/images/character/idle/15.png',
+        '../assets/images/character/idle/16.png',
+        '../assets/images/character/idle/17.png',
+        '../assets/images/character/idle/18.png'
+    ];
+
+    images_swim = [
+        '../assets/images/character/swim/1.png',
+        '../assets/images/character/swim/2.png',
+        '../assets/images/character/swim/3.png',
+        '../assets/images/character/swim/4.png',
+        '../assets/images/character/swim/5.png',
+        '../assets/images/character/swim/6.png'
+    ];
+
+    constructor() {
+        super().loadImage('../assets/images/character/idle/1.png');
+        this.loadImages(this.images_swim);
+        this.loadImages(this.images_idle);
+        this.animate();
+    }
+
+    animate() {
+        setInterval (() => {
+            const maxX = this.world.level.end_level_x - this.width;
+            if(this.world.keyboard.RIGHT && this.x < maxX) {
+            this.otherDirection = false;
+            this.moveRight();
+        }
+            if(this.world.keyboard.LEFT && this.x > 100 ) {
+            this.otherDirection = true ;
+            this.moveLeft();
+        }
+            if(this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.jump();
+            }
+            const margin = 100; // Distance in pixels from the left edge of the screen where the character should be positioned
+            const maxCameraX = -(this.world.level.end_level_x - this.world.canvas.width); // The furthest left the camera can scroll, so the right edge of the level aligns with the right edge of the screen
+            let cameraX = -this.x + margin; // Calculate camera position so the character stays 100px from the left
+            if (cameraX < maxCameraX) {  // Prevent camera from going beyond the right edge of the level
+            cameraX = maxCameraX;
+        }
+            const rightEdge = this.world.level.end_level_x - this.width; // The maximum x-position where the character is fully visible on screen
+            if (this.x > rightEdge) { // Lock the camera at the end so the character doesn’t go partially off-screen
+            cameraX = -(this.world.level.end_level_x - this.world.canvas.width); 
+        }
+
+        this.world.camera_x = cameraX;
+        }, 1000 / 60 );
+
+        setInterval(() => {
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.animationFrameSpeed(1)
+                this.playAnimations(this.images_swim);
+            } else {
+                this.animationFrameSpeed(2)
+                this.playAnimations(this.images_idle);
+            }
+        }, 50);
+    }
+}

@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Lucky";
+    src: url("assets/font/Luckiest_Guy/LuckiestGuy-Regular.ttf");
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction:  column;
+    background-image: url("assets/images/deepSee/vecteezy_ocean-background_273915.png");
+}
+
+h1 {
+    font-family: "Lucky" , sans-serif;
+    color: red ; 
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background-color: black;
+    border-radius: 30px;
+}
