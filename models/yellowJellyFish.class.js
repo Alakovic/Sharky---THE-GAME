@@ -7,15 +7,14 @@ class YellowJellyFish extends jellyFish {
         '../assets/images/enemies/yellowJellyFish/Yellow 4.png'
     ]
 
-    constructor(x) {
+    constructor(x,option = "option1") {
         super();
         this.loadImage(this.images_yellow[0]);
         this.loadImages(this.images_yellow);
         this.animate(this.images_yellow);
         this.x = x;
         this.y = 250;
-        this.speedY = 2.5;
         this.damage = 10;
-        this.startMoveUpDown(this.y - 200,this.y + 200);
+        this.applyOption(option);
     }
 }

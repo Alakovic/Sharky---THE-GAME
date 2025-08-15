@@ -23,4 +23,11 @@ const coin1 = [
     ...generateCoinsArc(2100,450,5,100,80),
     ...generateCoinsArc(2600,450,4,100,80),
     ...generateCoinsArc(5150,450,5,100,80),
+    ...generateCoinsLine(3900, 0,10, 150),
+    ...generateCoinsLine(3900, 500,10, 120),
+    ...generateCoinsLine(7600,50,6, 100),
+    ...generateCoinsLine(7600,150,6, 100),
+    ...generateCoinsLine(7600,250,6, 100),
+    ...generateCoinsLine(7600,350,6, 100),
+    ...generateCoinsLine(7600,450,6, 100),
 ]

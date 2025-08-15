@@ -26,8 +26,8 @@ class World {
         this.addObjectsToMap(this.level.obstacle);
         this.addObjectsToMap(this.level.poison);
         this.addObjectsToMap(this.level.coin);
-        this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addToMap(this.character);
         this.ctx.translate(-this.camera_x,0);
         //----Space for fixed objects --- 
         

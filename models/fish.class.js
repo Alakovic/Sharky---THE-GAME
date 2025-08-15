@@ -1,7 +1,7 @@
-class jellyFish extends MovableObject {
+class Fish extends MovableObject {
 
-    height = 100;
-    width =100;
+    height = 120;
+    width =120;
 
     constructor(){
     super();
@@ -14,6 +14,7 @@ class jellyFish extends MovableObject {
         }, 100);
     }
 
+    
     applyOption(option) {
         if(option === "option1"){
             this.option1();
@@ -23,12 +24,12 @@ class jellyFish extends MovableObject {
     }
 
     option1(){
-        this.speedY = 2.5;
-        this.startMoveUpDown(this.y - 200,this.y + 200);
+        this.moveLeftRight(this.x-300, this.x+300);
+        this.speed = 5;
     }
 
-    option2(){
-        this.speedY = -5.5;
-        this.startMoveUpDown(this.y - 200, this.y + 200);
+    option2() {
+        this.speed = 2.5;
+        this.moveLeftRight(this.x - 100, this.x + 100);
     }
 }
