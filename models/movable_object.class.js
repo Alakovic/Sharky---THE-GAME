@@ -1,6 +1,6 @@
 class MovableObject extends DrawableObject {
     speed = 0.15;
-    speedY = 0;
+    speedY = 1;
     acceleration = 2.5;
     energy;
     damage;
@@ -57,8 +57,17 @@ class MovableObject extends DrawableObject {
         }, 1000 / 60);
     }
 
-    jump(){
-        return  this.speedY = 20;
+    moveUpDown(minY,maxY) {
+            this.y += this.speedY;
+                if (this.y <= minY || this.y >= maxY) {
+            this.speedY *= -1;
+        }
+    }
+
+    startMoveUpDown(minY, maxY) {
+        setInterval(() => {
+            this.moveUpDown(minY, maxY);
+        }, 1000 / 60); 
     }
 
     isColliding(mo) {

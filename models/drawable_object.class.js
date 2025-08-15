@@ -35,7 +35,7 @@ class DrawableObject {
             ctx.translate(this.x, this.y);
         }
     }
-
+/*
     drawHitbox(ctx) {
     if(this.isCollidable()) {
         ctx.beginPath();
@@ -50,7 +50,7 @@ class DrawableObject {
         ctx.stroke();
         }
     }
- /*
+
     isCollidable() {
         return (
             this instanceof Character || 
