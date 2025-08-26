@@ -20,6 +20,8 @@ class Fish extends MovableObject {
             this.option1();
         }else if (option === "option2") {
             this.option2();
+        }else if (option === "option3"){
+            this.option3();
         }
     }
 
@@ -31,5 +33,10 @@ class Fish extends MovableObject {
     option2() {
         this.speed = 2.5;
         this.moveLeftRight(this.x - 100, this.x + 100);
+    }
+
+    option3(){
+        this.speed = 7.5;
+        this.moveLeftRight(this.x - 75, this.x + 75);
     }
 }

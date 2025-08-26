@@ -73,9 +73,9 @@ function generateBackground(images, xStart, xEnd, y, width, height) {
 }
 
 const background1 = [
-    ...generateBackground(water_light, -5, 20000, 0, 1200, 600),
-    ...generateBackground(bg2_light, 0,20000,100,900,500),
-    ...generateBackground(bg1_light,0,20000,50,900,550),
-    ...generateBackground(light,0,20000,0,1200,600),
-    ...generateBackground(floor_light,0,20000,150,900,450)
+    ...generateBackground(water_light, -5, 15000, 0, 1200, 600),
+    ...generateBackground(bg2_light, 0,15000,100,900,500),
+    ...generateBackground(bg1_light,0,15000,50,900,550),
+    ...generateBackground(light,0,15000,0,1200,600),
+    ...generateBackground(floor_light,0,15000,150,900,450)
 ]

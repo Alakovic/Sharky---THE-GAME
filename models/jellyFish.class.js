@@ -31,4 +31,53 @@ class jellyFish extends MovableObject {
         this.speedY = -5.5;
         this.startMoveUpDown(this.y - 200, this.y + 200);
     }
+
+    applyVariant(variant) {
+        if(variant === "variant1"){
+            this.variant1();
+        }else if (variant === "variant2") {
+            this.variant2();
+        }else if (variant === "variant3"){
+            this.variant3();
+        }
+    }
+
+    variant1(){
+        this.speed = 1.5;
+        this.startX = this.x;
+        this.startY = this.y;
+    }
+
+    variant2(){
+        this.speed = 2.5;
+        this.startX = this.x - 50;
+        this.startY = this.y - 50;
+    }
+
+    variant3(){
+        this.speed = 3;
+        this.startX = this.x + 30;
+        this.startY = this.y - 30;
+    }
+
+    movingSquare() {
+    setInterval(() => {
+        if (this.direction === "up") {
+            this.y -= this.speed;
+            if (this.y <= this.startY - this.range) this.direction = "right";
+        } 
+        else if (this.direction === "right") {
+            this.x += this.speed;
+            if (this.x >= this.startX + this.range) this.direction = "down";
+        } 
+        else if (this.direction === "down") {
+            this.y += this.speed;
+            if (this.y + this.height >= this.startY + this.range) this.direction = "left";
+        } 
+        else if (this.direction === "left") {
+            this.x -= this.speed;
+            if (this.x <= this.startX) this.direction = "up";
+        }
+    }, 1000 / 60);
+}
 }
