@@ -26,6 +26,7 @@ class World {
         this.addObjectsToMap(this.level.obstacle);
         this.addObjectsToMap(this.level.poison);
         this.addObjectsToMap(this.level.coin);
+        this.addObjectsToMap(this.level.hearth);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x,0);

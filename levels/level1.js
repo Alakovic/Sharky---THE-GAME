@@ -26,7 +26,12 @@ const level1 = new Level (
         new GreenFish(9000,350,"option3"),
         new PinkFish(9350,200,"option3"),
         new GreenFish(9700,350,"option3"),
-        new GreenJellyFish(300,300,300),
+        new GreenJellyFish(10400,300,300),
+        new GreenJellyFish(10500,300,300),
+        new LilaJellyFish(10590,"option3"),
+        new PinkJellyFish(11400,300,300,"variant2"),
+        new PinkJellyFish(11500,300,300,"variant2"),
+        new YellowJellyFish(11590,"option4"),
     ],
     background1,
     [//imagePath,x,y,width,height
@@ -40,6 +45,16 @@ const level1 = new Level (
         new Poison(2300,500),
         new Poison(2750,500),
         new Poison(5350,500),
+        new Poison(10590,500),
+        new Poison(11590,500),
+    ],
+    [
+        new Hearth(2550,200),
+        new Hearth(5800,300),
+        new Hearth(8110,260),
+        new Hearth(10100,470),
+        new Hearth(12200,300),
+        new Hearth(12500,300)
     ],
     coin1,
     15000

@@ -19,6 +19,10 @@ class jellyFish extends MovableObject {
             this.option1();
         }else if (option === "option2") {
             this.option2();
+        }else if(option === "option3"){
+            this.option3();
+        }else if(option === "option4"){
+            this.option4();
         }
     }
 
@@ -30,6 +34,16 @@ class jellyFish extends MovableObject {
     option2(){
         this.speedY = -5.5;
         this.startMoveUpDown(this.y - 200, this.y + 200);
+    }
+
+    option3(){
+        this.speedY = -5.5;
+        this.startMoveUpDown(this.y - 150, this.y + 150);
+    }
+
+    option4(){
+        this.speedY = 2.5;
+        this.startMoveUpDown(this.y - 150, this.y + 150);
     }
 
     applyVariant(variant) {
@@ -49,15 +63,15 @@ class jellyFish extends MovableObject {
     }
 
     variant2(){
-        this.speed = 2.5;
-        this.startX = this.x - 50;
-        this.startY = this.y - 50;
+        this.speed = 7.5;
+        this.startX = this.x ;
+        this.startY = this.y ;
     }
 
     variant3(){
         this.speed = 3;
-        this.startX = this.x + 30;
-        this.startY = this.y - 30;
+        this.startX = this.x ;
+        this.startY = this.y ;
     }
 
     movingSquare() {
@@ -78,6 +92,6 @@ class jellyFish extends MovableObject {
             this.x -= this.speed;
             if (this.x <= this.startX) this.direction = "up";
         }
-    }, 1000 / 60);
+    }, 1000/60);
 }
 }
