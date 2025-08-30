@@ -6,6 +6,13 @@ class Coin extends MovableObject {
         '../assets/images/coin/4.png'
     ];
 
+    offset = {
+        top: 70,
+        bottom: 70,
+        left: 70,
+        right: 70
+    }
+
     constructor(x,y) {
         super().loadImage(this.images_coin[0]);
         this.loadImages(this.images_coin);
@@ -14,8 +21,10 @@ class Coin extends MovableObject {
         this.y = y;
         this.width = 80;
         this.height = 80;
-        this.value = 1 ; 
+        this.value = 1.5;
     }
+
+    
 
     animate() {
         setInterval(() => {

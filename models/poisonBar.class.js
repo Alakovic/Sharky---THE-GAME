@@ -1,13 +1,12 @@
 class PoisonBar extends DrawableObject {
     
     images_bar = [
-        'assets/images/game_interface/poison_bar/0_ copia.png',
-        'assets/images/game_interface/poison_bar/20_ copia.png',
-        'assets/images/game_interface/poison_bar/40_ copia.png',
-        'assets/images/game_interface/poison_bar/40_ copia.png',
-        'assets/images/game_interface/poison_bar/60_ copia.png',
-        'assets/images/game_interface/poison_bar/80_ copia.png',
-        'assets/images/game_interface/poison_bar/100_ copia.png',
+        'assets/images/game_interface/poison_bar/0.png',
+        'assets/images/game_interface/poison_bar/20.png',
+        'assets/images/game_interface/poison_bar/40.png',
+        'assets/images/game_interface/poison_bar/60.png',
+        'assets/images/game_interface/poison_bar/80.png',
+        'assets/images/game_interface/poison_bar/100.png',
     ]
 
     percentage = 100;

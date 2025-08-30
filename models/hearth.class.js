@@ -17,6 +17,7 @@ class Hearth extends MovableObject {
         this.y = y;
         this.width = 60;
         this.height = 60;
+        this.value = 20;
     }
     
     offset = {

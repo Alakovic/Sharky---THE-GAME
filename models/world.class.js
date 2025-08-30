@@ -9,14 +9,19 @@ class World {
     coinBar = new CoinBar();
     poisonBar = new PoisonBar();
     second = 0;
+    totalCoins;
+    totalPoison
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.level = level;
+        this.totalCoins = this.level.coin.length;
+        this.totalPoison = this.level.poison.reduce((sum, p) => sum + p.value, 0);
         this.draw();
         this.setWorld();
+        this.checkCollisions();
         setInterval(() => {
             this.second++;
         }, 1000)
@@ -24,6 +29,14 @@ class World {
 
     setWorld(){
         this.character.world = this;
+    }
+
+    checkCollisions() {
+        setInterval(() => {
+            this.checkCoinCollection();
+            this.checkPoisonCollection();
+            this.checkHearthCollection();
+        }, 200)
     }
 
     draw(){
@@ -49,6 +62,42 @@ class World {
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
     }
 
+    checkCoinCollection() {
+        this.level.coin.forEach((coin, index) => {
+            if(this.character.isColliding(coin)) {
+                this.character.coinCount += coin.value;
+                let percentage = Math.min((this.character.coinCount / this.totalCoins) * 100 , 100);
+                this.coinBar.setPercentage(percentage)
+                this.level.coin.splice(index,1) ; // Remove collected coin
+            }
+        });
+    }
+
+    checkPoisonCollection() {
+        this.level.poison.forEach((poison,index) => {
+            if(this.character.isColliding(poison)){
+                this.character.poisonCount += poison.value;
+                let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
+                this.poisonBar.setPercentage(percentage);
+                this.level.poison.splice(index,1);// Remove collected poison
+            }
+        } )
+    }
+
+    checkHearthCollection() {
+        this.level.hearth.forEach((hearth,index) =>{
+            if(this.character.isColliding(hearth)){
+                if(this.character.energy < 100) {
+                    this.character.energy += hearth.value;
+
+                    if (this.character.energy > 100)  this.character.energy = 100;  
+                    this.healthBar.setPercentage(this.character.energy);
+                    this.level.hearth.splice(index,1);
+                }
+            }
+        });
+    }
+
     addToMap(mo) {
         this.ctx.save();
         if (mo instanceof MovableObject) {
@@ -58,6 +107,7 @@ class World {
         }
         mo.draw(this.ctx);         
         this.ctx.restore();
+        mo.drawHitbox(this.ctx);
     }
 
     addObjectsToMap(objects){
@@ -67,7 +117,7 @@ class World {
     }
 
     drawTimeText() {
-        this.ctx.font = '30px Arial';
+        this.ctx.font = '30px Lucky';
         this.ctx.fillStyle = '#f72307ff' ;
         this.ctx.textAlign = 'left' ;
         this.ctx.fillText(this.formatTime(), this.canvas.width / 2, 30);

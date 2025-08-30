@@ -35,35 +35,30 @@ class DrawableObject {
             ctx.translate(this.x, this.y);
         }
     }
-/*
+
     drawHitbox(ctx) {
-    if(this.isCollidable()) {
-        ctx.beginPath();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "red";
-        ctx.rect(
-            this.offset.left,
-            this.offset.top,
-            this.width - this.offset.left - this.offset.right,
-            this.height - this.offset.top - this.offset.bottom
-        );
-        ctx.stroke();
+        if (this.isCollidable()) {
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "red";
+            ctx.rect(
+                this.x + this.offset.left,
+                this.y + this.offset.top,
+                this.width - this.offset.left - this.offset.right,
+                this.height - this.offset.top - this.offset.bottom
+            );
+            ctx.stroke();
         }
     }
 
     isCollidable() {
         return (
-            this instanceof Character || 
-            this instanceof Ant ||
-            this instanceof Snake ||
-            this instanceof Rabbit ||
-            this instanceof Obstacle ||
-            this instanceof Box ||
+            this instanceof Character ||
             this instanceof Coin ||
-            this instanceof Hearth ||
-            this instanceof Diamond ||
-            this instanceof Centipede
+            this instanceof Poison ||
+            this instanceof Hearth
+
         );
     }
-    */
+    
 }

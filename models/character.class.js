@@ -7,12 +7,13 @@ class Character extends MovableObject {
     world;
     energy = 100;
     coinCount = 0;
+    poisonCount = 0;
 
     offset = {
-        top: 50,
-        bottom: 20,
-        left: 30,
-        right: 30
+        top: 140,
+        bottom: 70,
+        left: 70,
+        right: 70
     }
 
     images_idle = [
