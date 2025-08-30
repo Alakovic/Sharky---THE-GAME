@@ -5,6 +5,10 @@ class World {
     canvas;
     keyboard;
     camera_x = 0;
+    healthBar = new HealthBar();
+    coinBar = new CoinBar();
+    poisonBar = new PoisonBar();
+    second = 0;
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -13,6 +17,9 @@ class World {
         this.level = level;
         this.draw();
         this.setWorld();
+        setInterval(() => {
+            this.second++;
+        }, 1000)
     }
 
     setWorld(){
@@ -31,9 +38,13 @@ class World {
         this.addToMap(this.character);
         this.ctx.translate(-this.camera_x,0);
         //----Space for fixed objects --- 
-        
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap (this.poisonBar);
         this.ctx.translate(this.camera_x,0);
         this.ctx.translate(-this.camera_x,0);
+
+        this.drawTimeText();
     
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
     }
@@ -53,5 +64,18 @@ class World {
         objects.forEach(o => {
             this.addToMap(o)
         });
+    }
+
+    drawTimeText() {
+        this.ctx.font = '30px Arial';
+        this.ctx.fillStyle = '#f72307ff' ;
+        this.ctx.textAlign = 'left' ;
+        this.ctx.fillText(this.formatTime(), this.canvas.width / 2, 30);
+    }
+
+    formatTime() {
+        const minutes = Math.floor(this.second / 60);
+        const seconds = this.second % 60;
+        return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     }
 }

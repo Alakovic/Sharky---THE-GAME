@@ -19,7 +19,7 @@ class Poison extends MovableObject {
         this.y = y;
         this.width = 70;
         this.height = 70;
-        this.value = 10;
+        this.value = 1;
     }
 
     animate() {
