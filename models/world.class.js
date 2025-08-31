@@ -36,6 +36,7 @@ class World {
             this.checkCoinCollection();
             this.checkPoisonCollection();
             this.checkHearthCollection();
+            this.checkEnemyCollision();
         }, 200)
     }
 
@@ -96,6 +97,16 @@ class World {
                 }
             }
         });
+    }
+    
+    checkEnemyCollision() {
+        this.level.enemies.forEach((enemy) => {
+            if( this.character.isColliding(enemy)) {
+                console.log('Sudario si se sa:', enemy);
+                this.character.hit(enemy.damage);
+                this.healthBar.setPercentage(this.character.energy);
+            }
+        })
     }
 
     addToMap(mo) {

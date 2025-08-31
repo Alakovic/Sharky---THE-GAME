@@ -14,7 +14,7 @@ class PinkJellyFish extends jellyFish {
         this.animate(this.images_pink);
         this.x = x;
         this.y = y;
-        this.damage = 10;
+        this.damage = 20;
         this.range = range;
         this.direction=direction;
         this.applyVariant(variant)

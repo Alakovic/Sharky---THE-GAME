@@ -7,6 +7,13 @@ class jellyFish extends MovableObject {
     super();
     }
 
+    offset = {
+        top:90,
+        bottom: 90,
+        left: 90,
+        right: 90
+    }
+
     animate(images) {
         setInterval(() => {
             this.animationFrameSpeed(1);

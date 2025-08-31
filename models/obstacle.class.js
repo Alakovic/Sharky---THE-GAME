@@ -7,4 +7,11 @@ class Obstacle extends MovableObject {
         this.width = width;
         this.height = height;
     }
+
+    offset = {
+    top: 40,  
+    bottom: 20, 
+    left: 10,
+    right: 15
+}
 }

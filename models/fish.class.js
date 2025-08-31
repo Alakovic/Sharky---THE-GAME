@@ -7,6 +7,13 @@ class Fish extends MovableObject {
     super();
     }
 
+    offset = {
+        top: 90,
+        bottom: 110,
+        left: 110,
+        right: 110
+    }
+
     animate(images) {
         setInterval(() => {
             this.animationFrameSpeed(1);
