@@ -59,7 +59,6 @@ class World {
         this.ctx.translate(-this.camera_x,0);
 
         this.drawTimeText();
-    
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
     }
 

@@ -89,6 +89,39 @@ class Character extends MovableObject {
         '../assets/images/character/dead/electrified/10.png'
     ]
 
+    images_attackFinSlap =[
+        '../assets/images/character/attack/finSlap/1.png',
+        '../assets/images/character/attack/finSlap/2.png',
+        '../assets/images/character/attack/finSlap/3.png',
+        '../assets/images/character/attack/finSlap/4.png',
+        '../assets/images/character/attack/finSlap/5.png',
+        '../assets/images/character/attack/finSlap/6.png',
+        '../assets/images/character/attack/finSlap/7.png',
+        '../assets/images/character/attack/finSlap/8.png'
+    ]
+
+    images_attackWithBubble = [
+        '../assets/images/character/attack/bubble/withBubble/1.png',
+        '../assets/images/character/attack/bubble/withBubble/2.png',
+        '../assets/images/character/attack/bubble/withBubble/3.png',
+        '../assets/images/character/attack/bubble/withBubble/4.png',
+        '../assets/images/character/attack/bubble/withBubble/5.png',
+        '../assets/images/character/attack/bubble/withBubble/6.png',
+        '../assets/images/character/attack/bubble/withBubble/7.png',
+        '../assets/images/character/attack/bubble/withBubble/8.png'
+    ]
+
+    images_attackWithoutBubble = [
+        '../assets/images/character/attack/bubble/withoutBubble/1.png',
+        '../assets/images/character/attack/bubble/withoutBubble/2.png',
+        '../assets/images/character/attack/bubble/withoutBubble/3.png',
+        '../assets/images/character/attack/bubble/withoutBubble/4.png',
+        '../assets/images/character/attack/bubble/withoutBubble/5.png',
+        '../assets/images/character/attack/bubble/withoutBubble/6.png',
+        '../assets/images/character/attack/bubble/withoutBubble/7.png',
+        '../assets/images/character/attack/bubble/withoutBubble/8.png'
+    ]
+
     constructor() {
         super().loadImage('../assets/images/character/idle/1.png');
         this.loadImages(this.images_swim);
@@ -97,6 +130,9 @@ class Character extends MovableObject {
         this.loadImages(this.images_electrified);
         this.loadImages(this.images_deathElectro);
         this.loadImages(this.images_deathPoison);
+        this.loadImages(this.images_attackFinSlap);
+        this.loadImages(this.images_attackWithBubble);
+        this.loadImages(this.images_attackWithBubble);
         this.animate();
     }
 
@@ -156,10 +192,18 @@ class Character extends MovableObject {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.animationFrameSpeed(1)
                 this.playAnimations(this.images_swim);
-            } else {
+            }else if(this.world.keyboard.SPACE) {
+                this.animationFrameSpeed(1)
+                this.playAnimations(this.images_attackFinSlap);
+            } else if(this.world.keyboard.D) {
+                this.animationFrameSpeed(1)
+                this.playAnimations(this.images_attackWithBubble);
+            }
+            else {
                 this.animationFrameSpeed(3)
                 this.playAnimations(this.images_idle);
             }}
         }, 50);
     }
+
 }
