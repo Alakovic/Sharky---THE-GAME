@@ -8,6 +8,7 @@ class Character extends MovableObject {
     energy = 100;
     coinCount = 0;
     poisonCount = 0;
+    damageType;
 
     offset = {
         top: 140,
@@ -46,10 +47,56 @@ class Character extends MovableObject {
         '../assets/images/character/swim/6.png'
     ];
 
+    images_poisoned = [
+        '../assets/images/character/hurt/poisoned/1.png',
+        '../assets/images/character/hurt/poisoned/2.png',
+        '../assets/images/character/hurt/poisoned/3.png',
+        '../assets/images/character/hurt/poisoned/4.png',
+        '../assets/images/character/hurt/poisoned/5.png'
+    ];
+
+    images_electrified = [
+        '../assets/images/character/hurt/electric shock/1.png',
+        '../assets/images/character/hurt/electric shock/2.png',
+        '../assets/images/character/hurt/electric shock/3.png'
+    ]
+
+    images_deathPoison = [
+        '../assets/images/character/dead/poisoned/1.png',
+        '../assets/images/character/dead/poisoned/2.png',
+        '../assets/images/character/dead/poisoned/3.png',
+        '../assets/images/character/dead/poisoned/4.png',
+        '../assets/images/character/dead/poisoned/5.png',
+        '../assets/images/character/dead/poisoned/6.png',
+        '../assets/images/character/dead/poisoned/7.png',
+        '../assets/images/character/dead/poisoned/8.png',
+        '../assets/images/character/dead/poisoned/9.png',
+        '../assets/images/character/dead/poisoned/10.png',
+        '../assets/images/character/dead/poisoned/11.png',
+        '../assets/images/character/dead/poisoned/12.png'
+    ]
+
+    images_deathElectro = [
+        '../assets/images/character/dead/electrified/1.png',
+        '../assets/images/character/dead/electrified/2.png',
+        '../assets/images/character/dead/electrified/3.png',
+        '../assets/images/character/dead/electrified/4.png',
+        '../assets/images/character/dead/electrified/5.png',
+        '../assets/images/character/dead/electrified/6.png',
+        '../assets/images/character/dead/electrified/7.png',
+        '../assets/images/character/dead/electrified/8.png',
+        '../assets/images/character/dead/electrified/9.png',
+        '../assets/images/character/dead/electrified/10.png'
+    ]
+
     constructor() {
         super().loadImage('../assets/images/character/idle/1.png');
         this.loadImages(this.images_swim);
         this.loadImages(this.images_idle);
+        this.loadImages(this.images_poisoned);
+        this.loadImages(this.images_electrified);
+        this.loadImages(this.images_deathElectro);
+        this.loadImages(this.images_deathPoison);
         this.animate();
     }
 
@@ -89,13 +136,30 @@ class Character extends MovableObject {
         }, 1000 / 60 );
 
         setInterval(() => {
+            if(this.isDead()) {
+                if (this.damageType === 'poison') {
+                    this.animationFrameSpeed(2);
+                    this.playAnimations(this.images_deathPoison);
+                }else if (this.damageType === 'electro') {
+                    this.animationFrameSpeed(2);
+                    this.playAnimations(this.images_deathElectro);
+                }
+            }else if(this.isHurt()) {
+                if(this.damageType === 'poison') {
+                    this.animationFrameSpeed(2);
+                    this.playAnimations(this.images_poisoned);
+                } else if (this.damageType === 'electro') {
+                    this.animationFrameSpeed(2);
+                    this.playAnimations(this.images_electrified);
+                }
+            } else {
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                 this.animationFrameSpeed(1)
                 this.playAnimations(this.images_swim);
             } else {
                 this.animationFrameSpeed(3)
                 this.playAnimations(this.images_idle);
-            }
+            }}
         }, 50);
     }
 }

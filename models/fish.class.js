@@ -2,6 +2,7 @@ class Fish extends MovableObject {
 
     height = 120;
     width =120;
+    damageType = 'poison';
 
     constructor(){
     super();

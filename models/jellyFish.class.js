@@ -2,6 +2,7 @@ class jellyFish extends MovableObject {
 
     height = 100;
     width =100;
+    damageType = 'electro'
 
     constructor(){
     super();
