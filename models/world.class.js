@@ -8,6 +8,7 @@ class World {
     healthBar = new HealthBar();
     coinBar = new CoinBar();
     poisonBar = new PoisonBar();
+    boss = new Boss();
     second = 0;
     totalCoins;
     totalPoison
@@ -37,6 +38,7 @@ class World {
             this.checkPoisonCollection();
             this.checkHearthCollection();
             this.checkEnemyCollision();
+            this.checkBossTrigger();
         }, 200)
     }
 
@@ -50,6 +52,7 @@ class World {
         this.addObjectsToMap(this.level.hearth);
         this.addObjectsToMap(this.level.enemies);
         this.addToMap(this.character);
+        this.addBossToMap();
         this.ctx.translate(-this.camera_x,0);
         //----Space for fixed objects --- 
         this.addToMap(this.healthBar);
@@ -60,6 +63,12 @@ class World {
 
         this.drawTimeText();
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
+    }
+
+    addBossToMap(){
+        if (this.boss.state !== "hidden") {
+            this.addToMap(this.boss);
+        }
     }
 
     checkCoinCollection() {
@@ -106,6 +115,13 @@ class World {
                 this.character.damageType = enemy.damageType;
             }
         })
+    }
+
+    checkBossTrigger() {
+        if (this.character.x > 13800 && this.boss.state === "hidden") {
+            this.boss.state = "introduce";
+            this.boss.startIntroduceAnimation();
+        }
     }
 
     addToMap(mo) {
