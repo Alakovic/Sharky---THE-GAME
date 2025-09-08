@@ -142,19 +142,27 @@ class Character extends MovableObject {
             const maxY = 360;
             const minY = -130;
             if(this.world.keyboard.RIGHT && this.x < maxX) {
-            this.otherDirection = false;
-            this.moveRight();
+                this.otherDirection = false;
+            if (!this.collidingObstacle("right")) {
+                this.moveRight();
+            }
         }
             if(this.world.keyboard.LEFT && this.x > 100 ) {
-            this.otherDirection = true ;
-            this.moveLeft();
+                this.otherDirection = true ;
+            if (!this.collidingObstacle("left")) {
+                this.moveLeft();
+            }
         }
 
             if (this.world.keyboard.UP && this.y > minY) {
-            this.moveUp();
+            if (!this.collidingObstacle("up")) {
+                this.moveUp();
+            }
         }
             if (this.world.keyboard.DOWN && this.y < maxY) {
-            this.moveDown();
+            if (!this.collidingObstacle("down")) {
+                this.moveDown();
+            }
         }
 
             const margin = 100; // Distance in pixels from the left edge of the screen where the character should be positioned
@@ -176,34 +184,57 @@ class Character extends MovableObject {
                 if (this.damageType === 'poison') {
                     this.animationFrameSpeed(2);
                     this.playAnimations(this.images_deathPoison);
-                }else if (this.damageType === 'electro') {
+            } else if (this.damageType === 'electro') {
                     this.animationFrameSpeed(2);
                     this.playAnimations(this.images_deathElectro);
-                }
-            }else if(this.isHurt()) {
+        }
+            } else if(this.isHurt()) {
                 if(this.damageType === 'poison') {
                     this.animationFrameSpeed(2);
                     this.playAnimations(this.images_poisoned);
-                } else if (this.damageType === 'electro') {
+            } else if (this.damageType === 'electro') {
                     this.animationFrameSpeed(2);
                     this.playAnimations(this.images_electrified);
-                }
+        }
             } else {
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                this.animationFrameSpeed(1)
-                this.playAnimations(this.images_swim);
-            }else if(this.world.keyboard.SPACE) {
-                this.animationFrameSpeed(1)
-                this.playAnimations(this.images_attackFinSlap);
-            } else if(this.world.keyboard.D) {
-                this.animationFrameSpeed(1)
-                this.playAnimations(this.images_attackWithBubble);
+        
+                if (this.world.keyboard.SPACE) {
+                    this.animationFrameSpeed(1);
+                    this.playAnimations(this.images_attackFinSlap);
+            } else if (this.world.keyboard.D) {
+                    this.animationFrameSpeed(1);
+                    this.playAnimations(this.images_attackWithBubble);
+            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
+                    this.animationFrameSpeed(1);
+                    this.playAnimations(this.images_swim);
+            } else {
+                    this.animationFrameSpeed(3);
+                    this.playAnimations(this.images_idle);
             }
-            else {
-                this.animationFrameSpeed(3)
-                this.playAnimations(this.images_idle);
-            }}
-        }, 50);
+        }}, 50);
     }
+
+    collidingObstacle(direction) {
+    let nextX = this.x;
+    let nextY = this.y;
+
+    if (direction === "right") nextX += this.speed;
+    if (direction === "left")  nextX -= this.speed;
+    if (direction === "up")    nextY -= this.speed;
+    if (direction === "down")  nextY += this.speed;
+
+    return this.world.level.obstacle.some(obs => 
+        this.isCollidingObstacle(nextX, nextY, obs)
+    );
+    }
+
+    isCollidingObstacle(nextX, nextY, obs) {
+    return obs.hitboxes.some(hb => (
+        nextX + this.width - this.offset.right > obs.x + (hb.left || 0) &&
+        nextY + this.height - this.offset.bottom > obs.y + (hb.top || 0) &&
+        nextX + this.offset.left < obs.x + obs.width - (hb.right || 0) &&
+        nextY + this.offset.top < obs.y + obs.height - (hb.bottom || 0)
+    ));
+}
 
 }

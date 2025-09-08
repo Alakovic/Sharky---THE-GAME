@@ -47,6 +47,7 @@ class World {
         this.ctx.translate(this.camera_x,0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.obstacle);
+        this.level.obstacle.forEach(obs => obs.drawHitboxesObstacle(this.ctx));
         this.addObjectsToMap(this.level.poison);
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.hearth);

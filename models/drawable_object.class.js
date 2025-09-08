@@ -57,9 +57,9 @@ class DrawableObject {
             this instanceof Coin ||
             this instanceof Poison ||
             this instanceof Hearth ||
-            this instanceof Obstacle ||
             this instanceof Fish ||
-            this instanceof jellyFish
+            this instanceof jellyFish ||
+            this instanceof Boss
         );
     }
     

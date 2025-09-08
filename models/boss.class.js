@@ -7,8 +7,8 @@ class Boss extends MovableObject {
     offset = {
         top: 140,
         bottom: 70,
-        left: 70,
-        right: 70
+        left: 50,
+        right: 60
     }
 
     state = "hidden" ;
