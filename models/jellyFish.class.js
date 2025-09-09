@@ -9,10 +9,10 @@ class jellyFish extends MovableObject {
     }
 
     offset = {
-        top:90,
-        bottom: 90,
-        left: 90,
-        right: 90
+        top:10,
+        bottom: 10,
+        left: 10,
+        right: 10
     }
 
     animate(images) {

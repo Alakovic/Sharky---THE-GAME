@@ -5,10 +5,10 @@ class Boss extends MovableObject {
     width = 350;
 
     offset = {
-        top: 140,
-        bottom: 70,
+        top: 160,
+        bottom: 80,
         left: 50,
-        right: 60
+        right: 80
     }
 
     state = "hidden" ;

@@ -8,12 +8,12 @@ class Fish extends MovableObject {
     super();
     }
 
-    offset = {
-        top: 90,
-        bottom: 110,
-        left: 110,
-        right: 110
-    }
+    offset = { 
+        top: 20, 
+        bottom: 40, 
+        left: 30, 
+        right: 30 
+    };
 
     animate(images) {
         setInterval(() => {

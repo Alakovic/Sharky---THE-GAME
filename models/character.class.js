@@ -11,10 +11,10 @@ class Character extends MovableObject {
     damageType;
 
     offset = {
-        top: 140,
-        bottom: 70,
-        left: 70,
-        right: 70
+        top: 160,
+        bottom: 80,
+        left: 80,
+        right: 80
     }
 
     images_idle = [

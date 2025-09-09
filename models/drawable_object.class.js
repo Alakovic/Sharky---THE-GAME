@@ -36,17 +36,22 @@ class DrawableObject {
         }
     }
 
+    getHitbox() {
+        return {
+            left: this.x + (this.offset?.left || 0),
+            right: this.x + this.width - (this.offset?.right || 0),
+            top: this.y + (this.offset?.top || 0),
+            bottom: this.y + this.height - (this.offset?.bottom || 0)
+        };
+    }
+
     drawHitbox(ctx) {
         if (this.isCollidable()) {
+            const hb = this.getHitbox();
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle = "red";
-            ctx.rect(
-                this.x + this.offset.left,
-                this.y + this.offset.top,
-                this.width - this.offset.left - this.offset.right,
-                this.height - this.offset.top - this.offset.bottom
-            );
+            ctx.rect(hb.left, hb.top, hb.right - hb.left, hb.bottom - hb.top);
             ctx.stroke();
         }
     }

@@ -21,10 +21,10 @@ class Hearth extends MovableObject {
     }
     
     offset = {
-        top: 60,
-        bottom: 60,
-        left: 60,
-        right: 60
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
     }
 
     animate() {

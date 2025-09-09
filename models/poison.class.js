@@ -23,10 +23,10 @@ class Poison extends MovableObject {
     }
 
     offset = {
-        top: 70,
-        bottom: 70,
-        left: 70,
-        right: 70
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
     }
 
     animate() {
