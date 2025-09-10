@@ -64,7 +64,8 @@ class DrawableObject {
             this instanceof Hearth ||
             this instanceof Fish ||
             this instanceof jellyFish ||
-            this instanceof Boss
+            this instanceof Boss ||
+            this instanceof Bubble
         );
     }
     

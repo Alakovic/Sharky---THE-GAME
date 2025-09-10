@@ -9,6 +9,7 @@ class Character extends MovableObject {
     coinCount = 0;
     poisonCount = 0;
     damageType;
+    shooting = false;
 
     offset = {
         top: 160,
@@ -132,8 +133,20 @@ class Character extends MovableObject {
         this.loadImages(this.images_deathPoison);
         this.loadImages(this.images_attackFinSlap);
         this.loadImages(this.images_attackWithBubble);
-        this.loadImages(this.images_attackWithBubble);
+        this.loadImages(this.images_attackWithoutBubble);
         this.animate();
+    }
+    
+    shootBubble() {
+        if (!this.shooting && this.poisonCount > 0) {
+            this.shooting = true;
+            let direction = this.otherDirection ? -1 : 1;
+            let bubble = new Bubble(this.x + this.width / 2, this.y + this.height / 2, direction); 
+            this.world.bubbles.push(bubble);
+            this.poisonCount--;
+            this.world.poisonBar.setPercentage(Math.min((this.poisonCount / this.world.totalPoison) * 100, 100));
+            setTimeout(() => this.shooting = false, 300);
+        }
     }
 
     animate() {
@@ -203,7 +216,12 @@ class Character extends MovableObject {
                     this.playAnimations(this.images_attackFinSlap);
             } else if (this.world.keyboard.D) {
                     this.animationFrameSpeed(1);
+                    if (this.poisonCount > 0) {
                     this.playAnimations(this.images_attackWithBubble);
+                    this.shootBubble();
+                } else {
+                    this.playAnimations(this.images_attackWithoutBubble);
+                }
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                     this.animationFrameSpeed(1);
                     this.playAnimations(this.images_swim);
@@ -235,6 +253,8 @@ class Character extends MovableObject {
         nextX + this.offset.left < obs.x + obs.width - (hb.right || 0) &&
         nextY + this.offset.top < obs.y + obs.height - (hb.bottom || 0)
     ));
+    }
+
+    
 }
 
-}

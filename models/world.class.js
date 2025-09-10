@@ -9,9 +9,10 @@ class World {
     coinBar = new CoinBar();
     poisonBar = new PoisonBar();
     boss = new Boss();
+    bubbles = [];
     second = 0;
     totalCoins;
-    totalPoison
+    totalPoison;
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -19,7 +20,7 @@ class World {
         this.keyboard = keyboard;
         this.level = level;
         this.totalCoins = this.level.coin.length;
-        this.totalPoison = this.level.poison.reduce((sum, p) => sum + p.value, 0);
+        this.totalPoison = this.level.poison.length;
         this.draw();
         this.setWorld();
         this.checkCollisions();
@@ -45,6 +46,7 @@ class World {
     draw(){
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
         this.ctx.translate(this.camera_x,0);
+        this.updateBubbles();
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.obstacle);
         this.level.obstacle.forEach(obs => obs.drawHitboxesObstacle(this.ctx));
@@ -52,6 +54,7 @@ class World {
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.hearth);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.bubbles); 
         this.addToMap(this.character);
         this.addBossToMap();
         this.ctx.translate(-this.camera_x,0);
@@ -86,7 +89,7 @@ class World {
     checkPoisonCollection() {
         this.level.poison.forEach((poison,index) => {
             if(this.character.isColliding(poison)){
-                this.character.poisonCount += poison.value;
+                this.character.poisonCount += 1;
                 let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
                 this.poisonBar.setPercentage(percentage);
                 this.level.poison.splice(index,1);// Remove collected poison
@@ -124,10 +127,16 @@ class World {
             this.boss.startIntroduceAnimation();
         }
     }
+    
+    updateBubbles() {
+            this.bubbles.forEach((bubble, index) => {
+            bubble.update(); 
+        });
+    }
 
     addToMap(mo) {
         this.ctx.save();
-        if (mo instanceof MovableObject) {
+        if (mo instanceof MovableObject ) {
             mo.flipImage(this.ctx);
         } else {
             this.ctx.translate(mo.x, mo.y); 
