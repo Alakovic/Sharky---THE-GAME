@@ -2,7 +2,8 @@ class Bubble extends MovableObject {
     speed = 10;       
     width = 40;       
     height = 40;      
-    direction = 1;   
+    direction = 1; 
+    damage = 20;   
     
     offset = {
         top: 5,

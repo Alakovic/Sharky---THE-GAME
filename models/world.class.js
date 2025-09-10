@@ -40,6 +40,7 @@ class World {
             this.checkHearthCollection();
             this.checkEnemyCollision();
             this.checkBossTrigger();
+            this.checkBubbleFishCollision();
         }, 200)
     }
 
@@ -133,6 +134,18 @@ class World {
             bubble.update(); 
         });
     }
+
+    checkBubbleFishCollision() {
+    this.bubbles.forEach((bubble, bIndex) => {
+        this.level.enemies.forEach((enemy) => {
+            if(bubble.isColliding(enemy)) {
+                enemy.hit(bubble.damage);   // oduzima energiju enemy-ju
+                console.log(`Fish hit! Enemy energy: ${enemy.energy}`); // << ovde provjeri energiju
+                this.bubbles.splice(bIndex, 1); // bubble nestaje nakon udarca
+            }
+        });
+    });
+}
 
     addToMap(mo) {
         this.ctx.save();

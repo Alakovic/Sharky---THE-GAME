@@ -3,6 +3,7 @@ class Fish extends MovableObject {
     height = 120;
     width =120;
     damageType = 'poison';
+    energy = 20;
 
     constructor(){
     super();
@@ -15,10 +16,15 @@ class Fish extends MovableObject {
         right: 30 
     };
 
-    animate(images) {
+    animate(images, deadImages = []) {
         setInterval(() => {
-            this.animationFrameSpeed(1);
-            this.playAnimations(images);
+            if(this.isDead()) {
+                this.animationFrameSpeed(2); 
+                this.playAnimations(deadImages.length ? deadImages : images);
+            } else {
+                this.animationFrameSpeed(1);
+                this.playAnimations(images);
+            }
         }, 100);
     }
 
