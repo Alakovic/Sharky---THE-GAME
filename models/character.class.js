@@ -10,6 +10,7 @@ class Character extends MovableObject {
     poisonCount = 0;
     damageType;
     shooting = false;
+    finSlapDamage = 20;
 
     offset = {
         top: 160,
