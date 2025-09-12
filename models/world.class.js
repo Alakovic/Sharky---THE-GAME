@@ -114,17 +114,30 @@ class World {
     
     checkEnemyCollision() {
         this.level.enemies.forEach((enemy) => {
-            if( this.character.isColliding(enemy)) {
-                if(!this.keyboard.SPACE) {
+            if (!enemy.death && this.character.isColliding(enemy)) {
+                if (!this.keyboard.SPACE) {
                     this.character.hit(enemy.damage);
                     this.healthBar.setPercentage(this.character.energy);
                     this.character.damageType = enemy.damageType;
                 } else {
                     enemy.hit(this.character.finSlapDamage);
-                    console.log("Enemy hit! Enemy energy:", enemy.energy);
+                    enemy.damage = 0;
+                    const direction =  this.getKnockbackDirection(this.character, enemy); 
+                    enemy.knockback(direction, -1);
                 }
             }
-        })
+        });
+    }
+
+    getKnockbackDirection(character, enemy) {
+        let characterMid = character.x + character.width / 2;
+        let enemyMid = enemy.x + enemy.width / 2;
+
+        if (characterMid < enemyMid) {
+            return 1;  // Character left - Fish goes right 
+        } else {
+            return -1; //Character right  - Fish goes left 
+        }
     }
 
     checkBossTrigger() {

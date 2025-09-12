@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0
     animationFrameCounter = 0; 
     currentAnimationImages;
+    death;
 
     offset = {
         top : 0,
@@ -15,6 +16,23 @@ class MovableObject extends DrawableObject {
         right:30
     }
     
+
+    playDeathAnimation(images) {
+    if (this.currentAnimationImages !== images) {
+        this.currentAnimationImages = images;
+        this.currentImage = 0;
+        this.animationFrameCounter = 0;
+    }
+    if (this.currentImage < images.length) {
+        let path = images[this.currentImage];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    } else {
+        let lastFrame = images[images.length - 1];
+        this.img = this.imageCache[lastFrame];
+    }
+}
+
     playAnimations(images) {
         if (this.currentAnimationImages !== images) {
         this.currentAnimationImages = images;
@@ -46,6 +64,7 @@ class MovableObject extends DrawableObject {
     moveLeftRight(minX, maxX) {
                 let direction = -1; // Initial direction left , so -1
     setInterval(() => {
+        if (this.isDead()) return;
                 this.x += this.speed * direction;
             if (this.x <= minX) {
                 direction = 1;            // Change direction to right 
@@ -83,11 +102,13 @@ class MovableObject extends DrawableObject {
     }
 
     hit(damage) {
-        this.energy -= damage
-        if(this.energy < 0) {
-            this.energy = 0; 
+        this.energy -= damage;
+        if  (this.energy <= 0) {
+            this.energy = 0;
+            this.death = true;   
         } else {
             this.lastHit = new Date().getTime();
+            this.death = false;  
         }
     }
     
