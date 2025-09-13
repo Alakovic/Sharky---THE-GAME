@@ -1,8 +1,11 @@
 class Boss extends MovableObject {
     x = 14500
     y=0
-    height = 300;
-    width = 350;
+    height = 500;
+    width = 550;
+    minX = 12600;
+    maxX = 14500;
+    damage = 20;
 
     offset = {
         top: 160,
@@ -89,6 +92,8 @@ class Boss extends MovableObject {
     }
 
     startFloatAnimation() {
+        this.speed = 5;
+
         setInterval(() => {
             if (this.state === "float") {
                 this.playAnimations(this.images_float);
@@ -96,4 +101,29 @@ class Boss extends MovableObject {
             }
         }, 50);
     }
+
+    checkAttack(character) {
+        const distance = Math.abs(character.x - this.x);
+        if (distance < 500 && this.state !== "attack") {
+            this.state = "attack";
+            this.startAttack();
+        } else if (distance >= 500 && this.state === "attack") {
+            this.state = "float"; 
+        }
+    }
+
+    startAttack() {
+        this.speed = 5;
+        let attackInterval = setInterval(() => {
+            if (this.state !== "attack") {
+                clearInterval(attackInterval);
+                return;
+            }
+            this.playAnimations(this.images_attack);
+            this.animationFrameSpeed(1.5);
+
+            
+        }, 100);
+    }
+
 }

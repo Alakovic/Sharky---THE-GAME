@@ -41,6 +41,8 @@ class World {
             this.checkEnemyCollision();
             this.checkBossTrigger();
             this.checkBubbleFishCollision();
+            this.bossLogic();
+            this.checkCharacterBossCollision();
         }, 200)
     }
 
@@ -111,6 +113,19 @@ class World {
             }
         });
     }
+
+    checkCharacterBossCollision() {
+        if (this.character.isColliding(this.boss)) {
+                this.character.hit(this.boss.damage); 
+                this.healthBar.setPercentage(this.character.energy)
+                this.character.damageType = 'poison';
+            }
+    }
+
+    bossLogic(){
+        this.boss.checkAttack(this.character)
+        this.checkCharacterBossCollision();
+    }
     
     checkEnemyCollision() {
         this.level.enemies.forEach((enemy) => {
@@ -148,7 +163,7 @@ class World {
     }
     
     updateBubbles() {
-            this.bubbles.forEach((bubble, index) => {
+            this.bubbles.forEach((bubble) => {
             bubble.update(); 
         });
     }
@@ -157,9 +172,8 @@ class World {
     this.bubbles.forEach((bubble, bIndex) => {
         this.level.enemies.forEach((enemy) => {
             if(bubble.isColliding(enemy)) {
-                enemy.hit(bubble.damage);   // oduzima energiju enemy-ju
-                console.log(`Fish hit! Enemy energy: ${enemy.energy}`); // << ovde provjeri energiju
-                this.bubbles.splice(bIndex, 1); // bubble nestaje nakon udarca
+                enemy.hit(bubble.damage);  
+                this.bubbles.splice(bIndex, 1); 
             }
         });
     });
