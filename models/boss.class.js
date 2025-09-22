@@ -6,6 +6,9 @@ class Boss extends MovableObject {
     minX = 12600;
     maxX = 14500;
     damage = 20;
+    speed = 5;
+    speedY = 5;
+    direction = 1;
 
     offset = {
         top: 160,
@@ -78,52 +81,71 @@ class Boss extends MovableObject {
         this.loadImages(this.images_introduce);
     }
 
-    startIntroduceAnimation() {
-        let interval = setInterval(() => {
+    updateBoss(character) {
+        if (this.state === "introduce") {
             this.playAnimations(this.images_introduce);
-            this.animationFrameSpeed(1);
-        },50);
-
-        setTimeout(() => {
-            clearInterval(interval);
-            this.state = "float";
-            this.startFloatAnimation();
-        }, this.images_introduce.length * 50);
-    }
-
-    startFloatAnimation() {
-        this.speed = 5;
-
-        setInterval(() => {
-            if (this.state === "float") {
-                this.playAnimations(this.images_float);
-                this.animationFrameSpeed(3);
-            }
-        }, 50);
-    }
-
-    checkAttack(character) {
-        const distance = Math.abs(character.x - this.x);
-        if (distance < 500 && this.state !== "attack") {
-            this.state = "attack";
-            this.startAttack();
-        } else if (distance >= 500 && this.state === "attack") {
-            this.state = "float"; 
+            this.animationFrameSpeed(6);
+        if (this.currentImage >= this.images_introduce.length) {
+            this.enterFloat(); 
+        }
+        } else if (this.state === "float") {
+            this.floatPatrol();
+        } else if (this.state === "hunt") {
+            this.huntCharacter(character);
+        } else if (this.state === "attack") {
+            this.playAnimations(this.images_attack);
+            this.animationFrameSpeed(4);
         }
     }
 
-    startAttack() {
-        this.speed = 5;
-        let attackInterval = setInterval(() => {
-            if (this.state !== "attack") {
-                clearInterval(attackInterval);
-                return;
-            }
-            this.playAnimations(this.images_attack);
-            this.animationFrameSpeed(1.5);
-
-            
-        }, 100);
+    huntCharacter(character) {
+        if (character.x < this.x) {
+            this.moveLeft();
+            this.otherDirection = false;
+        } else {
+            this.moveRight();
+            this.otherDirection = true;
+        }
+        if (character.y + character.height/2 < this.y + this.height/2) {
+            this.moveUp();
+        } else if (character.y + character.height/2 > this.y + this.height/2) {
+            this.moveDown();
+        }
+        this.playAnimations(this.images_attack);
+        this.animationFrameSpeed(4)
     }
 
+    checkAttack(character) {
+        if (this.state === "hidden" || this.state === "introduce" || this.state === "dead") return;
+    const distance = Math.abs(character.x - this.x);
+        if (distance < 500) {
+            this.state = "hunt";
+        } else if (this.state === "hunt") {
+            this.enterFloat(); 
+        }
+    }
+
+    floatPatrol() {
+        if (this.state !== "float") return;
+    this.x += this.speed * this.direction;
+    if (this.x <= this.minX) {
+        this.x = this.minX;
+        this.direction = 1;
+    } 
+    if (this.x >= this.maxX) {
+        this.x = this.maxX;
+        this.direction = -1;
+    }
+        this.otherDirection = this.direction === -1 ? false : true;
+        this.playAnimations(this.images_float);
+        this.animationFrameSpeed(8); 
+    }
+
+    enterFloat() {
+    this.state = "float";
+    if (this.x < this.minX) this.x = this.minX;
+    if (this.x > this.maxX) this.x = this.maxX;
+        this.direction = 1;
+        this.otherDirection = true;
+    }
 }

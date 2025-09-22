@@ -41,7 +41,6 @@ class World {
             this.checkEnemyCollision();
             this.checkBossTrigger();
             this.checkBubbleFishCollision();
-            this.bossLogic();
             this.checkCharacterBossCollision();
         }, 200)
     }
@@ -74,7 +73,9 @@ class World {
 
     addBossToMap(){
         if (this.boss.state !== "hidden") {
-            this.addToMap(this.boss);
+            this.boss.checkAttack(this.character); 
+            this.boss.updateBoss(this.character);  
+            this.addToMap(this.boss);              
         }
     }
 
@@ -122,11 +123,6 @@ class World {
             }
     }
 
-    bossLogic(){
-        this.boss.checkAttack(this.character)
-        this.checkCharacterBossCollision();
-    }
-    
     checkEnemyCollision() {
         this.level.enemies.forEach((enemy) => {
             if (!enemy.death && this.character.isColliding(enemy)) {
@@ -158,7 +154,6 @@ class World {
     checkBossTrigger() {
         if (this.character.x > 13800 && this.boss.state === "hidden") {
             this.boss.state = "introduce";
-            this.boss.startIntroduceAnimation();
         }
     }
     
