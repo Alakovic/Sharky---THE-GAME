@@ -9,9 +9,10 @@ class Boss extends MovableObject {
     speed = 5;
     speedY = 5;
     direction = 1;
+    energy = 100;
 
     offset = {
-        top: 160,
+        top: 250,
         bottom: 80,
         left: 50,
         right: 80

@@ -9,6 +9,7 @@ class World {
     coinBar = new CoinBar();
     poisonBar = new PoisonBar();
     boss = new Boss();
+    healthBarBoss = new HealthBarBoss();
     bubbles = [];
     second = 0;
     totalCoins;
@@ -64,6 +65,9 @@ class World {
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap (this.poisonBar);
+        if(this.boss.state !== "hidden") {
+        this.addToMap(this.healthBarBoss);
+        }
         this.ctx.translate(this.camera_x,0);
         this.ctx.translate(-this.camera_x,0);
 
@@ -75,7 +79,7 @@ class World {
         if (this.boss.state !== "hidden") {
             this.boss.checkAttack(this.character); 
             this.boss.updateBoss(this.character);  
-            this.addToMap(this.boss);              
+            this.addToMap(this.boss);         
         }
     }
 
