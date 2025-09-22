@@ -10,6 +10,8 @@ class Boss extends MovableObject {
     speedY = 5;
     direction = 1;
     energy = 100;
+     hurtStartTime = 0;      // vreme kad je boss pogođen
+    hurtDuration = 500; 
 
     offset = {
         top: 250,
@@ -88,7 +90,7 @@ class Boss extends MovableObject {
             this.animationFrameSpeed(6);
         if (this.currentImage >= this.images_introduce.length) {
             this.enterFloat(); 
-        }
+            }
         } else if (this.state === "float") {
             this.floatPatrol();
         } else if (this.state === "hunt") {
@@ -96,6 +98,10 @@ class Boss extends MovableObject {
         } else if (this.state === "attack") {
             this.playAnimations(this.images_attack);
             this.animationFrameSpeed(4);
+        }else if (this.state === "hurt"){
+            this.playAnimations(this.images_hurt);
+            this.animationFrameSpeed(4);
+            
         }
     }
 

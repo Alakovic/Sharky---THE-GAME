@@ -43,6 +43,7 @@ class World {
             this.checkBossTrigger();
             this.checkBubbleFishCollision();
             this.checkCharacterBossCollision();
+            this.checkBubbleBossCollision();
         }, 200)
     }
 
@@ -173,10 +174,23 @@ class World {
             if(bubble.isColliding(enemy)) {
                 enemy.hit(bubble.damage);  
                 this.bubbles.splice(bIndex, 1); 
+                }
+            });
+        });
+    }
+
+    checkBubbleBossCollision() {
+        if (this.boss.state === "hidden") return; 
+
+        this.bubbles.forEach((bubble, bIndex) => {
+            if (bubble.isColliding(this.boss)) {
+                this.boss.hit(bubble.damage);
+                this.healthBarBoss.setPercentage(this.boss.energy);   
+                this.boss.state = "hurt";
+                this.bubbles.splice(bIndex, 1); 
             }
         });
-    });
-}
+    }
 
     addToMap(mo) {
         this.ctx.save();
