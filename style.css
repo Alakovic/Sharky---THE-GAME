@@ -10,18 +10,26 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    flex-direction:  column;
+    flex-direction: column;
     background-image: url("assets/images/deepSee/vecteezy_ocean-background_273915.png");
+    background-size: cover;     
+    background-position: center;
 }
 
 h1 {
-    font-family: "Lucky" , sans-serif;
-    color: red ; 
+    font-family: "Lucky", sans-serif;
+    color: red; 
+}
+
+.canvas-container {
+    width: 100%;             
+    max-width:800px;        
+    aspect-ratio: 1200 / 600; 
 }
 
 canvas {
-    max-width: 100%;
-    height: auto;
+    width: 100%;    
+    height: auto;   
     display: block;
     border-radius: 30px;
 }
