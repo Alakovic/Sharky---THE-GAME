@@ -85,23 +85,53 @@ class Boss extends MovableObject {
     }
 
     updateBoss(character) {
-        if (this.state === "introduce") {
-            this.playAnimations(this.images_introduce);
-            this.animationFrameSpeed(6);
-        if (this.currentImage >= this.images_introduce.length) {
-            this.enterFloat(); 
+        if (this.isDead() && this.state !== "dead") {
+            this.state = "dead";
+        } else if (this.isHurt() && this.state !== "hurt" && this.state !== "dead") {
+            this.state = "hurt";
+        }else if (this.state !== "dead" && this.state !== "hurt") {
+            this.checkAttack(character); 
+        }
+        this.switchAnimations(character);
+    }
+
+    switchAnimations(character) {
+    switch (this.state) {
+            case "dead":
+                this.playDeathAnimation(this.images_dead);
+                break;
+
+            case "hurt":
+                this.playAnimations(this.images_hurt);
+                this.animationFrameSpeed(4);
+            if (!this.isHurt()) {
+                this.enterFloat(); 
             }
-        } else if (this.state === "float") {
-            this.floatPatrol();
-        } else if (this.state === "hunt") {
-            this.huntCharacter(character);
-        } else if (this.state === "attack") {
-            this.playAnimations(this.images_attack);
-            this.animationFrameSpeed(4);
-        }else if (this.state === "hurt"){
-            this.playAnimations(this.images_hurt);
-            this.animationFrameSpeed(4);
-            
+                break;
+
+            case "introduce":
+                this.playAnimations(this.images_introduce);
+                this.animationFrameSpeed(6);
+            if (this.currentImage >= this.images_introduce.length) {
+                this.enterFloat(); 
+            }
+                break;
+
+            case "float":
+                this.floatPatrol();
+                break;
+
+            case "hunt":
+                this.huntCharacter(character);
+                break;
+
+            case "attack":
+                this.playAnimations(this.images_attack);
+                this.animationFrameSpeed(4);
+                break;
+
+            default:
+                break;
         }
     }
 
