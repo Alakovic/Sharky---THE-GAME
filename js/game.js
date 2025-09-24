@@ -2,13 +2,12 @@ let canvas;
 let world ;
 let keyboard = new Keyboard();
 let currentLevel = level1;
+let bgroundMusic = new Audio('../assets/sounds/underwater-loop-amb.wav')
 
 
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas , keyboard,currentLevel)
-
-    console.log('My character is',world.character);
 }
 
 window.addEventListener("keydown", (e) =>{

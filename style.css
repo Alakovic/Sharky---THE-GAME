@@ -7,7 +7,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
     flex-direction: column;
@@ -19,6 +19,8 @@ body {
 h1 {
     font-family: "Lucky", sans-serif;
     color: red; 
+    margin-top: 70px;
+    font-size: 40px;
 }
 
 .canvas-container {
@@ -32,4 +34,28 @@ canvas {
     height: auto;   
     display: block;
     border-radius: 30px;
+}
+
+.controls {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    gap:25px;
+}
+
+.control{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.control img {
+    height: 40px;
+    width: 80px;
+}
+
+.control span {
+    font-family: "Lucky", sans-serif;
+    color: white;
 }
