@@ -2,7 +2,6 @@ let canvas;
 let world ;
 let keyboard = new Keyboard();
 let currentLevel = level1;
-let bgroundMusic = new Audio('../assets/sounds/underwater-loop-amb.wav')
 let homeScreen;
 
 
