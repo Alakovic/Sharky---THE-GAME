@@ -7,4 +7,5 @@ class SoundButton extends DrawableObject  {
         this.width = 40;
         this.height = 40;
     }
+
 }

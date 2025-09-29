@@ -24,6 +24,8 @@ class World {
         this.totalPoison = this.level.poison.length;
         this.draw();
         this.setWorld();
+        this.backgroundMusic = new Audio('../assets/sounds/underwater-loop-amb.wav');
+        this.backgroundMusic.loop = true;
         this.checkCollisions();
         setInterval(() => {
             this.second++;
