@@ -3,23 +3,23 @@ class HomeScreen extends DrawableObject {
     canvas;
     keyboard;
     world;
-    gameStatus; // home, start , win , lose , pause 
     startButton = new StartButton();
     fullScreenButton = new FullScreen();
     soundButtonOn = new SoundButton();
     info = new Info();
+    aboutMe = new AboutMe();
     background = new Image();
     bgroundMusic;
     showOverlay = true;
     showInfoOverlay = false;
     soundEnabled = true;
+    showAboutMe = false;
 
     constructor(canvas,keyboard) {
         super();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.gameStatus = 'home';
         this.setBackground(); 
         this.prepareMusic();
         this.loadInstructionImages();
@@ -41,28 +41,55 @@ class HomeScreen extends DrawableObject {
         this.addToMap(this.fullScreenButton);
         this.addToMap(this.soundButtonOn);
         this.addToMap(this.info);
+        this.addToMap(this.aboutMe);
         if (this.showOverlay) {
             this.drawOverlay();
         }
         if (this.showInfoOverlay) {
             this.drawInfoOverlay();
         }
+        if(this.showAboutMe){
+            this.drawAboutMe();
+        }
         requestAnimationFrame(() => {this.draw()});
     }
 
     handleMouseMove(event) {
+        if (this.blockHover()) return;
+
         const { mouseX, mouseY } = this.getMousePos(event);
+        this.resetHover();
+        this.updateHover(mouseX, mouseY);
+
+        if (this.startButton.isHovered || this.fullScreenButton.isHovered || this.soundButtonOn.isHovered || this.info.isHovered || this.aboutMe.isHovered) {
+            this.canvas.style.cursor = 'pointer';
+        } else {
+            this.canvas.style.cursor = 'default';
+        }
+    }
+
+    resetHover() {
+        this.startButton.isHovered = false;
+        this.fullScreenButton.isHovered = false;
+        this.soundButtonOn.isHovered = false;
+        this.info.isHovered = false;
+        this.aboutMe.isHovered = false;
+    }
+
+    updateHover(mouseX, mouseY) {
         this.startButton.isHovered = this.startButton.isClicked(mouseX, mouseY);
         this.fullScreenButton.isHovered = this.fullScreenButton.isClicked(mouseX, mouseY);
         this.soundButtonOn.isHovered = this.soundButtonOn.isClicked(mouseX, mouseY);
         this.info.isHovered = this.info.isClicked(mouseX, mouseY);
+        this.aboutMe.isHovered = this.aboutMe.isClicked(mouseX, mouseY);
+    }
 
-        if (this.startButton.isHovered || this.fullScreenButton.isHovered || 
-            this.soundButtonOn.isHovered || this.info.isHovered) {
-            this.canvas.style.cursor = 'pointer';
-        } else {
-            his.canvas.style.cursor = 'default';
+    blockHover() {
+        if (this.showOverlay || this.showInfoOverlay) {
+            this.canvas.style.cursor = 'default';
+            return true ;
         }
+        return false;
     }
 
     drawTitle() {
@@ -107,15 +134,15 @@ class HomeScreen extends DrawableObject {
         ctx.font = "bold 40px Lucky";
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "center";
-        ctx.fillText("🔊 Click to enable sound", this.canvas.width / 2, this.canvas.height / 2);
+        ctx.fillText("Click here", this.canvas.width / 2, this.canvas.height / 2);
         ctx.restore();
     }
 
     handleClick(event) {
-        const { mouseX, mouseY } = this.getMousePos(event);
-
-        if (this.soundButtonOn.isClicked(mouseX, mouseY)) {
-            this.toggleSound();
+            const { mouseX, mouseY } = this.getMousePos(event);
+        if (this.showOverlay) {
+            this.bgroundMusic.play();
+            this.showOverlay = false;
             return; 
         }
 
@@ -124,8 +151,23 @@ class HomeScreen extends DrawableObject {
             return;
         }
 
+        if (this.showAboutMe) {
+            this.showAboutMe = false;
+            return;
+        }
+
+        if (this.soundButtonOn.isClicked(mouseX, mouseY)) {
+            this.toggleSound();
+            return; 
+        }
+
         if (this.info.isClicked(mouseX, mouseY)) {
             this.showInfoOverlay = !this.showInfoOverlay;
+            return;
+        }
+
+        if(this.aboutMe.isClicked(mouseX,mouseY)){
+            this.showAboutMe = !this.showAboutMe;
             return;
         }
 
@@ -135,9 +177,9 @@ class HomeScreen extends DrawableObject {
         }
 
         if (this.fullScreenButton.isClicked(mouseX, mouseY)) {
-    this.toggleFullScreen();
-    return;
-}
+            this.toggleFullScreen();
+            return;
+        }
 
         if (this.showOverlay) {
             this.bgroundMusic.play()
@@ -207,6 +249,41 @@ class HomeScreen extends DrawableObject {
         ctx.textAlign = "center";
         ctx.fillText(item.text, x + imgWidth / 2, y + imgHeight + 25);
         return imgWidth; 
+    }
+
+    drawAboutMe() {
+        const ctx = this.ctx;
+        ctx.save();
+        ctx.fillStyle = "rgba(0,0,0,1)";
+        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawAboutMeTitle(ctx);
+        this.drawAboutMeText(ctx);
+        ctx.restore();
+    }
+
+    drawAboutMeTitle(ctx) {
+        ctx.font = 'bold 60px Lucky';
+        ctx.fillStyle = '#FDF8FB';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('SHARKIE - THE GAME', this.canvas.width / 2, 50);
+    }
+
+    drawAboutMeText(ctx) {
+        ctx.font = '24px Lucky';
+        ctx.fillStyle = '#ffffff';
+        const textLines = [
+            "This game was created by Zeljko Alakovic as part of my studies at Developer Akademie.",
+            "It showcases my skills in JavaScript, Canvas, and game development.",
+            "I hope you enjoy playing it as much as I enjoyed creating it!"
+        ];
+
+        let startY = 250;
+        const lineHeight = 35;
+        textLines.forEach(line => {
+            ctx.fillText(line, this.canvas.width / 2, startY);
+            startY += lineHeight;
+        });
     }
 
     startGame() {
