@@ -1,11 +1,11 @@
 class SoundButton extends DrawableObject  {
-    constructor() {
+    constructor(path,x,y,w,h) {
         super();
-        this.loadImage('../assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png');
-        this.x = 1130;
-        this.y = 30;
-        this.width = 40;
-        this.height = 40;
+        this.loadImage(path);
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
     }
 
 }

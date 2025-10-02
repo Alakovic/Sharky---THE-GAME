@@ -14,6 +14,10 @@ class World {
     second = 0;
     totalCoins;
     totalPoison;
+    showMenuOverlay = false;
+    menuButton = new MenuButton();
+    paused = false;
+    frozenFrame = null;
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -28,8 +32,13 @@ class World {
         this.backgroundMusic.loop = true;
         this.checkCollisions();
         setInterval(() => {
-            this.second++;
+            if(!this.paused){
+                this.second++;
+            }
         }, 1000)
+        this.canvas.addEventListener('click', (event) => this.handleClick(event));
+        this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
+
     }
 
     setWorld(){
@@ -50,7 +59,10 @@ class World {
     }
 
     draw(){
-        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+    if (this.showMenuOverlay && this.frozenFrame) {
+        this.ctx.drawImage(this.frozenFrame, 0, 0, this.canvas.width, this.canvas.height);
+    } else {
         this.ctx.translate(this.camera_x,0);
         this.updateBubbles();
         this.addObjectsToMap(this.level.backgroundObjects);
@@ -64,12 +76,17 @@ class World {
         this.addToMap(this.character);
         this.addBossToMap();
         this.ctx.translate(-this.camera_x,0);
+    }
         //----Space for fixed objects --- 
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap (this.poisonBar);
         if(this.boss.state !== "hidden") {
         this.addToMap(this.healthBarBoss);
+        }
+        this.addToMap(this.menuButton); 
+        if (this.showMenuOverlay) {
+        this.drawMenuOverlay();
         }
         this.ctx.translate(this.camera_x,0);
         this.ctx.translate(-this.camera_x,0);
@@ -195,16 +212,23 @@ class World {
     }
 
     addToMap(mo) {
-        this.ctx.save();
-        if (mo instanceof MovableObject ) {
-            mo.flipImage(this.ctx);
-        } else {
-            this.ctx.translate(mo.x, mo.y); 
+                this.ctx.save();
+    if (mo instanceof MovableObject) {
+                mo.flipImage(this.ctx);
+    } else {
+            if (mo.isHovered) {
+                this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+                this.ctx.scale(1.2, 1.2);
+                this.ctx.translate(-mo.width / 2, -mo.height / 2);
+            } else {
+                this.ctx.translate(mo.x, mo.y);
+            }
         }
-        mo.draw(this.ctx);         
+        mo.draw(this.ctx);
         this.ctx.restore();
         mo.drawHitbox(this.ctx);
     }
+
 
     addObjectsToMap(objects){
         objects.forEach(o => {
@@ -223,5 +247,63 @@ class World {
         const minutes = Math.floor(this.second / 60);
         const seconds = this.second % 60;
         return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    }
+
+    getMousePos(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const scaleX = this.canvas.width / this.canvas.clientWidth;
+        const scaleY = this.canvas.height / this.canvas.clientHeight;
+        const mouseX = (event.clientX - rect.left) * scaleX;
+        const mouseY = (event.clientY - rect.top) * scaleY;
+        return { mouseX, mouseY };
+    }
+
+    drawMenuOverlay() {
+        const ctx = this.ctx;
+        ctx.save();
+        const menuWidth = 400;
+        const menuHeight = 70;
+        const menuX = (this.canvas.width - menuWidth) / 2;  
+        const menuY = (this.canvas.height - menuHeight) / 3;
+        ctx.fillStyle = "white";
+        ctx.fillRect(menuX, menuY, menuWidth, menuHeight);
+        ctx.strokeStyle = "#048cf2";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(menuX, menuY, menuWidth, menuHeight);
+        this.addToMap(new HomeButton(menuX + 10 ,menuY + 10));
+        this.addToMap(new RestartButton(menuX + 70 , menuY + 10));
+        this.addToMap(new Info('assets/images/game_interface/startScreenButtons/info_blue.png',menuX + 130 , menuY + 10, 50,50));
+        this.addToMap(new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',menuX + 190 , menuY + 10, 50,50));
+        this.addToMap(new SoundButton('assets/images/game_interface/startScreenButtons/sound.png',menuX + 250, menuY + 10 , 50, 50 ))
+        ctx.restore();
+    }
+
+    handleClick(event) {
+            const { mouseX, mouseY } = this.getMousePos(event);
+    if (this.menuButton.isClicked(mouseX, mouseY)) {
+            this.showMenuOverlay = !this.showMenuOverlay;
+        if (this.showMenuOverlay) {
+            this.frozenFrame = new Image();
+            this.frozenFrame.src = this.canvas.toDataURL();
+            this.paused = true;  
+            this.backgroundMusic.pause();
+        } else {
+            this.frozenFrame = null; 
+            this.paused = false;
+            this.backgroundMusic.play();
+            }
+    }      
+    }
+
+
+    handleMouseMove(event) {
+        const { mouseX, mouseY } = this.getMousePos(event);
+        this.menuButton.isHovered = false;
+    if (this.menuButton.isClicked(mouseX, mouseY)) {
+        this.menuButton.isHovered = true;
+        this.canvas.style.cursor = 'pointer';
+    } else {
+        this.canvas.style.cursor = 'default';
+        }
     }
 }
