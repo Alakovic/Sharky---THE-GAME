@@ -15,14 +15,17 @@ class HomeScreen extends DrawableObject {
     soundEnabled = true;
     showAboutMe = false;
 
-    constructor(canvas,keyboard) {
+    constructor(canvas,keyboard,skipOverlay = false) {
         super();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.setBackground(); 
         this.prepareMusic();
-        this.loadInstructionImages();
+        if (skipOverlay) {
+        this.showOverlay = false;      // Preskoči "Click here"
+        this.bgroundMusic.play();      // Pusti muziku odmah
+        }
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
@@ -46,7 +49,7 @@ class HomeScreen extends DrawableObject {
             this.drawOverlay();
         }
         if (this.showInfoOverlay) {
-            this.drawInfoOverlay();
+            drawInfoOverlay(this.ctx, this.canvas,instructionImages);
         }
         if(this.showAboutMe){
             this.drawAboutMe();
@@ -208,49 +211,6 @@ class HomeScreen extends DrawableObject {
         }
     }
 
-    loadInstructionImages() {
-        this.instructionImages = [
-            { img: new Image(), text: "Move Character", src: '../assets/images/game_interface/buttons/arrow keys.png' },
-            { img: new Image(), text: "Fin Attack", src: '../assets/images/game_interface/buttons/Space Bar key.png' },
-            { img: new Image(), text: "Bubble / Poison Attack", src: '../assets/images/game_interface/buttons/D key.png' }
-        ];
-
-        this.instructionImages.forEach(item => item.img.src = item.src);
-    }
-
-    drawInfoOverlay() {
-        const ctx = this.ctx;
-        ctx.save();
-        ctx.fillStyle = "rgba(0,0,0,0.6)";
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        const startX = 300;
-        const startY = 250;
-        const imgHeight = 100;
-        const padding = 150;
-        let currentX = startX;
-
-        this.instructionImages.forEach(item => {
-            const imgWidth = this.drawInstructionItem(ctx, item, currentX, startY, imgHeight);
-            currentX += imgWidth + padding;
-        });
-
-        ctx.restore();
-    }   
-
-    drawInstructionItem(ctx, item, x, y, imgHeight) {
-            let imgWidth = imgHeight;
-        if (item.text === "Fin Attack") {
-            imgWidth = 150; 
-        }
-            ctx.drawImage(item.img, x, y, imgWidth, imgHeight);
-        ctx.font = "24px Lucky";
-        ctx.fillStyle = "#ffffff";
-        ctx.textAlign = "center";
-        ctx.fillText(item.text, x + imgWidth / 2, y + imgHeight + 25);
-        return imgWidth; 
-    }
-
     drawAboutMe() {
         const ctx = this.ctx;
         ctx.save();
@@ -327,5 +287,4 @@ class HomeScreen extends DrawableObject {
         this.canvas.style.marginLeft = '';
         this.canvas.style.marginTop = '';
     }
-
 }

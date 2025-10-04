@@ -15,9 +15,11 @@ class World {
     totalCoins;
     totalPoison;
     showMenuOverlay = false;
+    showInfoOverlay = false;
     menuButton = new MenuButton();
     paused = false;
     frozenFrame = null;
+    overlayButtons = []
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -87,6 +89,9 @@ class World {
         this.addToMap(this.menuButton); 
         if (this.showMenuOverlay) {
         this.drawMenuOverlay();
+        }
+        if (this.showInfoOverlay) {
+            drawInfoOverlay(this.ctx, this.canvas, instructionImages); 
         }
         this.ctx.translate(this.camera_x,0);
         this.ctx.translate(-this.camera_x,0);
@@ -212,22 +217,22 @@ class World {
     }
 
     addToMap(mo) {
-                this.ctx.save();
+    this.ctx.save();
     if (mo instanceof MovableObject) {
-                mo.flipImage(this.ctx);
+        mo.flipImage(this.ctx);
     } else {
-            if (mo.isHovered) {
-                this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
-                this.ctx.scale(1.2, 1.2);
-                this.ctx.translate(-mo.width / 2, -mo.height / 2);
-            } else {
-                this.ctx.translate(mo.x, mo.y);
-            }
+        this.ctx.translate(mo.x, mo.y);
+        if (mo.isHovered) {
+            this.ctx.translate(mo.width / 2, mo.height / 2);
+            this.ctx.scale(1.2, 1.2);
+            this.ctx.translate(-mo.width / 2, -mo.height / 2);
         }
-        mo.draw(this.ctx);
-        this.ctx.restore();
-        mo.drawHitbox(this.ctx);
     }
+    mo.draw(this.ctx);
+    this.ctx.restore();
+    mo.drawHitbox(this.ctx);
+}
+
 
 
     addObjectsToMap(objects){
@@ -265,45 +270,68 @@ class World {
         const menuHeight = 70;
         const menuX = (this.canvas.width - menuWidth) / 2;  
         const menuY = (this.canvas.height - menuHeight) / 3;
-        ctx.fillStyle = "white";
-        ctx.fillRect(menuX, menuY, menuWidth, menuHeight);
-        ctx.strokeStyle = "#048cf2";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(menuX, menuY, menuWidth, menuHeight);
-        this.addToMap(new HomeButton(menuX + 10 ,menuY + 10));
-        this.addToMap(new RestartButton(menuX + 70 , menuY + 10));
-        this.addToMap(new Info('assets/images/game_interface/startScreenButtons/info_blue.png',menuX + 130 , menuY + 10, 50,50));
-        this.addToMap(new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',menuX + 190 , menuY + 10, 50,50));
-        this.addToMap(new SoundButton('assets/images/game_interface/startScreenButtons/sound.png',menuX + 250, menuY + 10 , 50, 50 ))
+        this.overlayButtons.forEach(btn => this.addToMap(btn));
+
         ctx.restore();
     }
 
     handleClick(event) {
-            const { mouseX, mouseY } = this.getMousePos(event);
+    const { mouseX, mouseY } = this.getMousePos(event);
+    if (this.showInfoOverlay) {
+        this.showInfoOverlay = false;
+        return; 
+    }
     if (this.menuButton.isClicked(mouseX, mouseY)) {
-            this.showMenuOverlay = !this.showMenuOverlay;
+        this.showMenuOverlay = !this.showMenuOverlay;
         if (this.showMenuOverlay) {
+            this.overlayButtons = [
+                new HomeButton(460,150),
+                new RestartButton(530 , 150),
+                new Info('assets/images/game_interface/startScreenButtons/info_blue.png',600,150, 50,50),
+                new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',670, 150, 50,50),
+                new SoundButton('assets/images/game_interface/startScreenButtons/sound.png',740, 150 , 50, 50)
+            ];
             this.frozenFrame = new Image();
             this.frozenFrame.src = this.canvas.toDataURL();
             this.paused = true;  
-            this.backgroundMusic.pause();
+            if(this.backgroundMusic) this.backgroundMusic.pause();
         } else {
+            this.overlayButtons = [];
             this.frozenFrame = null; 
             this.paused = false;
-            this.backgroundMusic.play();
-            }
-    }      
+            if(this.backgroundMusic) this.backgroundMusic.play();
+        }
+        return;
     }
 
+    if (this.showMenuOverlay) {
+            this.overlayButtons.forEach(btn => {
+        if (btn.isClicked(mouseX, mouseY)) {
+            if (btn instanceof Info) {
+                this.showInfoOverlay = !this.showInfoOverlay;
+            }
+        }
+    });
+    }
+    }
 
     handleMouseMove(event) {
         const { mouseX, mouseY } = this.getMousePos(event);
         this.menuButton.isHovered = false;
+        this.overlayButtons.forEach(btn => btn.isHovered = false);
+        let hovered = false;
     if (this.menuButton.isClicked(mouseX, mouseY)) {
-        this.menuButton.isHovered = true;
-        this.canvas.style.cursor = 'pointer';
-    } else {
-        this.canvas.style.cursor = 'default';
+            this.menuButton.isHovered = true;
+            hovered = true;
         }
+    if (this.showMenuOverlay) {
+            this.overlayButtons.forEach(btn => {
+                if (btn.isClicked(mouseX, mouseY)) {
+                    btn.isHovered = true;
+                    hovered = true;
+                }
+            });
+        }
+        this.canvas.style.cursor = hovered ? 'pointer' : 'default';
     }
 }

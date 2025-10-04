@@ -3,11 +3,12 @@ let world ;
 let keyboard = new Keyboard();
 let currentLevel = level1;
 let homeScreen;
+let currentScreen;
 
 
 function init() {
     canvas = document.getElementById('canvas');
-   //  world = new World(canvas , keyboard,currentLevel)
+
     homeScreen = new HomeScreen(canvas , keyboard);
 }
 
