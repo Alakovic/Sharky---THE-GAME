@@ -35,3 +35,37 @@ function drawInstructionItem(ctx, item, x, y, imgHeight) {
     ctx.fillText(item.text, x + imgWidth / 2, y + imgHeight + 25);
     return imgWidth;
 }
+
+function toggleFullScreen(canvas) {
+    const container = canvas.parentElement;
+    if (!document.fullscreenElement) {
+        container.requestFullscreen()
+            .then(() => scaleCanvas(canvas))
+            .catch(err => {
+                console.error(`Fullscreen failed: ${err.message}`);
+            });
+    } else {
+        document.exitFullscreen()
+            .then(() => resetCanvasScale(canvas));
+    }
+}
+
+function scaleCanvas(canvas) {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const scaleX = screenWidth / canvas.width;
+    const scaleY = screenHeight / canvas.height;
+    const scaleFactor = Math.min(scaleX, scaleY);
+    canvas.style.width = `${canvas.width * scaleFactor}px`;
+    canvas.style.height = `${canvas.height * scaleFactor}px`;
+    canvas.style.marginLeft = `${(screenWidth - canvas.width * scaleFactor) / 2}px`;
+    canvas.style.marginTop = `${(screenHeight - canvas.height * scaleFactor) / 2}px`;
+}
+
+function resetCanvasScale(canvas) {
+    canvas.style.width = '';
+    canvas.style.height = '';
+    canvas.style.marginLeft = '';
+    canvas.style.marginTop = '';
+}
+

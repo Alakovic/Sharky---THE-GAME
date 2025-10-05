@@ -40,7 +40,12 @@ class World {
         }, 1000)
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
-
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                resetCanvasScale(this.canvas);
+            }
+        });
+        this.soundEnabled = true;
     }
 
     setWorld(){
@@ -285,11 +290,10 @@ class World {
         this.showMenuOverlay = !this.showMenuOverlay;
         if (this.showMenuOverlay) {
             this.overlayButtons = [
-                new HomeButton(460,150),
-                new RestartButton(530 , 150),
-                new Info('assets/images/game_interface/startScreenButtons/info_blue.png',600,150, 50,50),
-                new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',670, 150, 50,50),
-                new SoundButton('assets/images/game_interface/startScreenButtons/sound.png',740, 150 , 50, 50)
+                new RestartButton(460 , 70),
+                new Info('assets/images/game_interface/startScreenButtons/info_blue.png',530,70, 50,50),
+                new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',670, 70, 50,50),
+                new SoundButton( this.soundEnabled ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png',740, 70, 50, 50)
             ];
             this.frozenFrame = new Image();
             this.frozenFrame.src = this.canvas.toDataURL();
@@ -309,6 +313,15 @@ class World {
         if (btn.isClicked(mouseX, mouseY)) {
             if (btn instanceof Info) {
                 this.showInfoOverlay = !this.showInfoOverlay;
+            }
+            if (btn instanceof FullScreen) {
+                toggleFullScreen(this.canvas);
+            }
+            if(btn instanceof SoundButton) {
+                this.toggleSound();
+            }
+            if (btn instanceof RestartButton) {
+                this.reset();
             }
         }
     });
@@ -334,4 +347,41 @@ class World {
         }
         this.canvas.style.cursor = hovered ? 'pointer' : 'default';
     }
+
+    toggleSound() {
+    if (!this.backgroundMusic) return;
+        this.soundEnabled = !this.soundEnabled;
+        this.backgroundMusic.muted = !this.soundEnabled;
+    const icon = this.soundEnabled ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png';
+    const soundButton = this.overlayButtons.find(btn => btn instanceof SoundButton);
+    if (soundButton) {
+        soundButton.loadImage(icon);
+        }
+    }
+
+    reset() {
+    this.character = new Character();
+    this.setWorld(); 
+    this.healthBar.setPercentage(this.character.energy);
+    this.coinBar.setPercentage(0);
+    this.poisonBar.setPercentage(0);
+    this.boss = new Boss();
+    this.healthBarBoss = new HealthBarBoss();
+    this.level.resetLevel();
+    this.bubbles = [];
+    this.camera_x = 0;
+    this.second = 0;
+    this.showMenuOverlay = false;
+    this.showInfoOverlay = false;
+    this.overlayButtons = [];
+    this.paused = false;
+    if (this.backgroundMusic) {
+        this.backgroundMusic.pause();
+        this.backgroundMusic.currentTime = 0;
+        if (this.soundEnabled) {
+            this.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
+        }
+    }
+    }
+
 }

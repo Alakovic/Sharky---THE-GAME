@@ -22,16 +22,12 @@ class HomeScreen extends DrawableObject {
         this.keyboard = keyboard;
         this.setBackground(); 
         this.prepareMusic();
-        if (skipOverlay) {
-        this.showOverlay = false;      // Preskoči "Click here"
-        this.bgroundMusic.play();      // Pusti muziku odmah
-        }
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
-                this.resetCanvasScale(); 
+                resetCanvasScale(this.canvas); 
             }
         });
     }
@@ -180,7 +176,7 @@ class HomeScreen extends DrawableObject {
         }
 
         if (this.fullScreenButton.isClicked(mouseX, mouseY)) {
-            this.toggleFullScreen();
+            toggleFullScreen(this.canvas);
             return;
         }
 
@@ -258,33 +254,4 @@ class HomeScreen extends DrawableObject {
         }
     }
 
-    toggleFullScreen() {
-        const container = this.canvas.parentElement;
-        if (!document.fullscreenElement) {
-            container.requestFullscreen().then(() => this.scaleCanvas()).catch(err => {
-                console.error(`Fullscreen failed: ${err.message}`);
-            });
-        } else {
-            document.exitFullscreen().then(() => this.resetCanvasScale());
-        }
-    }
-
-    scaleCanvas() {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        const scaleX = screenWidth / this.canvas.width;
-        const scaleY = screenHeight / this.canvas.height;
-        this.scaleFactor = Math.min(scaleX, scaleY);
-        this.canvas.style.width = `${this.canvas.width * this.scaleFactor}px`;
-        this.canvas.style.height = `${this.canvas.height * this.scaleFactor}px`;
-        this.canvas.style.marginLeft = `${(screenWidth - this.canvas.width * this.scaleFactor) / 2}px`;
-        this.canvas.style.marginTop = `${(screenHeight - this.canvas.height * this.scaleFactor) / 2}px`;
-    }
-
-    resetCanvasScale() {
-        this.canvas.style.width = '';
-        this.canvas.style.height = '';
-        this.canvas.style.marginLeft = '';
-        this.canvas.style.marginTop = '';
-    }
 }
