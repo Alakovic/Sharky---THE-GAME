@@ -19,7 +19,13 @@ class World {
     menuButton = new MenuButton();
     paused = false;
     frozenFrame = null;
-    overlayButtons = []
+    overlayButtons = [];
+    coinSounds = [
+    new Audio('assets/sounds/coin-257878.mp3'),
+    new Audio('assets/sounds/coin-257878.mp3'),
+    new Audio('assets/sounds/coin-257878.mp3')
+    ];
+    nextCoinSound = 0;
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -119,9 +125,17 @@ class World {
                 this.character.coinCount += coin.value;
                 let percentage = Math.min((this.character.coinCount / this.totalCoins) * 100 , 100);
                 this.coinBar.setPercentage(percentage)
+                this.playCoinSound();
                 this.level.coin.splice(index,1) ; // Remove collected coin
             }
         });
+    }
+
+    playCoinSound() {
+    const sound = this.coinSounds[this.nextCoinSound];
+    sound.currentTime = 0;
+    sound.play();
+    this.nextCoinSound = (this.nextCoinSound + 1) % this.coinSounds.length;
     }
 
     checkPoisonCollection() {
@@ -235,10 +249,8 @@ class World {
     }
     mo.draw(this.ctx);
     this.ctx.restore();
-    mo.drawHitbox(this.ctx);
-}
-
-
+  //  mo.drawHitbox(this.ctx);
+    }
 
     addObjectsToMap(objects){
         objects.forEach(o => {

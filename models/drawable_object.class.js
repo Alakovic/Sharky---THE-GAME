@@ -45,6 +45,7 @@ class DrawableObject {
         };
     }
 
+    /*
     drawHitbox(ctx) {
         if (this.isCollidable()) {
             const hb = this.getHitbox();
@@ -54,7 +55,7 @@ class DrawableObject {
             ctx.rect(hb.left, hb.top, hb.right - hb.left, hb.bottom - hb.top);
             ctx.stroke();
         }
-    }
+    } */
 
     isCollidable() {
         return (
