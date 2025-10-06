@@ -1,3 +1,11 @@
+/**
+ * Generates a horizontal line of coins.
+ * @param {number} startX - Starting X position of the first coin.
+ * @param {number} y - Y position for all coins in the line.
+ * @param {number} count - Number of coins to generate.
+ * @param {number} spacing - Horizontal spacing between each coin.
+ * @returns {Coin[]} Array of Coin instances forming a line.
+ */
 function generateCoinsLine(startX, y, count, spacing) {
     const coins = [];
     for (let i = 0; i < count; i++) {
@@ -7,6 +15,15 @@ function generateCoinsLine(startX, y, count, spacing) {
     return coins;
 }
 
+/**
+ * Generates coins in an arc pattern using a sine wave.
+ * @param {number} startX - Starting X position of the first coin.
+ * @param {number} startY - Base Y position for the arc.
+ * @param {number} count - Number of coins to generate along the arc.
+ * @param {number} spacing - Horizontal spacing between each coin.
+ * @param {number} arcHeight - Maximum height of the arc.
+ * @returns {Coin[]} Array of Coin instances forming an arc.
+ */
 function generateCoinsArc(startX, startY, count, spacing, arcHeight) {
     const coins = [];
     for (let i = 0; i < count; i++) {
@@ -18,6 +35,10 @@ function generateCoinsArc(startX, startY, count, spacing, arcHeight) {
     return coins;
 }
 
+/**
+ * Array of all coin instances for level 1, combining lines and arcs.
+ * @type {Coin[]}
+ */
 const coin1 = [
     ...generateCoinsLine(800, 300, 5, 100),
     ...generateCoinsArc(2100,450,5,100,80),

@@ -1,3 +1,7 @@
+/**
+ * Represents a collectible heart item that restores health.
+ * Extends MovableObject to allow animations and movement.
+ */
 class Hearth extends MovableObject {
 
     images_hearth = [
@@ -9,6 +13,11 @@ class Hearth extends MovableObject {
         '../assets/images/hearth/6.png'
     ];
 
+/**
+* Creates a new Hearth instance at the given position.
+* @param {number} x - The x-coordinate of the heart on the canvas.
+* @param {number} y - The y-coordinate of the heart on the canvas.
+*/
     constructor(x,y) {
         super().loadImage(this.images_hearth[0]);
         this.loadImages(this.images_hearth);
@@ -19,7 +28,10 @@ class Hearth extends MovableObject {
         this.height = 60;
         this.value = 20;
     }
-    
+
+/** 
+ * @type {Object} Collision offset for more precise hit detection.
+ */
     offset = {
         top: 10,
         bottom: 10,
@@ -27,6 +39,9 @@ class Hearth extends MovableObject {
         right: 10
     }
 
+/**
+* Animates the heart by cycling through its images at a fixed interval.
+*/
     animate() {
         setInterval(() => {
             this.animationFrameSpeed(1)

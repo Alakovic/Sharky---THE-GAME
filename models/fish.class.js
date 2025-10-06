@@ -1,3 +1,7 @@
+/**
+ * Represents a fish enemy in the game.
+ * Extends MovableObject to inherit movement, gravity, and collision behavior.
+ */
 class Fish extends MovableObject {
 
     height = 120;
@@ -7,11 +11,17 @@ class Fish extends MovableObject {
     acceleration = 0.5;   
     speedX = 0;         
 
+/**
+* Creates a new Fish enemy and applies gravity.
+*/
     constructor() {
         super();
         this.applyGravity();
     }
 
+/** 
+ * @type {Object} Collision offsets for fine-tuned hit detection. 
+ */
     offset = { 
         top: 20, 
         bottom: 40, 
@@ -19,6 +29,11 @@ class Fish extends MovableObject {
         right: 30 
     };
 
+/**
+* Animates the fish using the provided images. Plays death animation if fish is dead.
+* @param {string[]} images - Array of image paths for normal animation.
+* @param {string[]} [deadImages=[]] - Optional array of image paths for death animation.
+*/
     animate(images, deadImages = []) {
         setInterval(() => {
             if (this.isDead()) {
@@ -35,6 +50,10 @@ class Fish extends MovableObject {
         }, 100);
     }
 
+/**
+* Applies one of several preset movement options.
+* @param {string} option - The movement option to apply ("option1", "option2", "option3").
+*/    
     applyOption(option) {
         if (option === "option1") {
             this.option1();
@@ -45,22 +64,34 @@ class Fish extends MovableObject {
         }
     }
 
+/**
+*  Moves the fish left and right with moderate speed and range. 
+*/
     option1() {
         this.moveLeftRight(this.x - 300, this.x + 300);
         this.speed = 5;
     }
 
+/** 
+* Moves the fish left and right slowly over a smaller range. 
+*/
     option2() {
         this.speed = 2.5;
         this.moveLeftRight(this.x - 100, this.x + 100);
     }
 
+/** 
+ * Moves the fish quickly over a very small range. 
+ */
     option3() {
         this.speed = 7.5;
         this.moveLeftRight(this.x - 75, this.x + 75);
     }
 
-
+/**
+* Applies gravity effect to the fish if dead.
+* Updates vertical speed and horizontal movement.
+*/
     applyGravity() {
         setInterval(() => {
                 if (this.isDead()) {  
@@ -74,11 +105,20 @@ class Fish extends MovableObject {
         }, 100);
     }
 
+/**
+* Initiates knockback movement when the fish is hit.
+* @param {number} [directionX=1] - Horizontal direction of knockback (1 for right, -1 for left).
+* @param {number} [directionY=-1] - Vertical direction of knockback (-1 for upward, 1 for downward).
+*/    
     knockback(directionX = 1, directionY = -1) {
         this.speedX = 10 * directionX; 
         this.speedY = 15 * directionY;  
     }
 
+/**
+* Applies continuous knockback movement to the fish based on speedX and speedY.
+* Runs an interval at 60 FPS to update position.
+*/
     applyKnockbackMovement() {
         setInterval(() => {
                 if (this.speedX !== 0) {

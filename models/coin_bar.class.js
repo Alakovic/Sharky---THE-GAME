@@ -1,3 +1,7 @@
+/**
+ * Represents the coin bar UI element showing the player's collected coins as a percentage.
+ * Extends DrawableObject to inherit drawing capabilities on the canvas.
+ */
 class CoinBar extends DrawableObject {
 
     images_bar = [
@@ -11,6 +15,9 @@ class CoinBar extends DrawableObject {
 
     percentage = 100;
 
+/**
+* Creates a new CoinBar instance, loads images, and sets initial position and size.
+*/
     constructor(){
         super();
         this.loadImages(this.images_bar)
@@ -21,6 +28,10 @@ class CoinBar extends DrawableObject {
         this.setPercentage(0);
     }
 
+/**
+* Updates the coin bar to reflect the given percentage of collected coins.
+* @param {number} percentage - Percentage of coins collected (0 to 100).
+*/
     setPercentage(percentage) {
         this.percentage = percentage;
         let index = this.resolveImageIndex();
@@ -28,6 +39,10 @@ class CoinBar extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
+/**
+* Resolves the index of the image to display based on the current percentage.
+* @returns {number} Index of the corresponding image in the images_bar array.
+*/    
     resolveImageIndex() {
         const maxIndex = this.images_bar.length - 1;
         let index = Math.floor((this.percentage / 100) * maxIndex);

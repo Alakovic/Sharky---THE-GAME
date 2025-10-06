@@ -1,3 +1,7 @@
+/**
+ * Represents the boss's health bar in the game.
+ * Extends DrawableObject to handle rendering on the canvas.
+ */
 class HealthBarBoss extends DrawableObject{
 
     images_bar = [
@@ -9,6 +13,9 @@ class HealthBarBoss extends DrawableObject{
         '../assets/images/game_interface/health_barBoss/100.png',
     ]
 
+/**
+* Creates a new HealthBarBoss instance and initializes it to full health.
+*/
     constructor(){
         super();
         this.loadImages(this.images_bar)
@@ -19,6 +26,10 @@ class HealthBarBoss extends DrawableObject{
         this.setPercentage(100);
     }
 
+/**
+* Sets the boss health bar to a specific percentage and updates the displayed image.
+* @param {number} percentage - Health percentage (0 to 100).
+*/
     setPercentage(percentage) {
         this.percentage = percentage;
         let index = this.resolveImageIndex();
@@ -26,6 +37,11 @@ class HealthBarBoss extends DrawableObject{
         this.img = this.imageCache[path];
     }
 
+/**
+* Resolves the correct image index based on the current health percentage.
+* Ensures the index is within bounds of the images_bar array.
+* @returns {number} Index of the image to display for the current health percentage.
+*/
     resolveImageIndex() {
         const maxIndex = this.images_bar.length - 1;
         let index = Math.round((this.percentage / 100) * maxIndex);

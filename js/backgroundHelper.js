@@ -72,6 +72,10 @@ function generateBackground(images, xStart, xEnd, y, width, height) {
     return backgroundObject;
 }
 
+/**
+ * Array of background objects for level 1, combining water, background layers, lights, and floor.
+ * @type {BackgroundObject[]}
+ */
 const background1 = [
     ...generateBackground(water_light, -5, 15000, 0, 1200, 600),
     ...generateBackground(bg2_light, 0,15000,100,900,500),

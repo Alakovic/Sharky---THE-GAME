@@ -1,3 +1,8 @@
+/**
+ * Represents the final boss enemy in the game.
+ * Handles all animations, movement, and state transitions.
+ * Inherits from MovableObject.
+ */
 class Boss extends MovableObject {
     x = 14500
     y=0
@@ -10,7 +15,7 @@ class Boss extends MovableObject {
     speedY = 5;
     direction = 1;
     energy = 100;
-     hurtStartTime = 0;      // vreme kad je boss pogođen
+    hurtStartTime = 0;      
     hurtDuration = 500; 
 
     offset = {
@@ -75,6 +80,9 @@ class Boss extends MovableObject {
         '../assets/images/enemies/boss/introduce/10.png'
     ]
 
+/**
+* Loads all necessary boss images for animations.
+*/
     constructor() {
         super();
         this.loadImages(this.images_attack);
@@ -84,6 +92,10 @@ class Boss extends MovableObject {
         this.loadImages(this.images_introduce);
     }
 
+/**
+* Updates the boss state and animation depending on health and player proximity.
+* @param {Character} character - The player's character to interact with.
+*/
     updateBoss(character) {
         if (this.isDead() && this.state !== "dead") {
             this.state = "dead";
@@ -95,46 +107,70 @@ class Boss extends MovableObject {
         this.switchAnimations(character);
     }
 
+/**
+* Switches boss animation and behavior based on the current state.
+* @param {Character} character - The player's character.
+*/
     switchAnimations(character) {
-    switch (this.state) {
-            case "dead":
-                this.playDeathAnimation(this.images_dead);
-                break;
-
-            case "hurt":
-                this.playAnimations(this.images_hurt);
-                this.animationFrameSpeed(4);
-            if (!this.isHurt()) {
-                this.enterFloat(); 
-            }
-                break;
-
-            case "introduce":
-                this.playAnimations(this.images_introduce);
-                this.animationFrameSpeed(6);
-            if (this.currentImage >= this.images_introduce.length) {
-                this.enterFloat(); 
-            }
-                break;
-
-            case "float":
-                this.floatPatrol();
-                break;
-
-            case "hunt":
-                this.huntCharacter(character);
-                break;
-
-            case "attack":
-                this.playAnimations(this.images_attack);
-                this.animationFrameSpeed(4);
-                break;
-
-            default:
-                break;
+        switch (this.state) {
+            case "dead": this.handleDeadState(); break;
+            case "hurt": this.handleHurtState(); break;
+            case "introduce": this.handleIntroduceState(); break;
+            case "float": this.handleFloatState(); break;
+            case "hunt": this.handleHuntState(character); break;
+            case "attack": this.handleAttackState(); break;
         }
     }
 
+/** 
+* Plays the death animation when the boss is dead. 
+*/
+    handleDeadState() {
+        this.playDeathAnimation(this.images_dead);
+    }
+
+/**
+* Handles the hurt animation, then returns to floating state when recovered.
+*/    
+    handleHurtState() {
+        this.playAnimations(this.images_hurt);
+        this.animationFrameSpeed(4);
+    if (!this.isHurt()) {
+        this.enterFloat();
+        }
+    }
+
+/**
+* Handles the introduction animation when the boss first appears.
+*/    
+    handleIntroduceState() {
+        this.playAnimations(this.images_introduce);
+        this.animationFrameSpeed(6);
+    if (this.currentImage >= this.images_introduce.length) {
+        this.enterFloat();
+        }
+    }
+
+/** 
+* Makes the boss patrol left and right in floating mode. 
+*/    
+    handleFloatState() {
+        this.floatPatrol();
+    }
+
+/**
+* Handles chasing and attacking the player when in hunt state.
+* @param {Character} character - The player's character.
+*/
+    handleHuntState(character) {
+        this.huntCharacter(character);
+    }
+
+/**
+* Moves the boss towards the player both horizontally and vertically.
+* Plays attack animation during movement.
+* @param {Character} character - The player's character.
+*/    
     huntCharacter(character) {
         if (character.x < this.x) {
             this.moveLeft();
@@ -152,6 +188,11 @@ class Boss extends MovableObject {
         this.animationFrameSpeed(4)
     }
 
+/**
+* Checks the distance between the boss and the player to determine
+* when to switch from floating to hunting.
+* @param {Character} character - The player's character.
+*/
     checkAttack(character) {
         if (this.state === "hidden" || this.state === "introduce" || this.state === "dead") return;
     const distance = Math.abs(character.x - this.x);
@@ -162,9 +203,21 @@ class Boss extends MovableObject {
         }
     }
 
+/** 
+* Plays the attack animation while the boss is in attack mode.
+*/
+    handleAttackState() {
+        this.playAnimations(this.images_attack);
+        this.animationFrameSpeed(4);
+    }
+
+/**
+* Moves the boss horizontally back and forth while floating.
+* Reverses direction at patrol boundaries.
+*/    
     floatPatrol() {
-        if (this.state !== "float") return;
-    this.x += this.speed * this.direction;
+    if (this.state !== "float") return;
+        this.x += this.speed * this.direction;
     if (this.x <= this.minX) {
         this.x = this.minX;
         this.direction = 1;
@@ -178,6 +231,10 @@ class Boss extends MovableObject {
         this.animationFrameSpeed(8); 
     }
 
+/**
+* Transitions the boss into the floating state after certain animations or events.
+* Resets direction and position boundaries.
+*/
     enterFloat() {
     this.state = "float";
     if (this.x < this.minX) this.x = this.minX;

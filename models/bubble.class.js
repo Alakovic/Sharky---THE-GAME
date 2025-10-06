@@ -1,3 +1,8 @@
+/**
+ * Represents a bubble projectile in the game.
+ * Extends MovableObject to inherit movement and collision behavior.
+ */
+
 class Bubble extends MovableObject {
     speed = 10;       
     width = 40;       
@@ -12,6 +17,12 @@ class Bubble extends MovableObject {
         right: 5
     }
 
+/**
+     * Creates a new bubble instance.
+     * @param {number} x - Initial x-coordinate of the bubble.
+     * @param {number} y - Initial y-coordinate of the bubble.
+     * @param {number} direction - Direction of movement (1 for right, -1 for left).
+     */
     constructor(x, y, direction) {
         super().loadImage('../assets/images/bubble/bubbleGreen.png'); 
         this.x = x;          
@@ -20,6 +31,9 @@ class Bubble extends MovableObject {
         this.otherDirection = direction < 0; 
     }
 
+/**
+* Updates the bubble's position based on its speed and direction.
+*/
     update() {
         this.x += this.speed * this.direction;
     }

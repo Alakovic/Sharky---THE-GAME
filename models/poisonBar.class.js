@@ -1,3 +1,7 @@
+/**
+ * Represents the poison bar UI element that displays the player's available poison.
+ * Extends DrawableObject to allow rendering on the canvas.
+ */
 class PoisonBar extends DrawableObject {
     
     images_bar = [
@@ -11,6 +15,9 @@ class PoisonBar extends DrawableObject {
 
     percentage = 100;
 
+/**
+* Creates a new PoisonBar instance and initializes its properties.
+*/
     constructor(){
         super();
         this.loadImages(this.images_bar)
@@ -21,6 +28,10 @@ class PoisonBar extends DrawableObject {
         this.setPercentage(0);
     }
 
+/**
+* Updates the poison bar to reflect the current poison percentage.
+* @param {number} percentage - The new poison percentage (0-100).
+*/
     setPercentage(percentage) {
         this.percentage = percentage;
         let index = this.resolveImageIndex();
@@ -28,6 +39,10 @@ class PoisonBar extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
+/**
+* Resolves the index of the image to use based on the current percentage.
+* @returns {number} The index of the image to display.
+*/
     resolveImageIndex() {
         const maxIndex = this.images_bar.length - 1;
         let index = Math.floor((this.percentage / 100) * maxIndex);
