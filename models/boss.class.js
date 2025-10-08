@@ -17,6 +17,7 @@ class Boss extends MovableObject {
     energy = 100;
     hurtStartTime = 0;      
     hurtDuration = 500; 
+    bossAttackSounds =  new Audio('assets/sounds/boss_attack.mp3');
 
     offset = {
         top: 250,
@@ -198,6 +199,7 @@ class Boss extends MovableObject {
     const distance = Math.abs(character.x - this.x);
         if (distance < 500) {
             this.state = "hunt";
+            this.bossAttackSounds.play();
         } else if (this.state === "hunt") {
             this.enterFloat(); 
         }
@@ -241,5 +243,12 @@ class Boss extends MovableObject {
     if (this.x > this.maxX) this.x = this.maxX;
         this.direction = 1;
         this.otherDirection = true;
+    }
+
+    playAttackSound() {
+        const sound = this.bossAttackSounds[this.nextAttackSound];
+        sound.currentTime = 0; 
+        sound.play();
+        this.nextAttackSound = (this.nextAttackSound + 1) % this.bossAttackSounds.length;
     }
 }

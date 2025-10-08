@@ -26,6 +26,15 @@ class World {
     new Audio('assets/sounds/coin-257878.mp3')
     ];
     nextCoinSound = 0;
+    hurtSounds = [
+        new Audio('assets/sounds/character_hurt.wav')
+    ]
+    nextHurtSound = 0;
+    enemySound = new Audio('assets/sounds/enemy_blownAway.wav');
+    heartSound = new Audio('assets/sounds/hearth_pickUp.wav');
+    poisonSound = new Audio('assets/sounds/poison_pickUp.mp3');
+    bossIntroSound = new Audio('assets/sounds/boss_appearing.wav');
+    bossDamagedSound = new Audio('assets/sounds/enemy_hit.mp3');
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -132,16 +141,24 @@ class World {
     }
 
     playCoinSound() {
-    const sound = this.coinSounds[this.nextCoinSound];
-    sound.currentTime = 0;
-    sound.play();
-    this.nextCoinSound = (this.nextCoinSound + 1) % this.coinSounds.length;
+        const sound = this.coinSounds[this.nextCoinSound];
+        sound.currentTime = 0;
+        sound.play();
+        this.nextCoinSound = (this.nextCoinSound + 1) % this.coinSounds.length;
+    }
+
+    playHurtSound(){
+        const sound = this.hurtSounds[this.nextHurtSound];
+        sound.currentTime = 0;
+        sound.play();
+        this.nextHurtSound = (this.nextHurtSound + 1) % this.hurtSounds.length;
     }
 
     checkPoisonCollection() {
         this.level.poison.forEach((poison,index) => {
             if(this.character.isColliding(poison)){
                 this.character.poisonCount += 1;
+                this.poisonSound.play();
                 let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
                 this.poisonBar.setPercentage(percentage);
                 this.level.poison.splice(index,1);// Remove collected poison
@@ -153,8 +170,8 @@ class World {
         this.level.hearth.forEach((hearth,index) =>{
             if(this.character.isColliding(hearth)){
                 if(this.character.energy < 100) {
+                    this.heartSound.play();
                     this.character.energy += hearth.value;
-
                     if (this.character.energy > 100)  this.character.energy = 100;  
                     this.healthBar.setPercentage(this.character.energy);
                     this.level.hearth.splice(index,1);
@@ -166,7 +183,8 @@ class World {
     checkCharacterBossCollision() {
         if (this.character.isColliding(this.boss)) {
                 this.character.hit(this.boss.damage); 
-                this.healthBar.setPercentage(this.character.energy)
+                this.healthBar.setPercentage(this.character.energy);
+                this.playHurtSound();
                 this.character.damageType = 'poison';
             }
     }
@@ -176,11 +194,13 @@ class World {
             if (!enemy.death && this.character.isColliding(enemy)) {
                 if (!this.keyboard.SPACE) {
                     this.character.hit(enemy.damage);
+                     this.playHurtSound();
                     this.healthBar.setPercentage(this.character.energy);
                     this.character.damageType = enemy.damageType;
                 } else {
                     enemy.hit(this.character.finSlapDamage);
                     enemy.damage = 0;
+                    this.enemySound.play();
                     const direction =  this.getKnockbackDirection(this.character, enemy); 
                     enemy.knockback(direction, -1);
                 }
@@ -202,6 +222,7 @@ class World {
     checkBossTrigger() {
         if (this.character.x > 13800 && this.boss.state === "hidden") {
             this.boss.state = "introduce";
+            this.bossIntroSound.play();
         }
     }
     
@@ -224,12 +245,12 @@ class World {
 
     checkBubbleBossCollision() {
         if (this.boss.state === "hidden") return; 
-
         this.bubbles.forEach((bubble, bIndex) => {
             if (bubble.isColliding(this.boss)) {
                 this.boss.hit(bubble.damage);
                 this.healthBarBoss.setPercentage(this.boss.energy);   
                 this.boss.state = "hurt";
+                this.bossDamagedSound.play();
                 this.bubbles.splice(bIndex, 1); 
             }
         });
@@ -283,10 +304,6 @@ class World {
     drawMenuOverlay() {
         const ctx = this.ctx;
         ctx.save();
-        const menuWidth = 400;
-        const menuHeight = 70;
-        const menuX = (this.canvas.width - menuWidth) / 2;  
-        const menuY = (this.canvas.height - menuHeight) / 3;
         this.overlayButtons.forEach(btn => this.addToMap(btn));
 
         ctx.restore();
