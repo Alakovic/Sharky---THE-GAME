@@ -11,7 +11,8 @@ let currentScreen;
 function init() {
     canvas = document.getElementById('canvas');
 
-    homeScreen = new HomeScreen(canvas , keyboard);
+  //  homeScreen = new HomeScreen(canvas , keyboard);
+        endScreen = new EndScreen(canvas,'win');
 }
 
 /**
