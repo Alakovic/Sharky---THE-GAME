@@ -31,8 +31,14 @@ class World {
     ]
     nextHurtSound = 0;
     enemySound = new Audio('assets/sounds/enemy_blownAway.wav');
-    heartSound = new Audio('assets/sounds/hearth_pickUp.wav');
-    poisonSound = new Audio('assets/sounds/poison_pickUp.mp3');
+    heartSound = [
+        new Audio('assets/sounds/hearth_pickUp.wav')
+    ]
+    poisonSound = [
+        new Audio('assets/sounds/poison_pickUp.mp3')
+    ]
+    nextHeartSound = 0;
+    nextPoisonSound = 0 ; 
     bossIntroSound = new Audio('assets/sounds/boss_appearing.wav');
     bossDamagedSound = new Audio('assets/sounds/enemy_hit.mp3');
     
@@ -89,7 +95,7 @@ class World {
         this.updateBubbles();
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.obstacle);
-        this.level.obstacle.forEach(obs => obs.drawHitboxesObstacle(this.ctx));
+       // this.level.obstacle.forEach(obs => obs.drawHitboxesObstacle(this.ctx));
         this.addObjectsToMap(this.level.poison);
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.hearth);
@@ -154,11 +160,25 @@ class World {
         this.nextHurtSound = (this.nextHurtSound + 1) % this.hurtSounds.length;
     }
 
+    playHeartSound(){
+        const sound = this.heartSound[this.nextHeartSound];
+        sound.currentTime = 0;
+        sound.play();
+        this.nextHeartSound = (this.nextHeartSound + 1) % this.heartSound.length;
+    }
+
+    playPoisonSound(){
+        const sound = this.poisonSound[this.nextPoisonSound];
+        sound.currentTime = 0;
+        sound.play();
+        this.nextPoisonSound = (this.nextPoisonSound + 1) % this.poisonSound.length;
+    }
+
     checkPoisonCollection() {
         this.level.poison.forEach((poison,index) => {
             if(this.character.isColliding(poison)){
                 this.character.poisonCount += 1;
-                this.poisonSound.play();
+                this.playPoisonSound();
                 let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
                 this.poisonBar.setPercentage(percentage);
                 this.level.poison.splice(index,1);// Remove collected poison
@@ -170,7 +190,7 @@ class World {
         this.level.hearth.forEach((hearth,index) =>{
             if(this.character.isColliding(hearth)){
                 if(this.character.energy < 100) {
-                    this.heartSound.play();
+                    this.playHeartSound();
                     this.character.energy += hearth.value;
                     if (this.character.energy > 100)  this.character.energy = 100;  
                     this.healthBar.setPercentage(this.character.energy);

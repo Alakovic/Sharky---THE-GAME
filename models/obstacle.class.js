@@ -13,7 +13,7 @@ class Obstacle extends MovableObject {
             right: 10
         }];
     }
-
+/*
     drawHitboxesObstacle(ctx) {
         ctx.lineWidth = 2;
         ctx.strokeStyle = "red";
@@ -28,4 +28,6 @@ class Obstacle extends MovableObject {
             ctx.stroke();
         });
     }
+
+    */
 }
