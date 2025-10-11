@@ -71,10 +71,12 @@ class World {
 
     setWorld(){
         this.character.world = this;
+        this.boss.world = this;
     }
 
     checkCollisions() {
         setInterval(() => {
+            if (this.character.isDead()) return;
             this.checkCoinCollection();
             this.checkPoisonCollection();
             this.checkHearthCollection();
@@ -124,6 +126,68 @@ class World {
 
         this.drawTimeText();
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
+    }
+
+    handleCharacterDeath(damageType) {
+        const deathSound = new Audio('assets/sounds/game_over.mp3');
+        deathSound.play()
+        if (this.character.onDeathEndScreenShown) return;
+        this.character.onDeathEndScreenShown = true;
+        if (this.backgroundMusic) {
+            this.backgroundMusic.pause();
+            this.backgroundMusic.currentTime = 0;
+        }
+        this.bossIntroSound.pause();
+        this.bossDamagedSound.pause();
+        this.enemySound.pause();
+        this.paused = true;
+        let images = [];
+        if (damageType === 'poison') {
+            images = this.character.images_deathPoison;
+        } else if (damageType === 'electro') {
+            images = this.character.images_deathElectro;
+        }
+
+        let frame = 0;
+        const deathInterval = setInterval(() => {
+            if (frame < images.length) {
+                this.character.img = this.character.imageCache[images[frame]];
+                frame++;
+            } else {
+                clearInterval(deathInterval);
+                setTimeout(() => {
+                    new EndScreen(this.canvas, 'lose',this.keyboard);
+                }, 500);
+            }
+        }, 120); 
+    }
+
+    handleBossDeath(){
+        const winSound = new Audio('assets/sounds/win.mp3');
+        winSound.play();
+        if (this.boss.onDeathEndScreenShown) return;
+        this.boss.onDeathEndScreenShown = true;
+        if (this.backgroundMusic) {
+            this.backgroundMusic.pause();
+            this.backgroundMusic.currentTime = 0;
+        }
+        this.bossIntroSound.pause();
+        this.bossDamagedSound.pause();
+        this.enemySound.pause();
+        this.paused = true;
+        let images = [this.boss.images_dead];
+        let frame = 0; 
+        const deathInterval = setInterval(() =>{
+            if(frame < images.length ) {
+                this.boss.img = this.boss.imageCache[images[frame]];
+                frame++;
+            }else {
+                clearInterval(deathInterval);
+                setTimeout(()  => {
+                    new EndScreen(this.canvas, 'win',this.keyboard)
+                },500)
+            }
+        },120);
     }
 
     addBossToMap(){
@@ -410,11 +474,11 @@ class World {
 
     reset() {
     this.character = new Character();
+    this.boss = new Boss();
     this.setWorld(); 
     this.healthBar.setPercentage(this.character.energy);
     this.coinBar.setPercentage(0);
     this.poisonBar.setPercentage(0);
-    this.boss = new Boss();
     this.healthBarBoss = new HealthBarBoss();
     this.level.resetLevel();
     this.bubbles = [];

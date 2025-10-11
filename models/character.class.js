@@ -23,6 +23,8 @@ class Character extends MovableObject {
         new Audio('assets/sounds/error-010-206498.mp3')
     ];
     nextBubbleError = 0;
+    hasPlayedDeathAnimation = false;
+    onDeathEndScreenShown = false;
 
     offset = {
         top: 160,
@@ -206,15 +208,13 @@ class Character extends MovableObject {
         }, 1000 / 60 );
 
         setInterval(() => {
-            if(this.isDead()) {
-                if (this.damageType === 'poison') {
-                    this.animationFrameSpeed(2);
-                    this.playAnimations(this.images_deathPoison);
-            } else if (this.damageType === 'electro') {
-                    this.animationFrameSpeed(2);
-                    this.playAnimations(this.images_deathElectro);
-        }
-            } else if(this.isHurt()) {
+            if (this.isDead()) {
+    if (!this.hasPlayedDeathAnimation) {
+        this.hasPlayedDeathAnimation = true;
+        this.world.handleCharacterDeath(this.damageType);
+    }
+    return; // zaustavi sve dalje animacije nakon smrti
+}            else if(this.isHurt()) {
                 if(this.damageType === 'poison') {
                     this.animationFrameSpeed(2);
                     this.playAnimations(this.images_poisoned);

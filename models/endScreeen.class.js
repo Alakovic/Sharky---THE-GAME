@@ -1,16 +1,18 @@
 class EndScreen extends DrawableObject {
     ctx;
     canvas;
+    keyboard;
     outcome;
     background = new Image();
     tryAgainButton ;
     gameOverTitle ;
 
-    constructor(canvas,outcome) {
+    constructor(canvas,outcome,keyboard) {
         super();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.outcome = outcome;
+        this.keyboard = keyboard;
         this.setBackground(outcome);
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));

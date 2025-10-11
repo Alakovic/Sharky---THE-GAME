@@ -18,6 +18,8 @@ class Boss extends MovableObject {
     hurtStartTime = 0;      
     hurtDuration = 500; 
     bossAttackSounds =  new Audio('assets/sounds/boss_attack.mp3');
+    hasPlayedDeathAnimation = false;
+    onDeathEndScreenShown = false;
 
     offset = {
         top: 250,
@@ -127,8 +129,11 @@ class Boss extends MovableObject {
 * Plays the death animation when the boss is dead. 
 */
     handleDeadState() {
-        this.playDeathAnimation(this.images_dead);
+    if (!this.hasPlayedDeathSequence) {
+        this.hasPlayedDeathSequence = true;
+        this.world.handleBossDeath();
     }
+}
 
 /**
 * Handles the hurt animation, then returns to floating state when recovered.
