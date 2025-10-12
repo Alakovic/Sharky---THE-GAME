@@ -461,16 +461,50 @@ class World {
         this.canvas.style.cursor = hovered ? 'pointer' : 'default';
     }
 
-    toggleSound() {
-    if (!this.backgroundMusic) return;
-        this.soundEnabled = !this.soundEnabled;
-        this.backgroundMusic.muted = !this.soundEnabled;
-    const icon = this.soundEnabled ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png';
-    const soundButton = this.overlayButtons.find(btn => btn instanceof SoundButton);
+ toggleSound() {
+    this.soundEnabled = !this.soundEnabled;
+    const allSounds = [
+        this.backgroundMusic,
+        this.enemySound,
+        this.bossIntroSound,
+        this.bossDamagedSound,
+        this.bossDefeatedSound,
+        this.walkingSound,
+        this.jumpSound,
+        this.throwSound,
+        this.winSound,
+        this.loseSound,
+        this.coinSound,
+        this.hurtSound,
+        this.heartSound,
+        this.poisonSound
+    ];
+
+    if (this.coinSounds) this.coinSounds.forEach(s => s.muted = !this.soundEnabled);
+    if (this.hurtSounds) this.hurtSounds.forEach(s => s.muted = !this.soundEnabled);
+
+    if (this.character) {
+        allSounds.push(...this.character.tailHitSounds);
+        allSounds.push(...this.character.bubblePopSounds);
+        allSounds.push(...this.character.bubblePopSoundsError);
+    }
+
+    allSounds.forEach(sound => {
+        if (sound instanceof Audio) {
+            sound.muted = !this.soundEnabled;
+        }
+    });
+
+    const icon = this.soundEnabled
+        ? 'assets/images/game_interface/startScreenButtons/sound.png'
+        : 'assets/images/game_interface/startScreenButtons/mute.png';
+
+    const soundButton = this.overlayButtons?.find(btn => btn instanceof SoundButton);
     if (soundButton) {
         soundButton.loadImage(icon);
-        }
     }
+    }
+
 
     reset() {
     this.character = new Character();

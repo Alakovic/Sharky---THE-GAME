@@ -250,6 +250,12 @@ class Boss extends MovableObject {
         this.otherDirection = true;
     }
 
+/**
+ * Plays the next boss attack sound in the sequence and loops back to the first sound after the last.
+ *
+ * The method resets the audio's current time to 0 before playing to ensure it starts from the beginning.
+ * It automatically updates the index to point to the next sound in the `bossAttackSounds` array.
+ */
     playAttackSound() {
         const sound = this.bossAttackSounds[this.nextAttackSound];
         sound.currentTime = 0; 

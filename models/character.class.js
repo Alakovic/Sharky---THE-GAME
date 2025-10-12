@@ -1,3 +1,7 @@
+/**
+ * Class representing the main playable character in the game.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
 
     y=200
@@ -151,7 +155,12 @@ class Character extends MovableObject {
         this.loadImages(this.images_attackWithoutBubble);
         this.animate();
     }
-    
+
+
+/**
+ * Shoots a bubble if the character has poison available.
+ * Decrements poison count and updates the UI.
+ */
     shootBubble() {
         if (!this.shooting && this.poisonCount > 0) {
             this.shooting = true;
@@ -164,90 +173,171 @@ class Character extends MovableObject {
         }
     }
 
-    animate() {
-        setInterval (() => {
-            const maxX = this.world.level.end_level_x - this.width;
-            const maxY = 360;
-            const minY = -130;
-            if(this.world.keyboard.RIGHT && this.x < maxX) {
-                this.otherDirection = false;
-            if (!this.collidingObstacle("right")) {
-                this.moveRight();
-            }
-        }
-            if(this.world.keyboard.LEFT && this.x > 100 ) {
-                this.otherDirection = true ;
-            if (!this.collidingObstacle("left")) {
-                this.moveLeft();
-            }
-        }
-
-            if (this.world.keyboard.UP && this.y > minY) {
-            if (!this.collidingObstacle("up")) {
-                this.moveUp();
-            }
-        }
-            if (this.world.keyboard.DOWN && this.y < maxY) {
-            if (!this.collidingObstacle("down")) {
-                this.moveDown();
-            }
-        }
-
-            const margin = 100; // Distance in pixels from the left edge of the screen where the character should be positioned
-            const maxCameraX = -(this.world.level.end_level_x - this.world.canvas.width); // The furthest left the camera can scroll, so the right edge of the level aligns with the right edge of the screen
-            let cameraX = -this.x + margin; // Calculate camera position so the character stays 100px from the left
-            if (cameraX < maxCameraX) {  // Prevent camera from going beyond the right edge of the level
-            cameraX = maxCameraX;
-        }
-            const rightEdge = this.world.level.end_level_x - this.width; // The maximum x-position where the character is fully visible on screen
-            if (this.x > rightEdge) { // Lock the camera at the end so the character doesn’t go partially off-screen
-            cameraX = -(this.world.level.end_level_x - this.world.canvas.width); 
-        }
-
-        this.world.camera_x = cameraX;
-        }, 1000 / 60 );
+/**
+* Starts the character's animation loops for movement and actions.
+*/
+    animate() { 
+        setInterval(() => {
+            this.handleMovement();
+            this.updateCamera();
+        }, 1000 / 60);
 
         setInterval(() => {
-            if (this.isDead()) {
-    if (!this.hasPlayedDeathAnimation) {
-        this.hasPlayedDeathAnimation = true;
-        this.world.handleCharacterDeath(this.damageType);
-    }
-    return; // zaustavi sve dalje animacije nakon smrti
-}            else if(this.isHurt()) {
-                if(this.damageType === 'poison') {
-                    this.animationFrameSpeed(2);
-                    this.playAnimations(this.images_poisoned);
-            } else if (this.damageType === 'electro') {
-                    this.animationFrameSpeed(2);
-                    this.playAnimations(this.images_electrified);
-        }
-            } else {
-        
-                if (this.world.keyboard.SPACE) {
-                    this.animationFrameSpeed(1);
-                    this.playAnimations(this.images_attackFinSlap);
-                    this.playTailHitSound();
-            } else if (this.world.keyboard.D) {
-                    this.animationFrameSpeed(1);
-                    if (this.poisonCount > 0) {
-                    this.playAnimations(this.images_attackWithBubble);
-                    this.shootBubble();
-                    this.playBubbleSound();
-                } else {
-                    this.playAnimations(this.images_attackWithoutBubble);
-                    this.playBubbleErrorSound();
-                }
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-                    this.animationFrameSpeed(1);
-                    this.playAnimations(this.images_swim);
-            } else {
-                    this.animationFrameSpeed(3);
-                    this.playAnimations(this.images_idle);
-            }
-        }}, 50);
+        this.handleAnimations();
+        }, 50);
     }
 
+/**
+* Handles horizontal and vertical movement based on keyboard input.
+*/
+    handleMovement() {
+        this.handleHorizontalMovement();
+        this.handleVerticalMovement();
+    }
+
+/** 
+* Handles right and left movement 
+*/
+    handleHorizontalMovement() {
+    const maxX = this.world.level.end_level_x - this.width;
+        if (this.world.keyboard.RIGHT && this.x < maxX) {
+            this.otherDirection = false;
+            if (!this.collidingObstacle("right")) this.moveRight();
+        }
+
+        if (this.world.keyboard.LEFT && this.x > 100) {
+            this.otherDirection = true;
+            if (!this.collidingObstacle("left")) this.moveLeft();
+        }
+    }
+
+/** 
+* Handles up and down movement 
+*/
+    handleVerticalMovement() {
+    const maxY = 360;
+    const minY = -130;
+        if (this.world.keyboard.UP && this.y > minY) {
+            if (!this.collidingObstacle("up")) this.moveUp();
+        }
+
+        if (this.world.keyboard.DOWN && this.y < maxY) {
+            if (!this.collidingObstacle("down")) this.moveDown();
+        }
+    }
+
+/** 
+* Updates the camera position relative to the character 
+*/    
+    updateCamera() {
+        const margin = 100;  // Distance in pixels from the left edge of the screen where the character should be positioned
+        const maxCameraX = -(this.world.level.end_level_x - this.world.canvas.width); // The furthest left the camera can scroll, so the right edge of the level aligns with the right edge of the screen
+        let cameraX = -this.x + margin; // Calculate camera position so the character stays 100px from the left
+        const rightEdge = this.world.level.end_level_x - this.width; // The maximum x-position where the character is fully visible on screen
+        if (cameraX < maxCameraX) cameraX = maxCameraX; // Prevent camera from going beyond the right edge of the level
+        if (this.x > rightEdge) cameraX = maxCameraX;  // Lock the camera at the end so the character doesn’t go partially off-screen
+        this.world.camera_x = cameraX;
+    }
+
+/**
+* Main animation handler, chooses which animation to play
+*/
+    handleAnimations() {
+        if (this.handleDeath()) return;
+        if (this.handleHurt()) return;
+        if (this.handleAttack()) return;
+        if (this.handleMovementAnimation()) return;
+        this.handleIdleAnimation();
+    }
+
+/** 
+* Handles death animation and end-of-game logic 
+*/
+    handleDeath() {
+        if (!this.isDead()) return false;
+        if (!this.hasPlayedDeathAnimation) {
+            this.hasPlayedDeathAnimation = true;
+            this.world.handleCharacterDeath(this.damageType);
+        }
+        return true;
+    }
+
+/** 
+* Handles hurt animations depending on damage type 
+*/    
+    handleHurt() {
+        if (!this.isHurt()) return false;
+        if (this.damageType === 'poison') {
+            this.animationFrameSpeed(2);
+            this.playAnimations(this.images_poisoned);
+        } else if (this.damageType === 'electro') {
+            this.animationFrameSpeed(2);
+            this.playAnimations(this.images_electrified);
+        }
+        return true;
+    }
+
+/**
+*Handles character attacks
+* @returns {boolean} True if an attack animation was played
+*/
+    handleAttack() {
+        if (this.world.keyboard.SPACE) {
+            return this.handleTailAttack();
+        } else if (this.world.keyboard.D) {
+            return this.handleBubbleAttack();
+        }
+        return false;
+    }
+
+/** Handles fin slap attack */
+    handleTailAttack() {
+        this.animationFrameSpeed(1);
+        this.playAnimations(this.images_attackFinSlap);
+        this.playTailHitSound();
+        return true;
+    }
+
+/** Handles bubble attack */
+    handleBubbleAttack() {
+    this.animationFrameSpeed(1);
+        if (this.poisonCount > 0) {
+            this.playAnimations(this.images_attackWithBubble);
+            this.shootBubble();
+            this.playBubbleSound();
+        } else {
+            this.playAnimations(this.images_attackWithoutBubble);
+            this.playBubbleErrorSound();
+        }   
+        return true;
+    }
+
+/** Handles swim animation when moving */
+    handleMovementAnimation() {
+        if (
+            this.world.keyboard.RIGHT ||
+            this.world.keyboard.LEFT ||
+            this.world.keyboard.UP ||
+            this.world.keyboard.DOWN
+        ) {
+            this.animationFrameSpeed(1);
+            this.playAnimations(this.images_swim);
+            return true;
+        }
+        return false;
+    }
+
+/** Handles idle animation when no input */
+    handleIdleAnimation() {
+        this.animationFrameSpeed(3);
+        this.playAnimations(this.images_idle);
+    }
+
+/**
+* Checks if character will collide with an obstacle in the given direction
+* @param {string} direction - "up", "down", "left", or "right"
+* @returns {boolean} True if a collision would occur
+*/
     collidingObstacle(direction) {
     let nextX = this.x;
     let nextY = this.y;
@@ -262,6 +352,13 @@ class Character extends MovableObject {
     );
     }
 
+/**
+* Checks collision between character and an obstacle hitbox
+* @param {number} nextX - Future X position
+* @param {number} nextY - Future Y position
+* @param {Obstacle} obs - Obstacle object
+* @returns {boolean} True if colliding
+*/
     isCollidingObstacle(nextX, nextY, obs) {
     return obs.hitboxes.some(hb => (
         nextX + this.width - this.offset.right > obs.x + (hb.left || 0) &&
@@ -271,6 +368,7 @@ class Character extends MovableObject {
     ));
     }
 
+/** Plays the next tail hit sound */
     playTailHitSound() {
         const sound = this.tailHitSounds[this.nextTailHit];
         sound.currentTime = 0; 
@@ -278,6 +376,7 @@ class Character extends MovableObject {
         this.nextTailHit = (this.nextTailHit + 1) % this.tailHitSounds.length;
     }
 
+/** Plays the next bubble pop sound */
     playBubbleSound() {
         const sound = this.bubblePopSounds[this.nextBubble];
         sound.currentTime = 0;
@@ -285,6 +384,7 @@ class Character extends MovableObject {
         this.nextBubble = (this.nextBubble + 1) % this.bubblePopSounds.length;
     }   
 
+/** Plays the next bubble error sound */
     playBubbleErrorSound() {
         const sound = this.bubblePopSoundsError[this.nextBubbleError];
         sound.currentTime = 0;
