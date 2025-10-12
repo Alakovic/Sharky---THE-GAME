@@ -107,6 +107,7 @@ class EndScreen extends DrawableObject {
             this.bgroundMusic.pause();
             this.bgroundMusic.currentTime = 0; 
         }
+            currentLevel = createLevel1();
             world = new World(this.canvas, this.keyboard, currentLevel);
         
         if (world.backgroundMusic) {

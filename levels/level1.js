@@ -1,4 +1,5 @@
-const level1 = new Level (
+function createLevel1(){
+return new Level (
     [
         new YellowJellyFish(4000),
         new YellowJellyFish(4400),
@@ -129,3 +130,4 @@ const level1 = new Level (
     coin1,
     15000
 );
+}
