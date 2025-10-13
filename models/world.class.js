@@ -20,27 +20,7 @@ class World {
     paused = false;
     frozenFrame = null;
     overlayButtons = [];
-    coinSounds = [
-    new Audio('assets/sounds/coin-257878.mp3'),
-    new Audio('assets/sounds/coin-257878.mp3'),
-    new Audio('assets/sounds/coin-257878.mp3')
-    ];
-    nextCoinSound = 0;
-    hurtSounds = [
-        new Audio('assets/sounds/character_hurt.wav')
-    ]
-    nextHurtSound = 0;
-    enemySound = new Audio('assets/sounds/enemy_blownAway.wav');
-    heartSound = [
-        new Audio('assets/sounds/hearth_pickUp.wav')
-    ]
-    poisonSound = [
-        new Audio('assets/sounds/poison_pickUp.mp3')
-    ]
-    nextHeartSound = 0;
-    nextPoisonSound = 0 ; 
-    bossIntroSound = new Audio('assets/sounds/boss_appearing.wav');
-    bossDamagedSound = new Audio('assets/sounds/enemy_hit.mp3');
+    sound = new SoundManager();
     
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
@@ -51,8 +31,7 @@ class World {
         this.totalPoison = this.level.poison.length;
         this.draw();
         this.setWorld();
-        this.backgroundMusic = new Audio('../assets/sounds/underwater-loop-amb.wav');
-        this.backgroundMusic.loop = true;
+        this.sound.play(this.sound.background);
         this.checkCollisions();
         setInterval(() => {
             if(!this.paused){
@@ -66,7 +45,6 @@ class World {
                 resetCanvasScale(this.canvas);
             }
         });
-        this.soundEnabled = true;
     }
 
     setWorld(){
@@ -129,17 +107,10 @@ class World {
     }
 
     handleCharacterDeath(damageType) {
-        const deathSound = new Audio('assets/sounds/game_over.mp3');
-        deathSound.play()
+        this.sound.play(this.sound.lose);
+
         if (this.character.onDeathEndScreenShown) return;
         this.character.onDeathEndScreenShown = true;
-        if (this.backgroundMusic) {
-            this.backgroundMusic.pause();
-            this.backgroundMusic.currentTime = 0;
-        }
-        this.bossIntroSound.pause();
-        this.bossDamagedSound.pause();
-        this.enemySound.pause();
         this.paused = true;
         let images = [];
         if (damageType === 'poison') {
@@ -163,17 +134,9 @@ class World {
     }
 
     handleBossDeath(){
-        const winSound = new Audio('assets/sounds/win.mp3');
-        winSound.play();
+        this.sound.play(this.sound.win);
         if (this.boss.onDeathEndScreenShown) return;
         this.boss.onDeathEndScreenShown = true;
-        if (this.backgroundMusic) {
-            this.backgroundMusic.pause();
-            this.backgroundMusic.currentTime = 0;
-        }
-        this.bossIntroSound.pause();
-        this.bossDamagedSound.pause();
-        this.enemySound.pause();
         this.paused = true;
         let images = [this.boss.images_dead];
         let frame = 0; 
@@ -204,45 +167,17 @@ class World {
                 this.character.coinCount += coin.value;
                 let percentage = Math.min((this.character.coinCount / this.totalCoins) * 100 , 100);
                 this.coinBar.setPercentage(percentage)
-                this.playCoinSound();
+                this.sound.play(this.sound.coin);
                 this.level.coin.splice(index,1) ; // Remove collected coin
             }
         });
-    }
-
-    playCoinSound() {
-        const sound = this.coinSounds[this.nextCoinSound];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextCoinSound = (this.nextCoinSound + 1) % this.coinSounds.length;
-    }
-
-    playHurtSound(){
-        const sound = this.hurtSounds[this.nextHurtSound];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextHurtSound = (this.nextHurtSound + 1) % this.hurtSounds.length;
-    }
-
-    playHeartSound(){
-        const sound = this.heartSound[this.nextHeartSound];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextHeartSound = (this.nextHeartSound + 1) % this.heartSound.length;
-    }
-
-    playPoisonSound(){
-        const sound = this.poisonSound[this.nextPoisonSound];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextPoisonSound = (this.nextPoisonSound + 1) % this.poisonSound.length;
     }
 
     checkPoisonCollection() {
         this.level.poison.forEach((poison,index) => {
             if(this.character.isColliding(poison)){
                 this.character.poisonCount += 1;
-                this.playPoisonSound();
+                this.sound.play(this.sound.poison);
                 let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
                 this.poisonBar.setPercentage(percentage);
                 this.level.poison.splice(index,1);// Remove collected poison
@@ -254,7 +189,7 @@ class World {
         this.level.hearth.forEach((hearth,index) =>{
             if(this.character.isColliding(hearth)){
                 if(this.character.energy < 100) {
-                    this.playHeartSound();
+                    this.sound.play(this.sound.heart);
                     this.character.energy += hearth.value;
                     if (this.character.energy > 100)  this.character.energy = 100;  
                     this.healthBar.setPercentage(this.character.energy);
@@ -268,7 +203,7 @@ class World {
         if (this.character.isColliding(this.boss)) {
                 this.character.hit(this.boss.damage); 
                 this.healthBar.setPercentage(this.character.energy);
-                this.playHurtSound();
+                this.sound.play(this.sound.hurt);
                 this.character.damageType = 'poison';
             }
     }
@@ -278,13 +213,13 @@ class World {
             if (!enemy.death && this.character.isColliding(enemy)) {
                 if (!this.keyboard.SPACE) {
                     this.character.hit(enemy.damage);
-                     this.playHurtSound();
+                    this.sound.play(this.sound.hurt);
                     this.healthBar.setPercentage(this.character.energy);
                     this.character.damageType = enemy.damageType;
                 } else {
                     enemy.hit(this.character.finSlapDamage);
                     enemy.damage = 0;
-                    this.enemySound.play();
+                    this.sound.play(this.sound.enemy);
                     const direction =  this.getKnockbackDirection(this.character, enemy); 
                     enemy.knockback(direction, -1);
                 }
@@ -306,7 +241,7 @@ class World {
     checkBossTrigger() {
         if (this.character.x > 13800 && this.boss.state === "hidden") {
             this.boss.state = "introduce";
-            this.bossIntroSound.play();
+            this.sound.play(this.sound.bossIntro);
         }
     }
     
@@ -334,7 +269,7 @@ class World {
                 this.boss.hit(bubble.damage);
                 this.healthBarBoss.setPercentage(this.boss.energy);   
                 this.boss.state = "hurt";
-                this.bossDamagedSound.play();
+                this.sound.play(this.sound.bossHit);
                 this.bubbles.splice(bIndex, 1); 
             }
         });
@@ -386,6 +321,7 @@ class World {
     }
 
     drawMenuOverlay() {
+        if (!this.overlayButtons) this.overlayButtons = [];
         const ctx = this.ctx;
         ctx.save();
         this.overlayButtons.forEach(btn => this.addToMap(btn));
@@ -406,17 +342,17 @@ class World {
                 new RestartButton(460 , 70),
                 new Info('assets/images/game_interface/startScreenButtons/info_blue.png',530,70, 50,50),
                 new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',670, 70, 50,50),
-                new SoundButton( this.soundEnabled ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png',740, 70, 50, 50)
+                new SoundButton(this.sound.enabled  ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png',740, 70, 50, 50)
             ];
             this.frozenFrame = new Image();
             this.frozenFrame.src = this.canvas.toDataURL();
             this.paused = true;  
-            if(this.backgroundMusic) this.backgroundMusic.pause();
+            this.sound.background.pause();
         } else {
             this.overlayButtons = [];
             this.frozenFrame = null; 
             this.paused = false;
-            if(this.backgroundMusic) this.backgroundMusic.play();
+            if (this.sound.enabled) this.sound.background.play();
         }
         return;
     }
@@ -461,49 +397,18 @@ class World {
         this.canvas.style.cursor = hovered ? 'pointer' : 'default';
     }
 
- toggleSound() {
-    this.soundEnabled = !this.soundEnabled;
-    const allSounds = [
-        this.backgroundMusic,
-        this.enemySound,
-        this.bossIntroSound,
-        this.bossDamagedSound,
-        this.bossDefeatedSound,
-        this.walkingSound,
-        this.jumpSound,
-        this.throwSound,
-        this.winSound,
-        this.loseSound,
-        this.coinSound,
-        this.hurtSound,
-        this.heartSound,
-        this.poisonSound
-    ];
+    toggleSound() {
+        this.sound.toggle();
+        const icon = this.sound.enabled
+            ? 'assets/images/game_interface/startScreenButtons/sound.png'
+            : 'assets/images/game_interface/startScreenButtons/mute.png';
 
-    if (this.coinSounds) this.coinSounds.forEach(s => s.muted = !this.soundEnabled);
-    if (this.hurtSounds) this.hurtSounds.forEach(s => s.muted = !this.soundEnabled);
-
-    if (this.character) {
-        allSounds.push(...this.character.tailHitSounds);
-        allSounds.push(...this.character.bubblePopSounds);
-        allSounds.push(...this.character.bubblePopSoundsError);
-    }
-
-    allSounds.forEach(sound => {
-        if (sound instanceof Audio) {
-            sound.muted = !this.soundEnabled;
-        }
-    });
-
-    const icon = this.soundEnabled
-        ? 'assets/images/game_interface/startScreenButtons/sound.png'
-        : 'assets/images/game_interface/startScreenButtons/mute.png';
-
-    const soundButton = this.overlayButtons?.find(btn => btn instanceof SoundButton);
+        const soundButton = this.overlayButtons?.find(btn => btn instanceof SoundButton);
     if (soundButton) {
         soundButton.loadImage(icon);
+        }
     }
-    }
+
 
 
     reset() {
@@ -522,13 +427,6 @@ class World {
     this.showInfoOverlay = false;
     this.overlayButtons = [];
     this.paused = false;
-    if (this.backgroundMusic) {
-        this.backgroundMusic.pause();
-        this.backgroundMusic.currentTime = 0;
-        if (this.soundEnabled) {
-            this.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
-        }
-    }
     }
 
 }

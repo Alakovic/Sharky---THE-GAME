@@ -15,18 +15,6 @@ class Character extends MovableObject {
     damageType;
     shooting = false;
     finSlapDamage = 20;
-    tailHitSounds = [
-        new Audio('assets/sounds/whip-02-242215.mp3')
-    ];
-    nextTailHit = 0;
-    bubblePopSounds = [
-        new Audio('assets/sounds/bubble-pop-06-351337.mp3')
-    ];
-    nextBubble = 0;
-    bubblePopSoundsError = [
-        new Audio('assets/sounds/error-010-206498.mp3')
-    ];
-    nextBubbleError = 0;
     hasPlayedDeathAnimation = false;
     onDeathEndScreenShown = false;
 
@@ -370,26 +358,17 @@ class Character extends MovableObject {
 
 /** Plays the next tail hit sound */
     playTailHitSound() {
-        const sound = this.tailHitSounds[this.nextTailHit];
-        sound.currentTime = 0; 
-        sound.play();
-        this.nextTailHit = (this.nextTailHit + 1) % this.tailHitSounds.length;
+       this.world.sound.play(this.world.sound.tailHit);
     }
 
 /** Plays the next bubble pop sound */
     playBubbleSound() {
-        const sound = this.bubblePopSounds[this.nextBubble];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextBubble = (this.nextBubble + 1) % this.bubblePopSounds.length;
+        this.world.sound.play(this.world.sound.bubblePop);
     }   
 
 /** Plays the next bubble error sound */
     playBubbleErrorSound() {
-        const sound = this.bubblePopSoundsError[this.nextBubbleError];
-        sound.currentTime = 0;
-        sound.play();
-        this.nextBubbleError = (this.nextBubbleError + 1) % this.bubblePopSoundsError.length;
+       this.world.sound.play(this.world.sound.bubbleError);
     }
 }
 
