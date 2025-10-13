@@ -1,3 +1,6 @@
+/**
+ * Represents the game world, including the character, boss, level, UI, and all game objects.
+ */
 class World {
     character = new Character();
     level;
@@ -14,14 +17,14 @@ class World {
     second = 0;
     totalCoins;
     totalPoison;
-    showMenuOverlay = false;
-    showInfoOverlay = false;
-    menuButton = new MenuButton();
-    paused = false;
-    frozenFrame = null;
-    overlayButtons = [];
     sound = new SoundManager();
     
+    /**
+    * Creates a new game world instance.
+    * @param {HTMLCanvasElement} canvas - The game canvas.
+    * @param {Keyboard} keyboard - The keyboard input manager.
+    * @param {Level} level - The current level object.
+    */
     constructor(canvas , keyboard,level) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -29,17 +32,42 @@ class World {
         this.level = level;
         this.totalCoins = this.level.coin.length;
         this.totalPoison = this.level.poison.length;
+        this.uiManager = new UIManager(canvas, this.sound, this);
+        this.initWorld();
+        this.initCollisions();
+        this.initTimer();
+        this.initSounds();
+        this.initEventListeners();
+    }
+
+    /** Initializes the world drawing and references for game objects. */
+    initWorld(){
         this.draw();
         this.setWorld();
-        this.sound.play(this.sound.background);
+    }
+
+    /** Initializes the collision manager and starts collision checks. */
+    initCollisions(){
+        this.collisionManager = new CollisionManager(this);
         this.checkCollisions();
-        setInterval(() => {
+    }
+
+    /** Starts the in-game timer. */
+    initTimer(){
+         setInterval(() => {
             if(!this.paused){
                 this.second++;
             }
-        }, 1000)
-        this.canvas.addEventListener('click', (event) => this.handleClick(event));
-        this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
+        }, 1000);
+    }
+
+    /** Plays the background sound. */
+    initSounds() {
+        this.sound.play(this.sound.background);
+    }
+    
+    /** Registers event listeners (e.g., fullscreen change). */
+    initEventListeners(){
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 resetCanvasScale(this.canvas);
@@ -47,78 +75,112 @@ class World {
         });
     }
 
+    /** Sets the world reference for the character and boss. */
     setWorld(){
         this.character.world = this;
         this.boss.world = this;
     }
 
+    /** Starts continuous collision checking. */
     checkCollisions() {
         setInterval(() => {
-            if (this.character.isDead()) return;
-            this.checkCoinCollection();
-            this.checkPoisonCollection();
-            this.checkHearthCollection();
-            this.checkEnemyCollision();
-            this.checkBossTrigger();
-            this.checkBubbleFishCollision();
-            this.checkCharacterBossCollision();
-            this.checkBubbleBossCollision();
-        }, 200)
+            this.collisionManager.checkAll();
+        }, 200);
     }
 
+    /** Main draw loop, renders the game world and UI. */
     draw(){
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-    if (this.showMenuOverlay && this.frozenFrame) {
-        this.ctx.drawImage(this.frozenFrame, 0, 0, this.canvas.width, this.canvas.height);
-    } else {
+        this.drawGameWorld();
+        this.drawHUD();
+        this.uiManager.draw(this.ctx);
+        this.drawOverlays();
+        this.drawTimeText();
+        requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
+    }
+
+    /** Draws the game world, including background, objects, enemies, and character. */
+    drawGameWorld(){
         this.ctx.translate(this.camera_x,0);
         this.updateBubbles();
+        this.drawBackground();
+        this.drawEnemiesAndObjects();
+        this.drawCharacterAndBoss();
+        this.ctx.translate(-this.camera_x,0);
+    }
+
+    /** Draws background objects and obstacles. */
+    drawBackground(){
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.obstacle);
        // this.level.obstacle.forEach(obs => obs.drawHitboxesObstacle(this.ctx));
+    }
+
+    /** Draws enemies, pickups, and bubbles. */
+    drawEnemiesAndObjects(){
         this.addObjectsToMap(this.level.poison);
         this.addObjectsToMap(this.level.coin);
         this.addObjectsToMap(this.level.hearth);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.bubbles); 
+    }
+
+    /** Draws the player character and boss. */
+    drawCharacterAndBoss(){
         this.addToMap(this.character);
         this.addBossToMap();
-        this.ctx.translate(-this.camera_x,0);
     }
-        //----Space for fixed objects --- 
+
+    /** Draws the HUD (health, coins, poison, boss health). */
+    drawHUD(){
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap (this.poisonBar);
-        if(this.boss.state !== "hidden") {
-        this.addToMap(this.healthBarBoss);
-        }
-        this.addToMap(this.menuButton); 
-        if (this.showMenuOverlay) {
-        this.drawMenuOverlay();
-        }
-        if (this.showInfoOverlay) {
-            drawInfoOverlay(this.ctx, this.canvas, instructionImages); 
-        }
-        this.ctx.translate(this.camera_x,0);
-        this.ctx.translate(-this.camera_x,0);
-
-        this.drawTimeText();
-        requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
+        if(this.boss.state !== "hidden") {this.addToMap(this.healthBarBoss);}
     }
 
-    handleCharacterDeath(damageType) {
-        this.sound.play(this.sound.lose);
+    /** Draws overlays such as menu or info screens. */
+    drawOverlays(){
+        if (this.showMenuOverlay) this.drawMenuOverlay();
+        if (this.showInfoOverlay) drawInfoOverlay(this.ctx, this.canvas, instructionImages);
+    }
 
+    /**
+    * Handles character death sequence.
+    * @param {string} damageType - Type of damage that killed the character.
+    */
+    handleCharacterDeath(damageType) {
         if (this.character.onDeathEndScreenShown) return;
         this.character.onDeathEndScreenShown = true;
         this.paused = true;
-        let images = [];
-        if (damageType === 'poison') {
-            images = this.character.images_deathPoison;
-        } else if (damageType === 'electro') {
-            images = this.character.images_deathElectro;
-        }
+        this.sound.play(this.sound.lose);
+        const deathImages = this.getDeathImages(damageType);
+        this.animateDeath(deathImages,120,500);
+    }
 
+    /**
+    * Returns death images based on damage type.
+    * @param {string} damageType
+    * @returns {string[]} Array of image keys
+    */
+    getDeathImages(damageType) {
+        switch(damageType) {
+        case 'poison':
+            return this.character.images_deathPoison;
+        case 'electro':
+            return this.character.images_deathElectro;
+        default:
+            return this.character.images_deathPoison;
+        }
+    }
+
+    /**
+    * Animates the death of the character.
+    * @param {string[]} images - Array of image keys.
+    * @param {number} frameDuration - Duration per frame in ms.
+    * @param {number} endScreenDelay - Delay before showing end screen.
+    */
+    animateDeath(images,frameDuration = 120, endScreenDelay = 500) {
         let frame = 0;
         const deathInterval = setInterval(() => {
             if (frame < images.length) {
@@ -127,32 +189,49 @@ class World {
             } else {
                 clearInterval(deathInterval);
                 setTimeout(() => {
-                    new EndScreen(this.canvas, 'lose',this.keyboard);
-                }, 500);
+                    new EndScreen(this.canvas, 'lose', this.keyboard);
+                }, endScreenDelay);
             }
-        }, 120); 
+        }, frameDuration);
     }
 
+    /** Handles boss death sequence. */
     handleBossDeath(){
-        this.sound.play(this.sound.win);
         if (this.boss.onDeathEndScreenShown) return;
         this.boss.onDeathEndScreenShown = true;
         this.paused = true;
-        let images = [this.boss.images_dead];
-        let frame = 0; 
-        const deathInterval = setInterval(() =>{
-            if(frame < images.length ) {
-                this.boss.img = this.boss.imageCache[images[frame]];
-                frame++;
-            }else {
-                clearInterval(deathInterval);
-                setTimeout(()  => {
-                    new EndScreen(this.canvas, 'win',this.keyboard)
-                },500)
-            }
-        },120);
+        this.sound.play(this.sound.win);
+        const deathImages = this.getBossDeathImages();
+        this.animateBossDeath(deathImages,120,500);
     }
 
+    /** Returns boss death images. */
+    getBossDeathImages() {
+        return [this.boss.images_dead];
+    }
+
+    /**
+    * Animates boss death sequence.
+    * @param {string[]} images
+    * @param {number} frameDuration
+    * @param {number} endScreenDelay
+    */
+    animateBossDeath(images, frameDuration = 120, endScreenDelay = 500) {
+        let frame = 0;
+        const deathInterval = setInterval(() => {
+            if (frame < images.length) {
+                this.boss.img = this.boss.imageCache[images[frame]];
+                frame++;
+            } else {
+                clearInterval(deathInterval);
+                setTimeout(() => {
+                    new EndScreen(this.canvas, 'win', this.keyboard);
+                }, endScreenDelay);
+            }
+        }, frameDuration);
+    }
+
+    /** Adds the boss to the map and updates its state. */
     addBossToMap(){
         if (this.boss.state !== "hidden") {
             this.boss.checkAttack(this.character); 
@@ -160,121 +239,18 @@ class World {
             this.addToMap(this.boss);         
         }
     }
-
-    checkCoinCollection() {
-        this.level.coin.forEach((coin, index) => {
-            if(this.character.isColliding(coin)) {
-                this.character.coinCount += coin.value;
-                let percentage = Math.min((this.character.coinCount / this.totalCoins) * 100 , 100);
-                this.coinBar.setPercentage(percentage)
-                this.sound.play(this.sound.coin);
-                this.level.coin.splice(index,1) ; // Remove collected coin
-            }
-        });
-    }
-
-    checkPoisonCollection() {
-        this.level.poison.forEach((poison,index) => {
-            if(this.character.isColliding(poison)){
-                this.character.poisonCount += 1;
-                this.sound.play(this.sound.poison);
-                let percentage = Math.min((this.character.poisonCount / this.totalPoison) * 100, 100);
-                this.poisonBar.setPercentage(percentage);
-                this.level.poison.splice(index,1);// Remove collected poison
-            }
-        } )
-    }
-
-    checkHearthCollection() {
-        this.level.hearth.forEach((hearth,index) =>{
-            if(this.character.isColliding(hearth)){
-                if(this.character.energy < 100) {
-                    this.sound.play(this.sound.heart);
-                    this.character.energy += hearth.value;
-                    if (this.character.energy > 100)  this.character.energy = 100;  
-                    this.healthBar.setPercentage(this.character.energy);
-                    this.level.hearth.splice(index,1);
-                }
-            }
-        });
-    }
-
-    checkCharacterBossCollision() {
-        if (this.character.isColliding(this.boss)) {
-                this.character.hit(this.boss.damage); 
-                this.healthBar.setPercentage(this.character.energy);
-                this.sound.play(this.sound.hurt);
-                this.character.damageType = 'poison';
-            }
-    }
-
-    checkEnemyCollision() {
-        this.level.enemies.forEach((enemy) => {
-            if (!enemy.death && this.character.isColliding(enemy)) {
-                if (!this.keyboard.SPACE) {
-                    this.character.hit(enemy.damage);
-                    this.sound.play(this.sound.hurt);
-                    this.healthBar.setPercentage(this.character.energy);
-                    this.character.damageType = enemy.damageType;
-                } else {
-                    enemy.hit(this.character.finSlapDamage);
-                    enemy.damage = 0;
-                    this.sound.play(this.sound.enemy);
-                    const direction =  this.getKnockbackDirection(this.character, enemy); 
-                    enemy.knockback(direction, -1);
-                }
-            }
-        });
-    }
-
-    getKnockbackDirection(character, enemy) {
-        let characterMid = character.x + character.width / 2;
-        let enemyMid = enemy.x + enemy.width / 2;
-
-        if (characterMid < enemyMid) {
-            return 1;  // Character left - Fish goes right 
-        } else {
-            return -1; //Character right  - Fish goes left 
-        }
-    }
-
-    checkBossTrigger() {
-        if (this.character.x > 13800 && this.boss.state === "hidden") {
-            this.boss.state = "introduce";
-            this.sound.play(this.sound.bossIntro);
-        }
-    }
     
+    /** Updates all bubble objects. */
     updateBubbles() {
             this.bubbles.forEach((bubble) => {
             bubble.update(); 
         });
     }
 
-    checkBubbleFishCollision() {
-    this.bubbles.forEach((bubble, bIndex) => {
-        this.level.enemies.forEach((enemy) => {
-            if(bubble.isColliding(enemy)) {
-                enemy.hit(bubble.damage);  
-                this.bubbles.splice(bIndex, 1); 
-                }
-            });
-        });
-    }
-
-    checkBubbleBossCollision() {
-        if (this.boss.state === "hidden") return; 
-        this.bubbles.forEach((bubble, bIndex) => {
-            if (bubble.isColliding(this.boss)) {
-                this.boss.hit(bubble.damage);
-                this.healthBarBoss.setPercentage(this.boss.energy);   
-                this.boss.state = "hurt";
-                this.sound.play(this.sound.bossHit);
-                this.bubbles.splice(bIndex, 1); 
-            }
-        });
-    }
-
+    /**
+    * Adds a drawable object to the canvas.
+    * @param {DrawableObject} mo
+    */
     addToMap(mo) {
     this.ctx.save();
     if (mo instanceof MovableObject) {
@@ -292,12 +268,17 @@ class World {
   //  mo.drawHitbox(this.ctx);
     }
 
+    /**
+    * Adds multiple objects to the canvas.
+    * @param {DrawableObject[]} objects
+    */
     addObjectsToMap(objects){
         objects.forEach(o => {
             this.addToMap(o)
         });
     }
 
+    /** Draws the game time on the canvas. */
     drawTimeText() {
         this.ctx.font = '30px Lucky';
         this.ctx.fillStyle = '#f72307ff' ;
@@ -305,12 +286,21 @@ class World {
         this.ctx.fillText(this.formatTime(), this.canvas.width / 2, 30);
     }
 
+    /**
+    * Formats the in-game timer.
+    * @returns {string} Formatted time as MM:SS
+    */
     formatTime() {
         const minutes = Math.floor(this.second / 60);
         const seconds = this.second % 60;
         return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     }
 
+    /**
+    * Converts a mouse event to canvas coordinates.
+    * @param {MouseEvent} event
+    * @returns {{mouseX: number, mouseY: number}}
+    */
     getMousePos(event) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
@@ -320,113 +310,71 @@ class World {
         return { mouseX, mouseY };
     }
 
+    /** Draws the menu overlay. */
     drawMenuOverlay() {
         if (!this.overlayButtons) this.overlayButtons = [];
         const ctx = this.ctx;
         ctx.save();
         this.overlayButtons.forEach(btn => this.addToMap(btn));
-
         ctx.restore();
     }
 
-    handleClick(event) {
-    const { mouseX, mouseY } = this.getMousePos(event);
-    if (this.showInfoOverlay) {
-        this.showInfoOverlay = false;
-        return; 
-    }
-    if (this.menuButton.isClicked(mouseX, mouseY)) {
-        this.showMenuOverlay = !this.showMenuOverlay;
-        if (this.showMenuOverlay) {
-            this.overlayButtons = [
-                new RestartButton(460 , 70),
-                new Info('assets/images/game_interface/startScreenButtons/info_blue.png',530,70, 50,50),
-                new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-blue.png',670, 70, 50,50),
-                new SoundButton(this.sound.enabled  ? 'assets/images/game_interface/startScreenButtons/sound.png' : 'assets/images/game_interface/startScreenButtons/mute.png',740, 70, 50, 50)
-            ];
-            this.frozenFrame = new Image();
-            this.frozenFrame.src = this.canvas.toDataURL();
-            this.paused = true;  
-            this.sound.background.pause();
-        } else {
-            this.overlayButtons = [];
-            this.frozenFrame = null; 
-            this.paused = false;
-            if (this.sound.enabled) this.sound.background.play();
-        }
-        return;
-    }
-
-    if (this.showMenuOverlay) {
-            this.overlayButtons.forEach(btn => {
-        if (btn.isClicked(mouseX, mouseY)) {
-            if (btn instanceof Info) {
-                this.showInfoOverlay = !this.showInfoOverlay;
-            }
-            if (btn instanceof FullScreen) {
-                toggleFullScreen(this.canvas);
-            }
-            if(btn instanceof SoundButton) {
-                this.toggleSound();
-            }
-            if (btn instanceof RestartButton) {
-                this.reset();
-            }
-        }
-    });
-    }
-    }
-
-    handleMouseMove(event) {
-        const { mouseX, mouseY } = this.getMousePos(event);
-        this.menuButton.isHovered = false;
-        this.overlayButtons.forEach(btn => btn.isHovered = false);
-        let hovered = false;
-    if (this.menuButton.isClicked(mouseX, mouseY)) {
-            this.menuButton.isHovered = true;
-            hovered = true;
-        }
-    if (this.showMenuOverlay) {
-            this.overlayButtons.forEach(btn => {
-                if (btn.isClicked(mouseX, mouseY)) {
-                    btn.isHovered = true;
-                    hovered = true;
-                }
-            });
-        }
-        this.canvas.style.cursor = hovered ? 'pointer' : 'default';
-    }
-
-    toggleSound() {
-        this.sound.toggle();
-        const icon = this.sound.enabled
-            ? 'assets/images/game_interface/startScreenButtons/sound.png'
-            : 'assets/images/game_interface/startScreenButtons/mute.png';
-
-        const soundButton = this.overlayButtons?.find(btn => btn instanceof SoundButton);
-    if (soundButton) {
-        soundButton.loadImage(icon);
-        }
-    }
-
-
-
+    /** Resets the entire game world state. */
     reset() {
-    this.character = new Character();
-    this.boss = new Boss();
-    this.setWorld(); 
-    this.healthBar.setPercentage(this.character.energy);
-    this.coinBar.setPercentage(0);
-    this.poisonBar.setPercentage(0);
-    this.healthBarBoss = new HealthBarBoss();
-    this.level.resetLevel();
-    this.bubbles = [];
-    this.camera_x = 0;
-    this.second = 0;
-    this.showMenuOverlay = false;
-    this.showInfoOverlay = false;
-    this.overlayButtons = [];
-    this.paused = false;
+        this.resetEntities();
+        this.resetHUD();
+        this.resetLevel();
+        this.resetWorldState();
+        this.resetUIState();
+        this.uiManager.reset();
+        this.resumeGame();
+    }
+
+    /** Resets the character and boss. */
+    resetEntities() {
+        this.character = new Character();
+        this.boss = new Boss();
+        this.setWorld();
+    }
+
+    /** Resets HUD elements. */
+    resetHUD() {
+        this.healthBar.setPercentage(this.character.energy);
+        this.coinBar.setPercentage(0);
+        this.poisonBar.setPercentage(0);
+        this.healthBarBoss = new HealthBarBoss();
+    }
+
+    /** Resets level objects and bubbles. */
+    resetLevel() {
+        this.level.resetLevel();
+        this.bubbles = [];
+    }
+
+    /** Resets camera and timer. */
+    resetWorldState() {
+        this.camera_x = 0;
+        this.second = 0;
+    }
+
+    /** Resets UI state. */
+    resetUIState() {
+        this.showMenuOverlay = false;
+        this.showInfoOverlay = false;
+        this.overlayButtons = [];
+        this.paused = false;
+    }
+
+     /** Pauses the game and background music. */
+    pauseGame() {
+        this.paused = true;
+        this.sound.background.pause();
+    }
+
+     /** Resumes the game and background music if enabled. */
+    resumeGame() {
+        this.paused = false;
+        if(this.sound.enabled) this.sound.background.play();
     }
 
 }

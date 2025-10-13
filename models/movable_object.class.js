@@ -1,3 +1,7 @@
+/**
+ * Represents any movable object in the game world.
+ * Extends {@link DrawableObject} to add movement, physics, and animation behavior.
+ */
 class MovableObject extends DrawableObject {
     speed = 0.15;
     speedY = 1;
@@ -9,6 +13,7 @@ class MovableObject extends DrawableObject {
     currentAnimationImages;
     death;
 
+     /** @type {{top:number, bottom:number, left:number, right:number}} Collision offset adjustments. */
     offset = {
         top : 0,
         bottom: 0,
@@ -16,7 +21,10 @@ class MovableObject extends DrawableObject {
         right:30
     }
     
-
+        /**
+     * Plays a death animation sequence.
+     * @param {string[]} images - Array of image paths for the death animation.
+     */
     playDeathAnimation(images) {
     if (this.currentAnimationImages !== images) {
         this.currentAnimationImages = images;
@@ -31,8 +39,12 @@ class MovableObject extends DrawableObject {
         let lastFrame = images[images.length - 1];
         this.img = this.imageCache[lastFrame];
     }
-}
+    }
 
+    /**
+     * Plays a looping animation sequence.
+     * @param {string[]} images - Array of image paths for the animation.
+     */
     playAnimations(images) {
         if (this.currentAnimationImages !== images) {
         this.currentAnimationImages = images;
@@ -45,22 +57,31 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
+    /** Moves the object to the right. */
     moveRight(){
         this.x += this.speed;
     }
 
+    /** Moves the object to the left. */
     moveLeft(){
         this.x -= this.speed; 
     }
 
+     /** Moves the object upward. */
     moveUp(){
         this.y -= this.speed; 
     }
 
+     /** Moves the object downward. */
     moveDown() {
         this.y += this.speed;
     }
 
+    /**
+     * Makes the object move back and forth horizontally between two points.
+     * @param {number} minX - Minimum X boundary.
+     * @param {number} maxX - Maximum X boundary.
+     */
     moveLeftRight(minX, maxX) {
                 let direction = -1; // Initial direction left , so -1
     setInterval(() => {
@@ -76,6 +97,11 @@ class MovableObject extends DrawableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Moves the object vertically between two Y positions.
+     * @param {number} minY - Minimum Y position.
+     * @param {number} maxY - Maximum Y position.
+     */
     moveUpDown(minY,maxY) {
             this.y += this.speedY;
                 if (this.y <= minY || this.y >= maxY) {
@@ -83,12 +109,22 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Starts continuous vertical movement (oscillation) between two bounds.
+     * @param {number} minY - Top boundary.
+     * @param {number} maxY - Bottom boundary.
+     */
     startMoveUpDown(minY, maxY) {
         setInterval(() => {
             this.moveUpDown(minY, maxY);
         }, 1000 / 60); 
     }
 
+    /**
+     * Checks collision between this object and another movable object.
+     * @param {MovableObject} mo - Another movable object.
+     * @returns {boolean} True if both hitboxes intersect.
+     */
     isColliding(mo) {
         const a = this.getHitbox();
         const b = mo.getHitbox();
@@ -101,6 +137,10 @@ class MovableObject extends DrawableObject {
         );
     }
 
+     /**
+     * Applies damage to the object and handles death state.
+     * @param {number} damage - Amount of damage to apply.
+     */
     hit(damage) {
         this.energy -= damage;
         if  (this.energy <= 0) {
@@ -112,16 +152,28 @@ class MovableObject extends DrawableObject {
         }
     }
     
+     /**
+     * Checks if the object is dead (energy <= 0).
+     * @returns {boolean} True if dead.
+     */
     isDead() {
         return this.energy == 0;
     }
 
+    /**
+     * Checks if the object has been hit recently (within 0.25 seconds).
+     * @returns {boolean} True if the object is in a hurt state.
+     */
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit; // Difference in ms 
         timepassed = timepassed / 1000 ; // Difference in s 
         return timepassed < 0.25;
     }
 
+     /**
+     * Controls the speed of animation frame updates.
+     * @param {number} speed - The number of frames before switching to the next image.
+     */
     animationFrameSpeed(speed){
         this.animationFrameCounter++;
         if(this.animationFrameCounter >= speed) {

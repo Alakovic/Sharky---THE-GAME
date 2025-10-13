@@ -1,3 +1,7 @@
+/**
+ * Represents the end screen shown after winning or losing the game.
+ * @extends DrawableObject
+ */
 class EndScreen extends DrawableObject {
     ctx;
     canvas;
@@ -7,6 +11,13 @@ class EndScreen extends DrawableObject {
     tryAgainButton ;
     gameOverTitle ;
 
+
+    /**
+    * Creates an end screen.
+    * @param {HTMLCanvasElement} canvas - The game canvas.
+    * @param {string} outcome - "win" or "lose".
+    * @param {Keyboard} keyboard - Keyboard input manager.
+    */
     constructor(canvas,outcome,keyboard) {
         super();
         this.ctx = canvas.getContext('2d');
@@ -19,6 +30,7 @@ class EndScreen extends DrawableObject {
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
     }
 
+    /** Main draw loop for the end screen. */
     draw() {
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
         this.ctx.fillStyle = 'black';
@@ -31,6 +43,10 @@ class EndScreen extends DrawableObject {
         requestAnimationFrame(() => {this.draw()});
     }
 
+    /**
+    * Sets background based on game outcome.
+    * @param {string} outcome
+    */
     setBackground(outcome){
         if(outcome === 'win') {
            this.drawWinScreen();
@@ -39,18 +55,21 @@ class EndScreen extends DrawableObject {
         }
     }
 
+    /** Configures the win screen. */
     drawWinScreen(){
         this.background.src = 'assets/images/game_interface/endScreenButtons/Mesa de trabajo 1.png';
         this.tryAgainButton = new RestartButton(500, 450,200,50, 2);
          this.gameOverTitle = null;
     }
 
+    /** Configures the lose screen. */
     drawLoseScreen(){
         this.background.src = 'assets/images/game_interface/endScreenButtons/black.png';
         this.tryAgainButton = new RestartButton(500, 400, 200, 50, 2);
         this.drawGameOverTitle();
     }
 
+    /** Draws the "Game Over" title image. */
     drawGameOverTitle(){
         this.gameOverTitle = new Image();
         this.gameOverTitle.src = 'assets/images/game_interface/endScreenButtons/Recurso 10.png';
@@ -60,6 +79,10 @@ class EndScreen extends DrawableObject {
         this.titleHeight = 80;
     }
 
+    /**
+    * Draws a button with hover scaling.
+    * @param {RestartButton} button
+    */
     addToMap(button) {
         this.ctx.save();
         let scale = button.isHovered ? 1.2 : 1;
@@ -70,6 +93,10 @@ class EndScreen extends DrawableObject {
         this.ctx.restore();
     }
 
+    /**
+    * Handles mouse movement to update hover state.
+    * @param {MouseEvent} event
+    */
     handleMouseMove(event) {
     const { mouseX, mouseY } = this.getMousePos(event);
 
@@ -81,7 +108,11 @@ class EndScreen extends DrawableObject {
     }
     }
 
-
+    /**
+    * Converts mouse event to canvas coordinates.
+    * @param {MouseEvent} event
+    * @returns {{mouseX: number, mouseY: number}}
+    */
     getMousePos(event) {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / this.canvas.clientWidth;
@@ -91,17 +122,27 @@ class EndScreen extends DrawableObject {
         return { mouseX, mouseY };
     }
 
+    /**
+    * Updates hover state manually (optional).
+    * @param {number} mouseX
+    * @param {number} mouseY
+    */
     updateHover(mouseX, mouseY) {
         this.tryAgainButton.isHovered = this.tryAgainButton.isClicked(mouseX, mouseY);
     }
 
-     handleClick(event) {
+    /**
+    * Handles click events on the end screen.
+    * @param {MouseEvent} event
+    */
+    handleClick(event) {
         const { mouseX, mouseY } = this.getMousePos(event);
         if (this.tryAgainButton && this.tryAgainButton.isClicked(mouseX, mouseY)) {
             this.startGame();
         }
     }
 
+    /** Restarts the game when "Try Again" is clicked. */ 
     startGame() {
         if (this.bgroundMusic) {
             this.bgroundMusic.pause();
