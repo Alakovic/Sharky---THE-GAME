@@ -326,6 +326,11 @@ class HomeScreen extends DrawableObject {
 * Starts the actual game by creating a World instance and playing background music.
 */    
     startGame() {
+        const isPortrait = window.innerHeight > window.innerWidth;
+    if (isPortrait && /Mobi|Android/i.test(navigator.userAgent)) {
+        alert("Please rotate your device to landscape mode before starting the game!");
+        return;
+    }
         if (this.bgroundMusic) {
             this.bgroundMusic.pause();
             this.bgroundMusic.currentTime = 0; 

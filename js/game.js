@@ -14,6 +14,27 @@ function init() {
 }
 
 /**
+ * Detects orientation and shows an overlay if the device is in portrait mode.
+ */
+window.addEventListener("load", () => {
+    checkOrientation();
+    window.addEventListener("orientationchange", checkOrientation);
+    window.addEventListener("resize", checkOrientation);
+});
+
+function checkOrientation() {
+    const overlay = document.getElementById('rotateOverlay');
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+    if (isMobile && isPortrait) {
+        overlay.style.display = 'flex';
+    } else {
+        overlay.style.display = 'none';
+    }
+}
+
+/**
  * Handles keydown events to update the keyboard state.
  * @param {KeyboardEvent} e - The keyboard event object.
  */

@@ -18,6 +18,7 @@ class World {
     totalCoins;
     totalPoison;
     sound = new SoundManager();
+    controller;
     
     /**
     * Creates a new game world instance.
@@ -38,6 +39,11 @@ class World {
         this.initTimer();
         this.initSounds();
         this.initEventListeners();
+        this.initTouchController();
+    }
+
+    initTouchController() {
+    this.controller = new Controller(this.character, this.canvas);
     }
 
     /** Initializes the world drawing and references for game objects. */
@@ -96,6 +102,10 @@ class World {
         this.uiManager.draw(this.ctx);
         this.drawOverlays();
         this.drawTimeText();
+        if (this.controller) {
+        this.controller.update();
+        this.controller.draw(this.ctx);
+        }
         requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
     }
 

@@ -60,3 +60,29 @@ canvas {
     font-family: "Lucky", sans-serif;
     color: white;
 }
+
+#rotateOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    font-family: "Lucky", sans-serif;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+    text-align: center;        
+    word-wrap: break-word;           
+    z-index: 9999;
+    line-height: 1.5;          
+}
+
+/* Sakrij overlay na desktopu */
+@media (min-width: 801px) {
+    #rotateOverlay {
+        display: none !important;
+    }
+}
