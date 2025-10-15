@@ -17,6 +17,7 @@ class Character extends MovableObject {
     finSlapDamage = 20;
     hasPlayedDeathAnimation = false;
     onDeathEndScreenShown = false;
+    isMovingMobile = false;
 
     offset = {
         top: 160,
@@ -309,7 +310,8 @@ class Character extends MovableObject {
             this.world.keyboard.RIGHT ||
             this.world.keyboard.LEFT ||
             this.world.keyboard.UP ||
-            this.world.keyboard.DOWN
+            this.world.keyboard.DOWN ||
+            this.isMovingMobile 
         ) {
             this.animationFrameSpeed(1);
             this.playAnimations(this.images_swim);
