@@ -5,14 +5,14 @@
 class Poison extends MovableObject {
 
     images_poison = [
-        '../assets/images/poison/1.png',
-        '../assets/images/poison/2.png',
-        '../assets/images/poison/3.png',
-        '../assets/images/poison/4.png',
-        '../assets/images/poison/5.png',
-        '../assets/images/poison/6.png',
-        '../assets/images/poison/7.png',
-        '../assets/images/poison/8.png'
+        '/assets/images/poison/1.png',
+        '/assets/images/poison/2.png',
+        '/assets/images/poison/3.png',
+        '/assets/images/poison/4.png',
+        '/assets/images/poison/5.png',
+        '/assets/images/poison/6.png',
+        '/assets/images/poison/7.png',
+        '/assets/images/poison/8.png'
     ]
 
 /**

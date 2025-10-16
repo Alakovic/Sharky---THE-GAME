@@ -1,10 +1,10 @@
 class GreenJellyFish extends jellyFish {
 
     images_green = [
-        '../assets/images/enemies/greenJellyFish/Green 1.png',
-        '../assets/images/enemies/greenJellyFish/Green 2.png',
-        '../assets/images/enemies/greenJellyFish/Green 3.png',
-        '../assets/images/enemies/greenJellyFish/Green 4.png'
+        '/assets/images/enemies/greenJellyFish/Green 1.png',
+        '/assets/images/enemies/greenJellyFish/Green 2.png',
+        '/assets/images/enemies/greenJellyFish/Green 3.png',
+        '/assets/images/enemies/greenJellyFish/Green 4.png'
     ]
 
     constructor(x,y,range,variant= "variant1",direction="up"){

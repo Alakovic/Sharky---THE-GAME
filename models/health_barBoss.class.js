@@ -5,12 +5,12 @@
 class HealthBarBoss extends DrawableObject{
 
     images_bar = [
-        '../assets/images/game_interface/health_barBoss/0.png',
-        '../assets/images/game_interface/health_barBoss/20.png',
-        '../assets/images/game_interface/health_barBoss/40.png',
-        '../assets/images/game_interface/health_barBoss/60.png',
-        '../assets/images/game_interface/health_barBoss/80.png',
-        '../assets/images/game_interface/health_barBoss/100.png',
+        '/assets/images/game_interface/health_barBoss/0.png',
+        '/assets/images/game_interface/health_barBoss/20.png',
+        '/assets/images/game_interface/health_barBoss/40.png',
+        '/assets/images/game_interface/health_barBoss/60.png',
+        '/assets/images/game_interface/health_barBoss/80.png',
+        '/assets/images/game_interface/health_barBoss/100.png',
     ]
 
 /**

@@ -5,12 +5,12 @@
 class Hearth extends MovableObject {
 
     images_hearth = [
-        '../assets/images/hearth/1.png',
-        '../assets/images/hearth/2.png',
-        '../assets/images/hearth/3.png',
-        '../assets/images/hearth/4.png',
-        '../assets/images/hearth/5.png',
-        '../assets/images/hearth/6.png'
+        '/assets/images/hearth/1.png',
+        '/assets/images/hearth/2.png',
+        '/assets/images/hearth/3.png',
+        '/assets/images/hearth/4.png',
+        '/assets/images/hearth/5.png',
+        '/assets/images/hearth/6.png'
     ];
 
 /**

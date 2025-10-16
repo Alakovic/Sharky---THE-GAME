@@ -1,8 +1,8 @@
 class HomeButton extends DrawableObject  {
 
     home_images = [
-        '../assets/images/game_interface/startScreenButtons/home.png',
-        '../assets/images/game_interface/startScreenButtons/home-button-blue.png'
+        '/assets/images/game_interface/startScreenButtons/home.png',
+        '/assets/images/game_interface/startScreenButtons/home-button-blue.png'
     ];
 
     constructor(x,y) {

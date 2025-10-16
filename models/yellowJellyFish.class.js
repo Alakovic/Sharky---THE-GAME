@@ -1,10 +1,10 @@
 class YellowJellyFish extends jellyFish {
 
     images_yellow = [
-        '../assets/images/enemies/yellowJellyFish/Yellow 1.png',
-        '../assets/images/enemies/yellowJellyFish/Yellow 2.png',
-        '../assets/images/enemies/yellowJellyFish/Yellow 3.png',
-        '../assets/images/enemies/yellowJellyFish/Yellow 4.png'
+        '/assets/images/enemies/yellowJellyFish/Yellow 1.png',
+        '/assets/images/enemies/yellowJellyFish/Yellow 2.png',
+        '/assets/images/enemies/yellowJellyFish/Yellow 3.png',
+        '/assets/images/enemies/yellowJellyFish/Yellow 4.png'
     ]
 
     constructor(x,option = "option1") {

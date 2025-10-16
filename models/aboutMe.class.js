@@ -1,7 +1,7 @@
 class AboutMe extends DrawableObject {
     constructor() {
         super();
-        this.loadImage('../assets/images/game_interface/startScreenButtons/graduate-hat.png');
+        this.loadImage('/assets/images/game_interface/startScreenButtons/graduate-hat.png');
         this.x = 1120;
         this.y = 190;
         this.width = 50;

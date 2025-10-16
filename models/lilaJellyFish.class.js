@@ -1,10 +1,10 @@
 class LilaJellyFish extends jellyFish {
 
     images_lila = [
-        '../assets/images/enemies/lilaJellyFish/Lila 1.png',
-        '../assets/images/enemies/lilaJellyFish/Lila 2.png',
-        '../assets/images/enemies/lilaJellyFish/Lila 3.png',
-        '../assets/images/enemies/lilaJellyFish/Lila 4.png'
+        '/assets/images/enemies/lilaJellyFish/Lila 1.png',
+        '/assets/images/enemies/lilaJellyFish/Lila 2.png',
+        '/assets/images/enemies/lilaJellyFish/Lila 3.png',
+        '/assets/images/enemies/lilaJellyFish/Lila 4.png'
     ]
 
     constructor(x,option="option1") {

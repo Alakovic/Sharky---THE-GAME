@@ -1,17 +1,16 @@
 class GreenFish extends Fish {
-
-    images_green = [
-        '../assets/images/enemies/greenFish/1.swim1.png',
-        '../assets/images/enemies/greenFish/1.swim2.png',
-        '../assets/images/enemies/greenFish/1.swim3.png',
-        '../assets/images/enemies/greenFish/1.swim4.png',
-        '../assets/images/enemies/greenFish/1.swim5.png'
+   images_green = [
+        '/assets/images/enemies/greenFish/1.swim1.png',
+        '/assets/images/enemies/greenFish/1.swim2.png',
+        '/assets/images/enemies/greenFish/1.swim3.png',
+        '/assets/images/enemies/greenFish/1.swim4.png',
+        '/assets/images/enemies/greenFish/1.swim5.png'
     ];
 
     images_dead = [
-        '../assets/images/enemies/greenFish/dead/1.png',
-        '../assets/images/enemies/greenFish/dead/2.png',
-        '../assets/images/enemies/greenFish/dead/3.png'
+        '/assets/images/enemies/greenFish/dead/1.png',
+        '/assets/images/enemies/greenFish/dead/2.png',
+        '/assets/images/enemies/greenFish/dead/3.png'
     ]
 
     constructor(x,y,option = "option2") {
