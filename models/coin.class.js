@@ -5,10 +5,10 @@
 
 class Coin extends MovableObject {
     images_coin = [
-        '/assets/images/coin/1.png',
-        '/assets/images/coin/2.png',
-        '/assets/images/coin/3.png',
-        '/assets/images/coin/4.png'
+        './assets/images/coin/1.png',
+        './assets/images/coin/2.png',
+        './assets/images/coin/3.png',
+        './assets/images/coin/4.png'
     ];
 
 /**

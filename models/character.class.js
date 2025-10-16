@@ -27,112 +27,112 @@ class Character extends MovableObject {
     }
 
     images_idle = [
-        '/assets/images/character/idle/1.png',
-        '/assets/images/character/idle/2.png',
-        '/assets/images/character/idle/3.png',
-        '/assets/images/character/idle/4.png',
-        '/assets/images/character/idle/5.png',
-        '/assets/images/character/idle/6.png',
-        '/assets/images/character/idle/7.png',
-        '/assets/images/character/idle/8.png',
-        '/assets/images/character/idle/9.png',
-        '/assets/images/character/idle/10.png',
-        '/assets/images/character/idle/11.png',
-        '/assets/images/character/idle/12.png',
-        '/assets/images/character/idle/13.png',
-        '/assets/images/character/idle/14.png',
-        '/assets/images/character/idle/15.png',
-        '/assets/images/character/idle/16.png',
-        '/assets/images/character/idle/17.png',
-        '/assets/images/character/idle/18.png'
+        './assets/images/character/idle/1.png',
+        './assets/images/character/idle/2.png',
+        './assets/images/character/idle/3.png',
+        './assets/images/character/idle/4.png',
+        './assets/images/character/idle/5.png',
+        './assets/images/character/idle/6.png',
+        './assets/images/character/idle/7.png',
+        './assets/images/character/idle/8.png',
+        './assets/images/character/idle/9.png',
+        './assets/images/character/idle/10.png',
+        './assets/images/character/idle/11.png',
+        './assets/images/character/idle/12.png',
+        './assets/images/character/idle/13.png',
+        './assets/images/character/idle/14.png',
+        './assets/images/character/idle/15.png',
+        './assets/images/character/idle/16.png',
+        './assets/images/character/idle/17.png',
+        './assets/images/character/idle/18.png'
     ];
 
     images_swim = [
-        '/assets/images/character/swim/1.png',
-        '/assets/images/character/swim/2.png',
-        '/assets/images/character/swim/3.png',
-        '/assets/images/character/swim/4.png',
-        '/assets/images/character/swim/5.png',
-        '/assets/images/character/swim/6.png'
+        './assets/images/character/swim/1.png',
+        './assets/images/character/swim/2.png',
+        './assets/images/character/swim/3.png',
+        './assets/images/character/swim/4.png',
+        './assets/images/character/swim/5.png',
+        './assets/images/character/swim/6.png'
     ];
 
     images_poisoned = [
-        '/assets/images/character/hurt/poisoned/1.png',
-        '/assets/images/character/hurt/poisoned/2.png',
-        '/assets/images/character/hurt/poisoned/3.png',
-        '/assets/images/character/hurt/poisoned/4.png',
-        '/assets/images/character/hurt/poisoned/5.png'
+        './assets/images/character/hurt/poisoned/1.png',
+        './assets/images/character/hurt/poisoned/2.png',
+        './assets/images/character/hurt/poisoned/3.png',
+        './assets/images/character/hurt/poisoned/4.png',
+        './assets/images/character/hurt/poisoned/5.png'
     ];
 
     images_electrified = [
-        '/assets/images/character/hurt/electric shock/1.png',
-        '/assets/images/character/hurt/electric shock/2.png',
-        '/assets/images/character/hurt/electric shock/3.png'
+        './assets/images/character/hurt/electric shock/1.png',
+        './assets/images/character/hurt/electric shock/2.png',
+        './assets/images/character/hurt/electric shock/3.png'
     ]
 
     images_deathPoison = [
-        '/assets/images/character/dead/poisoned/1.png',
-        '/assets/images/character/dead/poisoned/2.png',
-        '/assets/images/character/dead/poisoned/3.png',
-        '/assets/images/character/dead/poisoned/4.png',
-        '/assets/images/character/dead/poisoned/5.png',
-        '/assets/images/character/dead/poisoned/6.png',
-        '/assets/images/character/dead/poisoned/7.png',
-        '/assets/images/character/dead/poisoned/8.png',
-        '/assets/images/character/dead/poisoned/9.png',
-        '/assets/images/character/dead/poisoned/10.png',
-        '/assets/images/character/dead/poisoned/11.png',
-        '/assets/images/character/dead/poisoned/12.png'
+        './assets/images/character/dead/poisoned/1.png',
+        './assets/images/character/dead/poisoned/2.png',
+        './assets/images/character/dead/poisoned/3.png',
+        './assets/images/character/dead/poisoned/4.png',
+        './assets/images/character/dead/poisoned/5.png',
+        './assets/images/character/dead/poisoned/6.png',
+        './assets/images/character/dead/poisoned/7.png',
+        './assets/images/character/dead/poisoned/8.png',
+        './assets/images/character/dead/poisoned/9.png',
+        './assets/images/character/dead/poisoned/10.png',
+        './assets/images/character/dead/poisoned/11.png',
+        './assets/images/character/dead/poisoned/12.png'
     ]
 
     images_deathElectro = [
-        '/assets/images/character/dead/electrified/1.png',
-        '/assets/images/character/dead/electrified/2.png',
-        '/assets/images/character/dead/electrified/3.png',
-        '/assets/images/character/dead/electrified/4.png',
-        '/assets/images/character/dead/electrified/5.png',
-        '/assets/images/character/dead/electrified/6.png',
-        '/assets/images/character/dead/electrified/7.png',
-        '/assets/images/character/dead/electrified/8.png',
-        '/assets/images/character/dead/electrified/9.png',
-        '/assets/images/character/dead/electrified/10.png'
+        './assets/images/character/dead/electrified/1.png',
+        './assets/images/character/dead/electrified/2.png',
+        './assets/images/character/dead/electrified/3.png',
+        './assets/images/character/dead/electrified/4.png',
+        './assets/images/character/dead/electrified/5.png',
+        './assets/images/character/dead/electrified/6.png',
+        './assets/images/character/dead/electrified/7.png',
+        './assets/images/character/dead/electrified/8.png',
+        './assets/images/character/dead/electrified/9.png',
+        './assets/images/character/dead/electrified/10.png'
     ]
 
     images_attackFinSlap =[
-        '/assets/images/character/attack/finSlap/1.png',
-        '/assets/images/character/attack/finSlap/2.png',
-        '/assets/images/character/attack/finSlap/3.png',
-        '/assets/images/character/attack/finSlap/4.png',
-        '/assets/images/character/attack/finSlap/5.png',
-        '/assets/images/character/attack/finSlap/6.png',
-        '/assets/images/character/attack/finSlap/7.png',
-        '/assets/images/character/attack/finSlap/8.png'
+        './assets/images/character/attack/finSlap/1.png',
+        './assets/images/character/attack/finSlap/2.png',
+        './assets/images/character/attack/finSlap/3.png',
+        './assets/images/character/attack/finSlap/4.png',
+        './assets/images/character/attack/finSlap/5.png',
+        './assets/images/character/attack/finSlap/6.png',
+        './assets/images/character/attack/finSlap/7.png',
+        './assets/images/character/attack/finSlap/8.png'
     ]
 
     images_attackWithBubble = [
-        '/assets/images/character/attack/bubble/withBubble/1.png',
-        '/assets/images/character/attack/bubble/withBubble/2.png',
-        '/assets/images/character/attack/bubble/withBubble/3.png',
-        '/assets/images/character/attack/bubble/withBubble/4.png',
-        '/assets/images/character/attack/bubble/withBubble/5.png',
-        '/assets/images/character/attack/bubble/withBubble/6.png',
-        '/assets/images/character/attack/bubble/withBubble/7.png',
-        '/assets/images/character/attack/bubble/withBubble/8.png'
+        './assets/images/character/attack/bubble/withBubble/1.png',
+        './assets/images/character/attack/bubble/withBubble/2.png',
+        './assets/images/character/attack/bubble/withBubble/3.png',
+        './assets/images/character/attack/bubble/withBubble/4.png',
+        './assets/images/character/attack/bubble/withBubble/5.png',
+        './assets/images/character/attack/bubble/withBubble/6.png',
+        './assets/images/character/attack/bubble/withBubble/7.png',
+        './assets/images/character/attack/bubble/withBubble/8.png'
     ]
 
     images_attackWithoutBubble = [
-        '/assets/images/character/attack/bubble/withoutBubble/1.png',
-        '/assets/images/character/attack/bubble/withoutBubble/2.png',
-        '/assets/images/character/attack/bubble/withoutBubble/3.png',
-        '/assets/images/character/attack/bubble/withoutBubble/4.png',
-        '/assets/images/character/attack/bubble/withoutBubble/5.png',
-        '/assets/images/character/attack/bubble/withoutBubble/6.png',
-        '/assets/images/character/attack/bubble/withoutBubble/7.png',
-        '/assets/images/character/attack/bubble/withoutBubble/8.png'
+        './assets/images/character/attack/bubble/withoutBubble/1.png',
+        './assets/images/character/attack/bubble/withoutBubble/2.png',
+        './assets/images/character/attack/bubble/withoutBubble/3.png',
+        './assets/images/character/attack/bubble/withoutBubble/4.png',
+        './assets/images/character/attack/bubble/withoutBubble/5.png',
+        './assets/images/character/attack/bubble/withoutBubble/6.png',
+        './assets/images/character/attack/bubble/withoutBubble/7.png',
+        './assets/images/character/attack/bubble/withoutBubble/8.png'
     ]
 
     constructor() {
-        super().loadImage('/assets/images/character/idle/1.png');
+        super().loadImage('./assets/images/character/idle/1.png');
         this.loadImages(this.images_swim);
         this.loadImages(this.images_idle);
         this.loadImages(this.images_poisoned);

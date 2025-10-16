@@ -1,7 +1,7 @@
 class MenuButton extends DrawableObject {
     constructor() {
         super();
-        this.loadImage('/assets/images/game_interface/startScreenButtons/menu-bar-blue.png');
+        this.loadImage('./assets/images/game_interface/startScreenButtons/menu-bar-blue.png');
         this.isHovered = false;
         this.x = 600;
         this.y = 70;
