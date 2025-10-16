@@ -10,7 +10,7 @@ class HomeScreen extends DrawableObject {
     keyboard;
     world;
     startButton = new StartButton();
-    fullScreenButton = new FullScreen('./assets/images/game_interface/startScreenButtons/fullscreen.png',1130,140,30,30);
+    fullScreenButton = new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen-black.png',1130,140,30,30);
     soundButtonOn = new SoundButton('assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png',1130, 30 , 40, 40);
     info = new Info('assets/images/game_interface/startScreenButtons/info.png', 1125,80,40,40);
     aboutMe = new AboutMe();
