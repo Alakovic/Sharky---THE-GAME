@@ -4,9 +4,9 @@
  * @type {{img: Image, text: string, src: string}[]}
  */
 const instructionImages = [
-    { img: new Image(), text: "Move Character", src: '../assets/images/game_interface/buttons/arrow keys.png' },
-    { img: new Image(), text: "Fin Attack", src: '../assets/images/game_interface/buttons/Space Bar key.png' },
-    { img: new Image(), text: "Bubble / Poison Attack", src: '../assets/images/game_interface/buttons/D key.png' }
+    { img: new Image(), text: "Move Character", src: './assets/images/game_interface/buttons/arrow keys.png' },
+    { img: new Image(), text: "Fin Attack", src: './assets/images/game_interface/buttons/Space Bar key.png' },
+    { img: new Image(), text: "Bubble / Poison Attack", src: './assets/images/game_interface/buttons/D key.png' }
 ];
 
 // Set the image sources
