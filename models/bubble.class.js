@@ -24,7 +24,7 @@ class Bubble extends MovableObject {
      * @param {number} direction - Direction of movement (1 for right, -1 for left).
      */
     constructor(x, y, direction) {
-        super().loadImage('./assets/images/bubble/bubbleGreen.png'); 
+        super().loadImage('assets/images/bubble/bubbleGreen.png'); 
         this.x = x;          
         this.y = y;          
         this.direction = direction;

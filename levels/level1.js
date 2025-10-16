@@ -36,14 +36,14 @@ return new Level (
     ],
     background1,
     [//imagePath,x,y,width,height
-        new Obstacle('./assets/images/background/barriers/3.png', 1200, -100, 800, 300, [
+        new Obstacle('assets/images/background/barriers/3.png', 1200, -100, 800, 300, [
             {top: 100, bottom: 120, left: 20, right: 20}, 
             {top: 80, bottom: 80, left: 40, right: 50},
             {top: 10, bottom: 60, left: 90, right: 150},
             {top: 10, bottom: 40, left: 160, right: 300},
             {top: 10, bottom: 10, left: 350, right: 370},
         ]) , 
-        new Obstacle('./assets/images/background/barriers/2.png',1200,400,800,300, [
+        new Obstacle('assets/images/background/barriers/2.png',1200,400,800,300, [
             {top: 160, bottom: 50, left: 60, right: 40}, 
             {top: 120, bottom: 80, left: 180, right: 100},
             {top: 90, bottom: 80, left: 200, right: 150},
@@ -51,14 +51,14 @@ return new Level (
             {top: 20, bottom: 80, left: 370, right: 380},
             {top: 10, bottom: 80, left: 590, right: 180},
         ]),
-        new Obstacle('./assets/images/background/barriers/3.png', 3000, -100 , 800 , 300, [
+        new Obstacle('assets/images/background/barriers/3.png', 3000, -100 , 800 , 300, [
             {top: 100, bottom: 120, left: 20, right: 20}, 
             {top: 80, bottom: 80, left: 40, right: 50},
             {top: 10, bottom: 60, left: 90, right: 150},
             {top: 10, bottom: 40, left: 160, right: 300},
             {top: 10, bottom: 10, left: 350, right: 370},
         ]),
-        new Obstacle('./assets/images/background/barriers/2.png',3000,400,800,300, [
+        new Obstacle('assets/images/background/barriers/2.png',3000,400,800,300, [
             {top: 160, bottom: 50, left: 60, right: 40}, 
             {top: 120, bottom: 80, left: 180, right: 100},
             {top: 90, bottom: 80, left: 200, right: 150},
@@ -66,14 +66,14 @@ return new Level (
             {top: 20, bottom: 80, left: 370, right: 380},
             {top: 10, bottom: 80, left: 590, right: 180},
         ]),
-        new Obstacle('./assets/images/background/barriers/3.png', 6000, -100 , 800 , 300, [
+        new Obstacle('assets/images/background/barriers/3.png', 6000, -100 , 800 , 300, [
             {top: 100, bottom: 120, left: 20, right: 20}, 
             {top: 80, bottom: 80, left: 40, right: 50},
             {top: 10, bottom: 60, left: 90, right: 150},
             {top: 10, bottom: 40, left: 160, right: 300},
             {top: 10, bottom: 10, left: 350, right: 370},
         ]),
-        new Obstacle('./assets/images/background/barriers/2.png',6000,400,800,300, [
+        new Obstacle('assets/images/background/barriers/2.png',6000,400,800,300, [
             {top: 160, bottom: 50, left: 60, right: 40}, 
             {top: 120, bottom: 80, left: 180, right: 100},
             {top: 90, bottom: 80, left: 200, right: 150},
@@ -81,14 +81,14 @@ return new Level (
             {top: 20, bottom: 80, left: 370, right: 380},
             {top: 10, bottom: 80, left: 590, right: 180},
         ]),
-        new Obstacle('./assets/images/background/barriers/3.png', 9000, -100 , 800 , 300, [
+        new Obstacle('assets/images/background/barriers/3.png', 9000, -100 , 800 , 300, [
             {top: 100, bottom: 120, left: 20, right: 20}, 
             {top: 80, bottom: 80, left: 40, right: 50},
             {top: 10, bottom: 60, left: 90, right: 150},
             {top: 10, bottom: 40, left: 160, right: 300},
             {top: 10, bottom: 10, left: 350, right: 370},
         ]),
-        new Obstacle('./assets/images/background/barriers/2.png',9000,400,800,300, [
+        new Obstacle('assets/images/background/barriers/2.png',9000,400,800,300, [
             {top: 160, bottom: 50, left: 60, right: 40}, 
             {top: 120, bottom: 80, left: 180, right: 100},
             {top: 90, bottom: 80, left: 200, right: 150},
@@ -96,14 +96,14 @@ return new Level (
             {top: 20, bottom: 80, left: 370, right: 380},
             {top: 10, bottom: 80, left: 590, right: 180},
         ]),
-        new Obstacle('./assets/images/background/barriers/3.png', 12000, -100 , 800 , 300, [
+        new Obstacle('assets/images/background/barriers/3.png', 12000, -100 , 800 , 300, [
             {top: 100, bottom: 120, left: 20, right: 20}, 
             {top: 80, bottom: 80, left: 40, right: 50},
             {top: 10, bottom: 60, left: 90, right: 150},
             {top: 10, bottom: 40, left: 160, right: 300},
             {top: 10, bottom: 10, left: 350, right: 370},
         ]),
-        new Obstacle('./assets/images/background/barriers/2.png',12000,400,800,300, [
+        new Obstacle('assets/images/background/barriers/2.png',12000,400,800,300, [
             {top: 160, bottom: 50, left: 60, right: 40}, 
             {top: 120, bottom: 80, left: 180, right: 100},
             {top: 90, bottom: 80, left: 200, right: 150},

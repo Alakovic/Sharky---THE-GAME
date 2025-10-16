@@ -10,9 +10,9 @@ class HomeScreen extends DrawableObject {
     keyboard;
     world;
     startButton = new StartButton();
-    fullScreenButton = new FullScreen('./assets/images/game_interface/startScreenButtons/fullscreen.png',1130,140,30,30);
-    soundButtonOn = new SoundButton('./assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png',1130, 30 , 40, 40);
-    info = new Info('./assets/images/game_interface/startScreenButtons/info.png', 1125,80,40,40);
+    fullScreenButton = new FullScreen('assets/images/game_interface/startScreenButtons/fullscreen.png',1130,140,30,30);
+    soundButtonOn = new SoundButton('assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png',1130, 30 , 40, 40);
+    info = new Info('assets/images/game_interface/startScreenButtons/info.png', 1125,80,40,40);
     aboutMe = new AboutMe();
     background = new Image();
     bgroundMusic;
@@ -141,7 +141,7 @@ class HomeScreen extends DrawableObject {
 * Loads and prepares background music for the home screen.
 */
     prepareMusic() {
-        this.bgroundMusic = new Audio('../assets/sounds/funny-cartoon-sound-397415 (1).mp3');
+        this.bgroundMusic = new Audio('assets/sounds/funny-cartoon-sound-397415 (1).mp3');
         this.bgroundMusic.loop = true;
     }
 
@@ -150,7 +150,7 @@ class HomeScreen extends DrawableObject {
 * Sets the background image for the home screen.
 */    
     setBackground(){
-        this.background.src ='../assets/images/game_interface/startScreenButtons/1.png';
+        this.background.src ='assets/images/game_interface/startScreenButtons/1.png';
     }
 
 /**
