@@ -142,7 +142,6 @@ class Character extends MovableObject {
         this.loadImages(this.images_attackFinSlap);
         this.loadImages(this.images_attackWithBubble);
         this.loadImages(this.images_attackWithoutBubble);
-        this.lastAttack = 0;
         this.animate();
     }
 
@@ -281,9 +280,6 @@ class Character extends MovableObject {
 
 /** Handles fin slap attack */
     handleTailAttack() {
-        const now = Date.now();
-        if (now - this.lastAttack < 400) return; // 400ms cooldown
-        this.lastAttack = now;
         this.animationFrameSpeed(1);
         this.playAnimations(this.images_attackFinSlap);
         this.playTailHitSound();

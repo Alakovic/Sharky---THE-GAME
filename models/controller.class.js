@@ -13,31 +13,61 @@ class Controller {
         this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/down.png', margin + btnSize, canvasH - btnSize, btnSize, btnSize, () =>this.moveDownMobile()));
         this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/left.png', margin, canvasH - btnSize*2, btnSize, btnSize, () => this.moveLeftMobile()));
         this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/right.png', margin + btnSize*2, canvasH - btnSize*2, btnSize, btnSize, () =>this.moveRightMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/Space Bar key.png', canvasW - btnSize*2 - margin, canvasH - btnSize*2, btnSize, btnSize, () => c.handleTailAttack()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/D key.png', canvasW - btnSize - margin, canvasH - btnSize*2, btnSize, btnSize, () => c.handleBubbleAttack()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/Space Bar key.png', canvasW - btnSize*2 - margin, canvasH - btnSize*2, btnSize, btnSize, () => this.pressTailAttackMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/D key.png', canvasW - btnSize - margin, canvasH - btnSize*2, btnSize, btnSize, () => this.pressBubbleAttackMobile()));
         this.addTouchEvents();
     }
 
     moveLeftMobile() {
-        this.character.otherDirection = true;
-        this.character.isMovingMobile = true;
-        this.character.moveLeft();
+    this.character.isMovingMobile = true;
+    const minX = 100;
+        if (!this.character.collidingObstacle("left") && this.character.x > minX) {
+            this.character.otherDirection = true;
+            this.character.isMovingMobile = true;
+            this.character.moveLeft();
+        }
     }
 
     moveRightMobile() {
-        this.character.otherDirection = false;
-        this.character.isMovingMobile = true;
-        this.character.moveRight();
+    this.character.isMovingMobile = true;
+    const maxX = this.character.world.level.end_level_x - this.character.width;
+        if (!this.character.collidingObstacle("right") && this.character.x < maxX) {
+            this.character.otherDirection = false;
+            this.character.isMovingMobile = true;
+            this.character.moveRight();
+        }
     }
 
     moveUpMobile() {
-        this.character.isMovingMobile = true;
-        this.character.moveUp();
+    this.character.isMovingMobile = true;
+    const minY = -130;
+        if (!this.character.collidingObstacle("up") && this.character.y > minY) {
+            this.character.isMovingMobile = true;
+            this.character.moveUp();
+        }
     }
 
     moveDownMobile() {
-        this.character.isMovingMobile = true;
-        this.character.moveDown();
+    this.character.isMovingMobile = true;
+    const maxY = 360;
+        if (!this.character.collidingObstacle("down") && this.character.y < maxY) {
+            this.character.isMovingMobile = true;
+            this.character.moveDown();
+        }
+    }
+
+    pressTailAttackMobile() {
+        this.character.world.keyboard.SPACE = true;
+    }
+
+    pressBubbleAttackMobile() {
+        this.character.world.keyboard.D = true;
+    }
+
+   
+    releaseAttacksMobile() {
+        this.character.world.keyboard.SPACE = false;
+        this.character.world.keyboard.D = false;
     }
 
     draw(ctx) {
@@ -63,6 +93,7 @@ class Controller {
         e.preventDefault();
         this.touchButtons.forEach(btn => btn.release());
         this.character.isMovingMobile = false; 
+        this.releaseAttacksMobile();
     });
     }
 
