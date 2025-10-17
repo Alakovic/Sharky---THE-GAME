@@ -75,7 +75,7 @@ class Controller {
     }
 
     addTouchEvents() {
-    this.canvas.addEventListener('touchstart', (e) => {
+    this._touchStartHandler = (e) => {
         e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / rect.width;
@@ -87,14 +87,23 @@ class Controller {
                 if (btn.isClicked(x, y)) btn.press();
             });
         }
-    });
+    };
 
-    this.canvas.addEventListener('touchend', (e) => {
+    this._touchEndHandler = (e) => {
         e.preventDefault();
         this.touchButtons.forEach(btn => btn.release());
-        this.character.isMovingMobile = false; 
+        this.character.isMovingMobile = false;
         this.releaseAttacksMobile();
-    });
+    };
+
+    this.canvas.addEventListener('touchstart', this._touchStartHandler);
+    this.canvas.addEventListener('touchend', this._touchEndHandler);
+    }
+
+
+    removeTouchEvents() {
+        this.canvas.removeEventListener('touchstart', this._touchStartHandler);
+        this.canvas.removeEventListener('touchend', this._touchEndHandler);
     }
 
     update() {

@@ -331,12 +331,16 @@ class World {
 
     /** Resets the entire game world state. */
     reset() {
+        if (this.controller) {
+        this.controller.removeTouchEvents();
+        }
         this.resetEntities();
         this.resetHUD();
         this.resetLevel();
         this.resetWorldState();
         this.resetUIState();
         this.uiManager.reset();
+        this.initTouchController();
         this.resumeGame();
     }
 
