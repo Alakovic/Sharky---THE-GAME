@@ -35,6 +35,7 @@ canvas {
     height: auto;   
     display: block;
     border-radius: 30px;
+    touch-action: manipulation;
 }
 
 .controls {
