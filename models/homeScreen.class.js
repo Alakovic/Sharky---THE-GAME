@@ -269,9 +269,9 @@ class HomeScreen extends DrawableObject {
         this.bgroundMusic.muted = !this.soundEnabled;
 
         if (this.soundEnabled) {
-            this.soundButtonOn.loadImage('../assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png');
+            this.soundButtonOn.loadImage('assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png');
         } else {
-            this.soundButtonOn.loadImage('../assets/images/game_interface/startScreenButtons/volume-mute.png');
+            this.soundButtonOn.loadImage('assets/images/game_interface/startScreenButtons/volume-mute.png');
         }
     }
 
