@@ -23,19 +23,9 @@ body {
     height: 100dvh; 
 }
 
-
-h1 {
-    font-family: "Lucky", sans-serif;
-    color: red; 
-    margin-top: 70px;
-    font-size: 40px;
-    visibility: hidden;
-}
-
 .canvas-container {
     width: 100%;             
     max-width: 800px;        
-    aspect-ratio: 1200 / 600; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,37 +35,12 @@ h1 {
 
 canvas {
     width: 100%;    
-    height: auto;   
+    height: 100%; 
     display: block;
     border-radius: 30px;
+    object-fit: cover;
     touch-action: manipulation; 
 }
-
-
-.controls {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
-}
-
-.control {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.control img {
-    height: 40px;
-    width: 80px;
-}
-
-.control span {
-    font-family: "Lucky", sans-serif;
-    color: white;
-}
-
 
 #rotateOverlay {
     position: fixed;
