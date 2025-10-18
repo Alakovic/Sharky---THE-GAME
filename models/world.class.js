@@ -331,9 +331,7 @@ class World {
 
     /** Resets the entire game world state. */
     reset() {
-        if (this.controller) {
         this.controller.removeTouchEvents();
-        }
         this.resetEntities();
         this.resetHUD();
         this.resetLevel();
@@ -346,7 +344,9 @@ class World {
 
     /** Resets the character and boss. */
     resetEntities() {
+          if (this.character) this.character.stopAnimations(); 
         this.character = new Character();
+        this.character.resetPosition();
         this.boss = new Boss();
         this.setWorld();
     }

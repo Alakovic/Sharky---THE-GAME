@@ -3,7 +3,7 @@
  * @extends MovableObject
  */
 class Character extends MovableObject {
-
+    animationIntervals = [];
     y=200
     height = 300;
     width = 350;
@@ -18,6 +18,8 @@ class Character extends MovableObject {
     hasPlayedDeathAnimation = false;
     onDeathEndScreenShown = false;
     isMovingMobile = false;
+    startX = 100;
+    startY = 200;
 
     offset = {
         top: 160,
@@ -144,6 +146,15 @@ class Character extends MovableObject {
         this.loadImages(this.images_attackWithoutBubble);
         this.animate();
     }
+    
+    resetPosition() {
+        this.x = this.startX;
+        this.y = this.startY;
+        this.energy = 100;
+        this.coinCount = 0;
+        this.poisonCount = 0;
+        this.otherDirection = false;
+    }
 
 /**
  * Shoots a bubble if the character has poison available.
@@ -165,14 +176,20 @@ class Character extends MovableObject {
 * Starts the character's animation loops for movement and actions.
 */
     animate() { 
-        setInterval(() => {
+      const movementInterval =   setInterval(() => {
             this.handleMovement();
             this.updateCamera();
         }, 1000 / 60);
 
-        setInterval(() => {
+        const animationInterval = setInterval(() => {
         this.handleAnimations();
         }, 50);
+        this.animationIntervals.push(movementInterval, animationInterval);
+    }
+
+    stopAnimations() {
+        this.animationIntervals.forEach(interval => clearInterval(interval));
+        this.animationIntervals = [];
     }
 
 /**
