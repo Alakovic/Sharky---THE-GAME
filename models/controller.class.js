@@ -9,12 +9,13 @@ class Controller {
         const c = this.character;
         const canvasW = canvas.width;
         const canvasH = canvas.height;
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/up.png', margin + btnSize, canvasH - btnSize*3, btnSize, btnSize, () => this.moveUpMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/down.png', margin + btnSize, canvasH - btnSize, btnSize, btnSize, () =>this.moveDownMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/left.png', margin, canvasH - btnSize*2, btnSize, btnSize, () => this.moveLeftMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/right.png', margin + btnSize*2, canvasH - btnSize*2, btnSize, btnSize, () =>this.moveRightMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/Space Bar key.png', canvasW - btnSize*2 - margin, canvasH - btnSize*2, btnSize, btnSize, () => this.pressTailAttackMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/D key.png', canvasW - btnSize - margin, canvasH - btnSize*2, btnSize, btnSize, () => this.pressBubbleAttackMobile()));
+        const verticalOffset = 30;
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/up.png', margin + btnSize, canvasH - btnSize*3 - verticalOffset, btnSize, btnSize, () => this.moveUpMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/down.png', margin + btnSize, canvasH - btnSize - verticalOffset, btnSize, btnSize, () =>this.moveDownMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/left.png', margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.moveLeftMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/right.png', margin + btnSize*2, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () =>this.moveRightMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/Space Bar key.png', canvasW - btnSize*4 - margin, canvasH - btnSize*2 - verticalOffset, 120, btnSize, () => this.pressTailAttackMobile()));
+        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/D key.png', canvasW - btnSize - margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.pressBubbleAttackMobile()));
         this.addTouchEvents();
     }
 
