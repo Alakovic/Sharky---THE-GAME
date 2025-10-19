@@ -17,4 +17,8 @@ class YellowJellyFish extends jellyFish {
         this.damage = 10;
         this.applyOption(option);
     }
+
+    clone() {
+        return new YellowJellyFish(this.x, this.option)
+    }
 }

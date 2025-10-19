@@ -41,12 +41,19 @@ class Level {
 * Initializes the current state arrays by copying from the original arrays.
 */   
     initCurrentState() {
-        this.enemies = [...this.originalEnemies];
+        this.enemies = this.originalEnemies.map(enemy => this.cloneEnemy(enemy));
         this.obstacle = [...this.originalObstacle];
         this.poison = [...this.originalPoison];
         this.coin = [...this.originalCoin];
         this.hearth = [...this.originalHearth];
     }
+
+/**
+ * Clones an enemy instance by creating a new object of the same type and position.
+ */
+cloneEnemy(enemy) {
+      return enemy.clone();
+}
 
 /**
 * Resets the level to its initial state by re-initializing all arrays.

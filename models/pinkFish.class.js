@@ -26,4 +26,8 @@ class PinkFish extends Fish {
         this.applyOption(option);
     }
 
+    clone(){
+        return new PinkFish(this.x, this.y, this.option);
+    }
+
 }

@@ -17,4 +17,8 @@ class LilaJellyFish extends jellyFish {
         this.damage = 10;
         this.applyOption(option);
     }
+
+    clone() {
+        return new LilaJellyFish(this.x, this.option)
+    }
 }

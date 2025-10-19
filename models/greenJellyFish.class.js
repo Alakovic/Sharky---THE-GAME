@@ -21,4 +21,8 @@ class GreenJellyFish extends jellyFish {
         this.movingSquare()
     }
 
+    clone() {
+        return new GreenJellyFish(this.x, this.y, this.range, this.variant, this.direction);
+    }
+
 }

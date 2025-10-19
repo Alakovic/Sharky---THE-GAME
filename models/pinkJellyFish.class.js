@@ -21,4 +21,8 @@ class PinkJellyFish extends jellyFish {
         this.movingSquare()
     }
 
+    clone() {
+        return new PinkJellyFish(this.x, this.y, this.range, this.variant, this.direction);
+    }
+
 }

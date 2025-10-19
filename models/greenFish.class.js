@@ -25,4 +25,8 @@ class GreenFish extends Fish {
         this.damage = 10;
         this.applyOption(option);
     }
+
+    clone() {
+       return new GreenFish(this.x, this.y, this.option);
+    }
 }
