@@ -28,6 +28,28 @@ class EndScreen extends DrawableObject {
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
+        this.canvas.addEventListener('touchstart', (event) => this.handleTouchStart(event), { passive: false });
+        this.canvas.addEventListener('touchmove', (event) => this.handleTouchMove(event), { passive: false });
+    }
+
+    handleTouchStart(event) {
+        event.preventDefault()
+        const touch = event.touches[0];
+        const fakeEvent = {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        };
+        this.handleClick(fakeEvent); 
+    }
+
+    handleTouchMove(event) {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const fakeEvent = {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        };
+        this.handleMouseMove(fakeEvent); 
     }
 
     /** Main draw loop for the end screen. */
