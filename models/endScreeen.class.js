@@ -18,12 +18,13 @@ class EndScreen extends DrawableObject {
     * @param {string} outcome - "win" or "lose".
     * @param {Keyboard} keyboard - Keyboard input manager.
     */
-    constructor(canvas,outcome,keyboard) {
+    constructor(canvas,outcome,keyboard,world) {
         super();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.outcome = outcome;
         this.keyboard = keyboard;
+        this.world = world;
         this.setBackground(outcome);
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
@@ -32,6 +33,16 @@ class EndScreen extends DrawableObject {
         this.canvas.addEventListener('touchmove', (event) => this.handleTouchMove(event), { passive: false });
     }
 
+    /**
+    * Handles the start of a touch event on the end screen.
+    * 
+    * This method prevents the default touch behavior (such as scrolling) and 
+    * simulates a mouse click event based on the touch coordinates. It allows 
+    * the end screen buttons (like "Try Again") to work correctly on touch devices.
+    * 
+    * @param {TouchEvent} event - The touchstart event triggered by the user.
+    * @returns {void}
+    */
     handleTouchStart(event) {
         event.preventDefault()
         const touch = event.touches[0];
@@ -42,6 +53,16 @@ class EndScreen extends DrawableObject {
         this.handleClick(fakeEvent); 
     }
 
+    /**
+    * Handles touch movement events on the end screen.
+    * 
+    * This method prevents the default scrolling behavior and simulates a mousemove 
+    * event so that hover effects (like button scaling or cursor changes) work 
+    * properly on touch devices.
+    * 
+    * @param {TouchEvent} event - The touchmove event triggered by the user.
+    * @returns {void}
+    */
     handleTouchMove(event) {
         event.preventDefault();
         const touch = event.touches[0];
@@ -166,6 +187,7 @@ class EndScreen extends DrawableObject {
 
     /** Restarts the game when "Try Again" is clicked. */ 
     startGame() {
+        this.stopWorld();
         if (this.bgroundMusic) {
             this.bgroundMusic.pause();
             this.bgroundMusic.currentTime = 0; 
@@ -176,6 +198,29 @@ class EndScreen extends DrawableObject {
         if (world.backgroundMusic) {
             world.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
         }
+    }
+
+    /**
+    * Stops all active processes, animations, sounds, and input listeners 
+    * of the currently running game world when the end screen is shown.
+    * 
+    * This method safely cancels animation frames, clears intervals for game logic
+    * (like timers and collision checks), pauses background music, removes input handlers,
+    * and marks the world as paused.
+    * 
+    * @method stopWorld
+    * @memberof EndScreen
+    * @returns {void}
+    */
+    stopWorld() {
+    if (!this.world) return;
+    if (this.world.drawFrameId) cancelAnimationFrame(this.world.drawFrameId);
+    if (this.world.timerInterval) clearInterval(this.world.timerInterval);
+    if (this.world.collisionInterval) clearInterval(this.world.collisionInterval);
+    if (this.world.sound && this.world.sound.background) {this.world.sound.background.pause();}
+    if (this.world.controller) {this.world.controller.removeTouchEvents();}
+    this.world.paused = true;
+    console.log("🧹 World stopped");
     }
     
 }

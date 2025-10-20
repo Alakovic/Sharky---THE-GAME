@@ -19,6 +19,9 @@ class World {
     totalPoison;
     sound = new SoundManager();
     controller;
+    drawFrameId;
+    timerInterval;
+    collisionInterval;
     
     /**
     * Creates a new game world instance.
@@ -60,7 +63,7 @@ class World {
 
     /** Starts the in-game timer. */
     initTimer(){
-         setInterval(() => {
+       this.timerInterval =  setInterval(() => {
             if(!this.paused){
                 this.second++;
             }
@@ -89,7 +92,7 @@ class World {
 
     /** Starts continuous collision checking. */
     checkCollisions() {
-        setInterval(() => {
+       this.collisionInterval = setInterval(() => {
             this.collisionManager.checkAll();
         }, 200);
     }
@@ -106,7 +109,7 @@ class World {
         this.controller.update();
         this.controller.draw(this.ctx);
         }
-        requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
+        this.drawFrameId =   requestAnimationFrame(() => {this.draw()}); // draw() wird immer wieder aufgerufen
     }
 
     /** Draws the game world, including background, objects, enemies, and character. */
@@ -199,7 +202,7 @@ class World {
             } else {
                 clearInterval(deathInterval);
                 setTimeout(() => {
-                    new EndScreen(this.canvas, 'lose', this.keyboard);
+                    new EndScreen(this.canvas, 'lose', this.keyboard,this);
                 }, endScreenDelay);
             }
         }, frameDuration);
@@ -235,7 +238,7 @@ class World {
             } else {
                 clearInterval(deathInterval);
                 setTimeout(() => {
-                    new EndScreen(this.canvas, 'win', this.keyboard);
+                    new EndScreen(this.canvas, 'win', this.keyboard,this);
                 }, endScreenDelay);
             }
         }, frameDuration);
