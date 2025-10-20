@@ -1,3 +1,8 @@
+/**
+ * @class TouchButton
+ * @extends DrawableObject
+ * @description Represents a touch button for mobile controls.
+ */
 class TouchButton extends DrawableObject {
     action; 
     isPressed = false;
@@ -12,14 +17,20 @@ class TouchButton extends DrawableObject {
         this.action = action;
     }
 
+    /** Marks the button as pressed */
     press() {
         this.isPressed = true;
     }
 
+    /** Marks the button as released */
     release() {
         this.isPressed = false;
     }
 
+    /**
+    * Draws the button on the canvas, scaling it down slightly when pressed
+    * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+    */
     draw(ctx) {
         if (!this.img) return;
         ctx.save();
@@ -31,6 +42,12 @@ class TouchButton extends DrawableObject {
         ctx.restore();
     }
 
+    /**
+    * Checks if a point (x, y) is inside the button's boundaries
+    * @param {number} x - X coordinate of the point.
+    * @param {number} y - Y coordinate of the point.
+    * @returns {boolean} True if the point is inside the button.
+    */
     isClicked(x, y) {
         return x >= this.x && x <= this.x + this.width &&
                y >= this.y && y <= this.y + this.height;
