@@ -33,6 +33,7 @@ class HomeScreen extends DrawableObject {
         this.keyboard = keyboard;
         this.setBackground(); 
         this.prepareMusic();
+        this.loadSoundState();
         this.draw();
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
@@ -42,6 +43,18 @@ class HomeScreen extends DrawableObject {
             }
         });
     }
+
+loadSoundState() {
+    const savedSound = localStorage.getItem('soundEnabled');
+    if (savedSound !== null) {
+        this.soundEnabled = savedSound === 'true';
+        if (this.bgroundMusic) this.bgroundMusic.muted = !this.soundEnabled;
+        const icon = this.soundEnabled 
+            ? 'assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png' 
+            : 'assets/images/game_interface/startScreenButtons/volume-mute.png';
+        this.soundButtonOn.loadImage(icon);
+    }
+}
 
 /**
 * Continuously draws the home screen and its UI elements using requestAnimationFrame.
@@ -273,6 +286,7 @@ class HomeScreen extends DrawableObject {
         } else {
             this.soundButtonOn.loadImage('assets/images/game_interface/startScreenButtons/volume-mute.png');
         }
+        localStorage.setItem('soundEnabled', this.soundEnabled);
     }
 
 /**

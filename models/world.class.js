@@ -37,6 +37,7 @@ class World {
         this.totalCoins = this.level.coin.length;
         this.totalPoison = this.level.poison.length;
         this.uiManager = new UIManager(canvas, this.sound, this);
+        this.sound.loadSoundState(); 
         this.initWorld();
         this.initCollisions();
         this.initTimer();

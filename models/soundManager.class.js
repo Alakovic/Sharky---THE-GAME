@@ -17,9 +17,26 @@ class SoundManager {
         this.bossHit = this.create('assets/sounds/enemy_hit.mp3');
         this.win = this.create('assets/sounds/win.mp3');
         this.lose = this.create('assets/sounds/game_over.mp3');
-         this.tailHit = this.create('assets/sounds/whip-02-242215.mp3', false, true);
+        this.tailHit = this.create('assets/sounds/whip-02-242215.mp3', false, true);
         this.bubblePop = this.create('assets/sounds/bubble-pop-06-351337.mp3', false, true);
         this.bubbleError = this.create('assets/sounds/error-010-206498.mp3', false, true);
+         this.loadSoundState();
+    }
+
+    loadSoundState() {
+        const savedSound = localStorage.getItem('soundEnabled');
+        if (savedSound !== null) {
+            this.enabled = savedSound === 'true';
+            this.muteAll(!this.enabled); 
+        }
+    }
+
+    muteAll(mute) {
+        Object.values(this).forEach(s => {
+            if (s instanceof Audio) {
+                s.muted = mute;
+            }
+        });
     }
 
     /**
@@ -59,12 +76,8 @@ class SoundManager {
      */
     toggle() {
         this.enabled = !this.enabled;
-        const allSounds = Object.values(this);
-        allSounds.forEach(s => {
-            if (s instanceof Audio) {
-                s.muted = !this.enabled;
-            }
-        });
+        this.muteAll(!this.enabled);
+        localStorage.setItem('soundEnabled', this.enabled);
     }
 
 }
