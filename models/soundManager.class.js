@@ -23,6 +23,10 @@ class SoundManager {
          this.loadSoundState();
     }
 
+    /**
+    * Loads the saved sound state from localStorage and applies it.
+    * @returns {void}
+    */
     loadSoundState() {
         const savedSound = localStorage.getItem('soundEnabled');
         if (savedSound !== null) {
@@ -31,6 +35,11 @@ class SoundManager {
         }
     }
 
+    /**
+    * Mutes or unmutes all Audio instances stored in this object.
+    * @param {boolean} mute - True to mute all audio, false to unmute.
+    * @returns {void}
+    */
     muteAll(mute) {
         Object.values(this).forEach(s => {
             if (s instanceof Audio) {

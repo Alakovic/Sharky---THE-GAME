@@ -45,17 +45,22 @@ class HomeScreen extends DrawableObject {
         });
     }
 
-loadSoundState() {
-    const savedSound = localStorage.getItem('soundEnabled');
-    if (savedSound !== null) {
-        this.soundEnabled = savedSound === 'true';
-        if (this.bgroundMusic) this.bgroundMusic.muted = !this.soundEnabled;
-        const icon = this.soundEnabled 
-            ? 'assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png' 
-            : 'assets/images/game_interface/startScreenButtons/volume-mute.png';
-        this.soundButtonOn.loadImage(icon);
-    }
-}
+    /**
+    * Loads the saved sound state from localStorage and applies it to the game.
+    * Updates the background music mute state and the sound button icon accordingly.
+    * @returns {void}
+    */    
+    loadSoundState() {
+        const savedSound = localStorage.getItem('soundEnabled');
+        if (savedSound !== null) {
+            this.soundEnabled = savedSound === 'true';
+            if (this.bgroundMusic) this.bgroundMusic.muted = !this.soundEnabled;
+                const icon = this.soundEnabled 
+                ? 'assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png' 
+                : 'assets/images/game_interface/startScreenButtons/volume-mute.png';
+            this.soundButtonOn.loadImage(icon);
+        }
+    }      
 
 /**
 * Continuously draws the home screen and its UI elements using requestAnimationFrame.

@@ -1,3 +1,8 @@
+/**
+ * Represents the game's Impressum overlay (legal notice / credits).
+ * Handles drawing the overlay, title, and text content on the canvas.
+ * @extends DrawableObject
+ */
 class Impressum extends DrawableObject {
     constructor() {
         super();
@@ -9,14 +14,25 @@ class Impressum extends DrawableObject {
         this.isVisible = false;
     }
 
+    /**
+    * Shows the Impressum overlay.
+    */
     show() {
         this.isVisible = true;
     }
 
+    /**
+    * Hides the Impressum overlay.
+    */
     hide() {
         this.isVisible = false;
     }
 
+    /**
+    * Draws the Impressum overlay on the canvas if it is visible.
+    * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
+    * @param {HTMLCanvasElement} canvas - The canvas element.
+    */
     drawOverlay(ctx, canvas) {
         if (!this.isVisible) return;
 
@@ -30,6 +46,11 @@ class Impressum extends DrawableObject {
         ctx.restore();
     }
 
+    /**
+    * Draws the overlay title.
+    * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
+    * @param {HTMLCanvasElement} canvas - The canvas element.
+    */
     drawTitle(ctx, canvas) {
         ctx.font = 'bold 50px Lucky';
         ctx.fillStyle = '#FDF8FB';
@@ -38,13 +59,23 @@ class Impressum extends DrawableObject {
         ctx.fillText('Impressum', canvas.width / 2, 50);
     }
 
-    
+    /**
+     * Draws the text content of the Impressum overlay.
+     * Delegates to setupTextStyle and drawLines.
+     * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
+     * @param {HTMLCanvasElement} canvas - The canvas element.
+     */
     drawText(ctx, canvas) {
         this.setupTextStyle(ctx);
         this.drawLines(ctx, canvas);
     }
-    
-   drawLines(ctx, canvas) {
+
+    /**
+    * Draws the individual lines of text on the overlay.
+    * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
+    * @param {HTMLCanvasElement} canvas - The canvas element.
+    */
+    drawLines(ctx, canvas) {
         const lines = [
             "Developer: Zeljko Alakovic",
             "Email: example@email.com",
@@ -56,6 +87,10 @@ class Impressum extends DrawableObject {
         lines.forEach(l => { ctx.fillText(l, canvas.width/2, y); y += 35; });
     }
 
+    /**
+    * Sets up the text style for the overlay content.
+    * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
+    */
     setupTextStyle(ctx) {
         ctx.font = '22px Lucky';
         ctx.fillStyle = '#ffffff';

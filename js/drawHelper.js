@@ -23,9 +23,9 @@ function drawInfoOverlay(ctx, canvas, instructionImages) {
     ctx.fillStyle = "rgba(0,0,0,0.6)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const startX = 300;
+    const startX = 200;
     const startY = 250;
-    const imgHeight = 100;
+    const imgHeight = 150;
     const padding = 150;
     let currentX = startX;
 
@@ -48,7 +48,7 @@ function drawInfoOverlay(ctx, canvas, instructionImages) {
  */
 function drawInstructionItem(ctx, item, x, y, imgHeight) {
     let imgWidth = imgHeight;
-    if (item.text === "Fin Attack") imgWidth = 150;
+    if (item.text === "Fin Attack") imgWidth = 250;
     ctx.drawImage(item.img, x, y, imgWidth, imgHeight);
     ctx.font = "24px Lucky";
     ctx.fillStyle = "#ffffff";

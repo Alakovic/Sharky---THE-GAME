@@ -2,7 +2,6 @@
  * Handles the game's UI elements, including menu buttons, overlays, and cursor interactions.
  */
 class UIManager{
-
     menuButton = new MenuButton();
 
     constructor(canvas,sound,world) {
