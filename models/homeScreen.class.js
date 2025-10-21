@@ -15,6 +15,7 @@ class HomeScreen extends DrawableObject {
     info = new Info('assets/images/game_interface/startScreenButtons/info.png', 1125,80,40,40);
     aboutMe = new AboutMe();
     background = new Image();
+    impressum = new Impressum();
     bgroundMusic;
     showOverlay = true;
     showInfoOverlay = false;
@@ -69,6 +70,7 @@ loadSoundState() {
         this.addToMap(this.soundButtonOn);
         this.addToMap(this.info);
         this.addToMap(this.aboutMe);
+        this.addToMap(this.impressum);
         if (this.showOverlay) {
             this.drawOverlay();
         }
@@ -77,6 +79,9 @@ loadSoundState() {
         }
         if(this.showAboutMe){
             this.drawAboutMe();
+        }
+        if (this.impressum.isVisible) {
+            this.impressum.drawOverlay(this.ctx, this.canvas);
         }
         requestAnimationFrame(() => {this.draw()});
     }
@@ -91,7 +96,7 @@ loadSoundState() {
         this.resetHover();
         this.updateHover(mouseX, mouseY);
 
-        if (this.startButton.isHovered || this.fullScreenButton.isHovered || this.soundButtonOn.isHovered || this.info.isHovered || this.aboutMe.isHovered) {
+        if (this.startButton.isHovered || this.fullScreenButton.isHovered || this.soundButtonOn.isHovered || this.info.isHovered || this.aboutMe.isHovered || this.impressum.isHovered) {
             this.canvas.style.cursor = 'pointer';
         } else {
             this.canvas.style.cursor = 'default';
@@ -107,6 +112,7 @@ loadSoundState() {
         this.soundButtonOn.isHovered = false;
         this.info.isHovered = false;
         this.aboutMe.isHovered = false;
+        this.impressum.isHovered = false;
     }
 
 /**
@@ -120,6 +126,7 @@ loadSoundState() {
         this.soundButtonOn.isHovered = this.soundButtonOn.isClicked(mouseX, mouseY);
         this.info.isHovered = this.info.isClicked(mouseX, mouseY);
         this.aboutMe.isHovered = this.aboutMe.isClicked(mouseX, mouseY);
+        this.impressum.isHovered = this.impressum.isClicked(mouseX, mouseY);
     }
 
 /**
@@ -127,7 +134,7 @@ loadSoundState() {
 * @returns {boolean} True if hover should be blocked.
 */    
     blockHover() {
-        if (this.showOverlay || this.showInfoOverlay) {
+        if (this.showOverlay || this.showInfoOverlay || this.impressum.isVisible) {
             this.canvas.style.cursor = 'default';
             return true ;
         }
@@ -241,6 +248,7 @@ loadSoundState() {
         if (this.showOverlay) return this.bgroundMusic.play(), this.showOverlay = false, true;
         if (this.showInfoOverlay) return this.showInfoOverlay = false, true;
         if (this.showAboutMe) return this.showAboutMe = false, true;
+        if(this.impressum.isVisible) return this.impressum.isVisible = false, true ; 
         return false;
     }
 
@@ -256,6 +264,7 @@ loadSoundState() {
         if (this.aboutMe.isClicked(x, y)) return this.showAboutMe = !this.showAboutMe, true;
         if (this.startButton.isClicked(x, y)) return this.startGame(), true;
         if (this.fullScreenButton.isClicked(x, y)) return toggleFullScreen(this.canvas), true;
+        if(this.impressum.isClicked(x,y)) return this.impressum.isVisible = !this.impressum.isVisible, true;
         return false;
     }
 
