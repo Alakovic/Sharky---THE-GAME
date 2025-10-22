@@ -30,69 +30,13 @@ class Boss extends MovableObject {
 
     state = "hidden" ;
 
-    images_attack = [
-        'assets/images/enemies/boss/attack/1.png',
-        'assets/images/enemies/boss/attack/2.png',
-        'assets/images/enemies/boss/attack/3.png',
-        'assets/images/enemies/boss/attack/4.png',
-        'assets/images/enemies/boss/attack/5.png',
-        'assets/images/enemies/boss/attack/6.png'
-    ]
-
-    images_dead = [
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 6.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 7.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 8.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 9.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 10.png'
-    ]
-
-    images_float = [
-        'assets/images/enemies/boss/float/1.png',
-        'assets/images/enemies/boss/float/2.png',
-        'assets/images/enemies/boss/float/3.png',
-        'assets/images/enemies/boss/float/4.png',
-        'assets/images/enemies/boss/float/5.png',
-        'assets/images/enemies/boss/float/6.png',
-        'assets/images/enemies/boss/float/7.png',
-        'assets/images/enemies/boss/float/8.png',
-        'assets/images/enemies/boss/float/8.png',
-        'assets/images/enemies/boss/float/10.png',
-        'assets/images/enemies/boss/float/11.png',
-        'assets/images/enemies/boss/float/12.png',
-        'assets/images/enemies/boss/float/13.png'
-    ]
-
-    images_hurt = [
-        'assets/images/enemies/boss/hurt/1.png',
-        'assets/images/enemies/boss/hurt/2.png',
-        'assets/images/enemies/boss/hurt/3.png',
-        'assets/images/enemies/boss/hurt/4.png'
-    ]
-
-    images_introduce = [
-        'assets/images/enemies/boss/introduce/1.png',
-        'assets/images/enemies/boss/introduce/2.png',
-        'assets/images/enemies/boss/introduce/3.png',
-        'assets/images/enemies/boss/introduce/4.png',
-        'assets/images/enemies/boss/introduce/5.png',
-        'assets/images/enemies/boss/introduce/6.png',
-        'assets/images/enemies/boss/introduce/7.png',
-        'assets/images/enemies/boss/introduce/8.png',
-        'assets/images/enemies/boss/introduce/9.png',
-        'assets/images/enemies/boss/introduce/10.png'
-    ]
-
-/**
-* Loads all necessary boss images for animations.
-*/
     constructor() {
         super();
-        this.loadImages(this.images_attack);
-        this.loadImages(this.images_dead);
-        this.loadImages(this.images_float);
-        this.loadImages(this.images_hurt);
-        this.loadImages(this.images_introduce);
+        this.loadImages(GameAssets.boss.attack);
+        this.loadImages(GameAssets.boss.dead);
+        this.loadImages(GameAssets.boss.float);
+        this.loadImages(GameAssets.boss.hurt);
+        this.loadImages(GameAssets.boss.introduce);
     }
 
 /**
@@ -139,7 +83,7 @@ class Boss extends MovableObject {
 * Handles the hurt animation, then returns to floating state when recovered.
 */    
     handleHurtState() {
-        this.playAnimations(this.images_hurt);
+        this.playAnimations(GameAssets.boss.hurt);
         this.animationFrameSpeed(4);
     if (!this.isHurt()) {
         this.enterFloat();
@@ -150,9 +94,9 @@ class Boss extends MovableObject {
 * Handles the introduction animation when the boss first appears.
 */    
     handleIntroduceState() {
-        this.playAnimations(this.images_introduce);
+        this.playAnimations(GameAssets.boss.introduce);
         this.animationFrameSpeed(6);
-    if (this.currentImage >= this.images_introduce.length) {
+    if (this.currentImage >= GameAssets.boss.introduce.length) {
         this.enterFloat();
         }
     }
@@ -190,7 +134,7 @@ class Boss extends MovableObject {
         } else if (character.y + character.height/2 > this.y + this.height/2) {
             this.moveDown();
         }
-        this.playAnimations(this.images_attack);
+        this.playAnimations(GameAssets.boss.attack);
         this.animationFrameSpeed(4)
     }
 
@@ -214,7 +158,7 @@ class Boss extends MovableObject {
 * Plays the attack animation while the boss is in attack mode.
 */
     handleAttackState() {
-        this.playAnimations(this.images_attack);
+        this.playAnimations(GameAssets.boss.attack);
         this.animationFrameSpeed(4);
     }
 
@@ -234,7 +178,7 @@ class Boss extends MovableObject {
         this.direction = -1;
     }
         this.otherDirection = this.direction === -1 ? false : true;
-        this.playAnimations(this.images_float);
+        this.playAnimations(GameAssets.boss.float);
         this.animationFrameSpeed(8); 
     }
 

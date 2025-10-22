@@ -3,22 +3,12 @@
  * Extends DrawableObject to handle rendering on the canvas.
  */
 class HealthBar extends DrawableObject{
-
-    images_bar = [
-        'assets/images/game_interface/health_bar/0.png',
-        'assets/images/game_interface/health_bar/20.png',
-        'assets/images/game_interface/health_bar/40.png',
-        'assets/images/game_interface/health_bar/60.png',
-        'assets/images/game_interface/health_bar/80.png',
-        'assets/images/game_interface/health_bar/100.png'
-    ]
-
 /**
 * Creates a new HealthBar instance and initializes it to full health.
 */
     constructor(){
         super();
-        this.loadImages(this.images_bar)
+        this.loadImages(GameAssets.bars.health)
         this.x = 35;
         this.y = 10;
         this.width = 300;
@@ -33,7 +23,7 @@ class HealthBar extends DrawableObject{
     setPercentage(percentage) {
         this.percentage = percentage;
         let index = this.resolveImageIndex();
-        let path = this.images_bar[index];
+        let path = GameAssets.bars.health[index];
         this.img = this.imageCache[path];
     }
     
@@ -43,7 +33,7 @@ class HealthBar extends DrawableObject{
 * @returns {number} Index of the image to display for the current health percentage.
 */
     resolveImageIndex() {
-        const maxIndex = this.images_bar.length - 1;
+        const maxIndex = GameAssets.bars.health.length - 1;
         let index = Math.round((this.percentage / 100) * maxIndex);
         if (index > maxIndex) index = maxIndex;
         if (index < 0) index = 0;

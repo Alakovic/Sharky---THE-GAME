@@ -3,7 +3,6 @@
  * This class handles drawing, hover effects, click detection, and music control for the main menu.
  * @extends DrawableObject
  */
-
 class HomeScreen extends DrawableObject {
     ctx;
     canvas;
@@ -100,7 +99,6 @@ class HomeScreen extends DrawableObject {
         const { mouseX, mouseY } = this.getMousePos(event);
         this.resetHover();
         this.updateHover(mouseX, mouseY);
-
         if (this.startButton.isHovered || this.fullScreenButton.isHovered || this.soundButtonOn.isHovered || this.info.isHovered || this.aboutMe.isHovered || this.impressum.isHovered) {
             this.canvas.style.cursor = 'pointer';
         } else {
@@ -267,7 +265,7 @@ class HomeScreen extends DrawableObject {
         if (this.soundButtonOn.isClicked(x, y)) return this.toggleSound(), true;
         if (this.info.isClicked(x, y)) return this.showInfoOverlay = !this.showInfoOverlay, true;
         if (this.aboutMe.isClicked(x, y)) return this.showAboutMe = !this.showAboutMe, true;
-        if (this.startButton.isClicked(x, y)) return this.startGame(), true;
+        if (this.startButton.isClicked(x, y)) return  this.startGameWithLoading(), true;
         if (this.fullScreenButton.isClicked(x, y)) return toggleFullScreen(this.canvas), true;
         if(this.impressum.isClicked(x,y)) return this.impressum.isVisible = !this.impressum.isVisible, true;
         return false;
@@ -302,6 +300,29 @@ class HomeScreen extends DrawableObject {
         }
         localStorage.setItem('soundEnabled', this.soundEnabled);
     }
+ 
+async startGameWithLoading() {
+    this.showOverlay = false;       
+    this.canvas.style.cursor = 'default';
+    const preloader = new Preloader();
+    addImagesFromObject(GameAssets, preloader); 
+    const loadingScreen = new LoadingScreen(this.canvas, preloader);
+    const loadPromise = loadingScreen.load();
+    await new Promise(resolve => {
+        const drawLoop = () => {
+            loadingScreen.updateProgress();
+            if (preloader.getProgress() < 1) {
+                requestAnimationFrame(drawLoop);
+            } else {
+                resolve(); 
+            }
+        };
+        drawLoop();
+    });
+
+    await loadPromise; 
+    this.startGameAfterLoading();
+}
 
 /**
 * Draws the "About Me" screen with information about the developer.
@@ -353,22 +374,22 @@ class HomeScreen extends DrawableObject {
 /**
 * Starts the actual game by creating a World instance and playing background music.
 */    
-    startGame() {
-        const isPortrait = window.innerHeight > window.innerWidth;
+   startGameAfterLoading() {
+    const isPortrait = window.innerHeight > window.innerWidth;
     if (isPortrait && /Mobi|Android/i.test(navigator.userAgent)) {
         alert("Please rotate your device to landscape mode before starting the game!");
         return;
     }
-        if (this.bgroundMusic) {
-            this.bgroundMusic.pause();
-            this.bgroundMusic.currentTime = 0; 
-        }   
-            currentLevel = createLevel1();
-            world = new World(this.canvas, this.keyboard, currentLevel);
-        
-        if (world.backgroundMusic) {
-            world.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
-        }
+    if (this.bgroundMusic) {
+        this.bgroundMusic.pause();
+        this.bgroundMusic.currentTime = 0; 
+    }   
+    currentLevel = createLevel1();
+    world = new World(this.canvas, this.keyboard, currentLevel);
+
+    if (world.backgroundMusic) {
+        world.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
     }
+}
 
 }

@@ -3,24 +3,14 @@
  * Extends MovableObject to allow animations and movement.
  */
 class Hearth extends MovableObject {
-
-    images_hearth = [
-        'assets/images/hearth/1.png',
-        'assets/images/hearth/2.png',
-        'assets/images/hearth/3.png',
-        'assets/images/hearth/4.png',
-        'assets/images/hearth/5.png',
-        'assets/images/hearth/6.png'
-    ];
-
 /**
 * Creates a new Hearth instance at the given position.
 * @param {number} x - The x-coordinate of the heart on the canvas.
 * @param {number} y - The y-coordinate of the heart on the canvas.
 */
     constructor(x,y) {
-        super().loadImage(this.images_hearth[0]);
-        this.loadImages(this.images_hearth);
+        super().loadImage(GameAssets.hearth.spin[0]);
+        this.loadImages(GameAssets.hearth.spin);
         this.animate();
         this.x = x;
         this.y = y;
@@ -45,7 +35,7 @@ class Hearth extends MovableObject {
     animate() {
         setInterval(() => {
             this.animationFrameSpeed(1)
-            this.playAnimations(this.images_hearth);
+            this.playAnimations(GameAssets.hearth.spin);
         }, 200 ); 
     }
 }

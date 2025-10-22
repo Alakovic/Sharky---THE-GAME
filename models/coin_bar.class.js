@@ -3,16 +3,6 @@
  * Extends DrawableObject to inherit drawing capabilities on the canvas.
  */
 class CoinBar extends DrawableObject {
-
-    images_bar = [
-        'assets/images/game_interface/coin_bar/0.png',
-        'assets/images/game_interface/coin_bar/20.png',
-        'assets/images/game_interface/coin_bar/40.png',
-        'assets/images/game_interface/coin_bar/60.png',
-        'assets/images/game_interface/coin_bar/80.png',
-        'assets/images/game_interface/coin_bar/100.png'
-    ]
-
     percentage = 100;
 
 /**
@@ -20,7 +10,7 @@ class CoinBar extends DrawableObject {
 */
     constructor(){
         super();
-        this.loadImages(this.images_bar)
+        this.loadImages(GameAssets.bars.coin)
         this.x = 35;
         this.y = 60;
         this.width = 240;
@@ -35,7 +25,7 @@ class CoinBar extends DrawableObject {
     setPercentage(percentage) {
         this.percentage = percentage;
         let index = this.resolveImageIndex();
-        let path = this.images_bar[index];
+        let path = GameAssets.bars.coin[index];
         this.img = this.imageCache[path];
     }
 
@@ -44,7 +34,7 @@ class CoinBar extends DrawableObject {
 * @returns {number} Index of the corresponding image in the images_bar array.
 */    
     resolveImageIndex() {
-        const maxIndex = this.images_bar.length - 1;
+        const maxIndex = GameAssets.bars.coin.length - 1;
         let index = Math.floor((this.percentage / 100) * maxIndex);
         if (index > maxIndex) index = maxIndex;
         if (index < 0) index = 0;

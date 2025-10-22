@@ -78,7 +78,7 @@ class Impressum extends DrawableObject {
     drawLines(ctx, canvas) {
         const lines = [
             "Developer: Zeljko Alakovic",
-            "Email: example@email.com",
+            "Email: zeljkoalakovic997@outlook.com",
             "This game 'SHARKIE - THE GAME' is a personal project for educational purposes.",
             "All content, graphics, and code are created by the developer.",
             "© 2025 Zeljko Alakovic"

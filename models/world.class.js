@@ -180,11 +180,11 @@ class World {
     getDeathImages(damageType) {
         switch(damageType) {
         case 'poison':
-            return this.character.images_deathPoison;
+            return  GameAssets.character.deathPoison;
         case 'electro':
-            return this.character.images_deathElectro;
+            return  GameAssets.character.deathElectro;
         default:
-            return this.character.images_deathPoison;
+            return GameAssets.character.deathPoison;
         }
     }
 
@@ -221,7 +221,7 @@ class World {
 
     /** Returns boss death images. */
     getBossDeathImages() {
-        return [this.boss.images_dead];
+        return GameAssets.boss.dead;
     }
 
     /**

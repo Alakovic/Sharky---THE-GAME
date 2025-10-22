@@ -57,12 +57,12 @@ class Controller {
         const canvasW = this.canvas.width;
         const canvasH = this.canvas.height;
         const verticalOffset = 30;
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/up.png', margin + btnSize, canvasH - btnSize*3 - verticalOffset, btnSize, btnSize, () => this.moveUpMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/down.png', margin + btnSize, canvasH - btnSize - verticalOffset, btnSize, btnSize, () =>this.moveDownMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/left.png', margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.moveLeftMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/right.png', margin + btnSize*2, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () =>this.moveRightMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/Space Bar key.png', canvasW - btnSize*4 - margin, canvasH - btnSize*2 - verticalOffset, 120, btnSize, () => this.pressTailAttackMobile()));
-        this.touchButtons.push(new TouchButton('assets/images/game_interface/buttons/D key.png', canvasW - btnSize - margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.pressBubbleAttackMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.up[0], margin + btnSize, canvasH - btnSize*3 - verticalOffset, btnSize, btnSize, () => this.moveUpMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.down[0], margin + btnSize, canvasH - btnSize - verticalOffset, btnSize, btnSize, () =>this.moveDownMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.left[0], margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.moveLeftMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.right[0], margin + btnSize*2, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () =>this.moveRightMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.tailAttack[0], canvasW - btnSize*4 - margin, canvasH - btnSize*2 - verticalOffset, 120, btnSize, () => this.pressTailAttackMobile()));
+        this.touchButtons.push(new TouchButton(GameAssets.controls.bubbleAttack[0], canvasW - btnSize - margin, canvasH - btnSize*2 - verticalOffset, btnSize, btnSize, () => this.pressBubbleAttackMobile()));
     }
 
     /** Moves the character left on mobile */
