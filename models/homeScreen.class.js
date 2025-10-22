@@ -16,25 +16,52 @@ class HomeScreen extends DrawableObject {
     background = new Image();
     impressum = new Impressum();
     bgroundMusic;
-    showOverlay = true;
-    showInfoOverlay = false;
     soundEnabled = true;
-    showAboutMe = false;
+    overlayManager;
 
 /**
-* Creates a new HomeScreen instance.
-* @param {HTMLCanvasElement} canvas - The canvas element to render the home screen.
-* @param {Keyboard} keyboard - The keyboard input handler.
-*/
-    constructor(canvas,keyboard) {
+ * Creates a new HomeScreen instance.
+ * @param {HTMLCanvasElement} canvas - The canvas element to render the home screen.
+ * @param {Keyboard} keyboard - The keyboard input handler.
+ */
+    constructor(canvas, keyboard) {
         super();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.setBackground(); 
-        this.prepareMusic();
-        this.loadSoundState();
+        this.overlayManager = new OverlayManager(this.ctx, this.canvas, this.aboutMe, this.impressum, instructionImages);
+        this.initBackground();
+        this.initMusic();
+        this.loadSavedSoundState();
+        this.initEventListeners();
         this.draw();
+    }
+
+    /**
+    * Sets up the background image for the home screen.
+    */
+    initBackground() {
+        this.setBackground();
+    }
+
+    /**
+    * Prepares the background music for the home screen.
+    */
+    initMusic() {
+        this.prepareMusic();
+    }
+
+    /**
+    * Loads the saved sound state from localStorage and applies it.
+    */
+    loadSavedSoundState() {
+        this.loadSoundState();
+    }
+
+    /**
+    * Adds all event listeners for clicks, mouse moves, and fullscreen changes.
+    */
+    initEventListeners() {
         this.canvas.addEventListener('click', (event) => this.handleClick(event));
         this.canvas.addEventListener('mousemove', (event) => this.handleMouseMove(event));
         document.addEventListener('fullscreenchange', () => {
@@ -61,13 +88,35 @@ class HomeScreen extends DrawableObject {
         }
     }      
 
-/**
-* Continuously draws the home screen and its UI elements using requestAnimationFrame.
-* Handles overlays and button rendering.
-*/
+    /**
+    * Continuously draws the home screen and its UI elements using requestAnimationFrame.
+    */
     draw() {
-        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
+        this.clearCanvas();
+        this.drawBackground();
+        this.drawUIElements();
+        this.drawOverlays();
+        requestAnimationFrame(() => this.draw());
+    }
+
+    /**
+    * Clears the canvas before redrawing.
+    */
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    /**
+    * Draws the background image.
+    */
+    drawBackground() {
         this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    /**
+    * Draws the main UI elements: title, buttons, icons.
+    */
+    drawUIElements() {
         this.drawTitle();
         this.addToMap(this.startButton);
         this.addToMap(this.fullScreenButton);
@@ -75,19 +124,10 @@ class HomeScreen extends DrawableObject {
         this.addToMap(this.info);
         this.addToMap(this.aboutMe);
         this.addToMap(this.impressum);
-        if (this.showOverlay) {
-            this.drawOverlay();
-        }
-        if (this.showInfoOverlay) {
-            drawInfoOverlay(this.ctx, this.canvas,instructionImages);
-        }
-        if(this.showAboutMe){
-            this.drawAboutMe();
-        }
-        if (this.impressum.isVisible) {
-            this.impressum.drawOverlay(this.ctx, this.canvas);
-        }
-        requestAnimationFrame(() => {this.draw()});
+    }
+
+    drawOverlays() {
+        this.overlayManager.drawOverlays();
     }
 
 /**
@@ -137,9 +177,9 @@ class HomeScreen extends DrawableObject {
 * @returns {boolean} True if hover should be blocked.
 */    
     blockHover() {
-        if (this.showOverlay || this.showInfoOverlay || this.impressum.isVisible) {
+        if (this.overlayManager.blockHover()) {
             this.canvas.style.cursor = 'default';
-            return true ;
+            return true;
         }
         return false;
     }
@@ -191,49 +231,6 @@ class HomeScreen extends DrawableObject {
     }
 
 /**
-* Draws the main overlay screen with game title, goal, hints, and start instruction.
-*/
-    drawOverlay() {
-        const ctx = this.ctx;
-        ctx.save();
-        ctx.fillStyle = "rgba(0,0,0,0.7)";
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawOverlayTitleAndGoal(ctx);
-        this.drawOverlayHints(ctx);
-        ctx.font = "bold 32px Lucky";
-        ctx.fillStyle = "#BF067F";
-        ctx.textAlign = "center";
-        ctx.fillText("Click anywhere to start", this.canvas.width / 2, 520);
-        ctx.restore();
-    }
-
-/**
-* Draws the overlay's title and the main game goal.
-* @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-*/
-    drawOverlayTitleAndGoal(ctx) {
-        ctx.font = "bold 40px Lucky";
-        ctx.fillStyle = "#BF067F";
-        ctx.textAlign = "center";
-        ctx.fillText("Underwater Adventure", this.canvas.width / 2, 150);
-        ctx.font = "24px Lucky";
-        ctx.fillText("Goal: Reach the end of the ocean and defeat the boss!", this.canvas.width / 2, 230);
-    }
-
-/**
-* Draws gameplay hints, including enemies and item usage tips.
-* @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-*/
-    drawOverlayHints(ctx) {
-        ctx.font = "25px Lucky";
-        ctx.fillStyle = "#BF067F";
-        ctx.textAlign = "center";
-        ctx.fillText("🐟 Fish can be defeated with tail hits or poison bubbles", this.canvas.width / 2, 300);
-        ctx.fillText("🐙 Jellyfish can't be defeated — avoid them!", this.canvas.width / 2, 340);
-        ctx.fillText("👑 Boss can only be defeated with poisoned bubbles", this.canvas.width / 2, 380);
-        ctx.fillText("⚗️ You only have 5 poison bubbles — use them wisely!", this.canvas.width / 2, 430);
-    }
-/**
 * Handles click events for overlays and buttons.
 * @param {MouseEvent} event - The mouse click event.
 */    
@@ -243,16 +240,8 @@ class HomeScreen extends DrawableObject {
         if(this.handleButtonClick(mouseX,mouseY)) return;
     }
 
-/**
-* Handles clicks on overlays (start, info, about screens).
-* @returns {boolean} True if an overlay was interacted with.
-*/    
     handleOverlayClicks() {
-        if (this.showOverlay) return this.bgroundMusic.play(), this.showOverlay = false, true;
-        if (this.showInfoOverlay) return this.showInfoOverlay = false, true;
-        if (this.showAboutMe) return this.showAboutMe = false, true;
-        if(this.impressum.isVisible) return this.impressum.isVisible = false, true ; 
-        return false;
+        return this.overlayManager.handleOverlayClicks(this.bgroundMusic);
     }
 
 /**
@@ -263,8 +252,8 @@ class HomeScreen extends DrawableObject {
 */    
     handleButtonClick(x,y) {
         if (this.soundButtonOn.isClicked(x, y)) return this.toggleSound(), true;
-        if (this.info.isClicked(x, y)) return this.showInfoOverlay = !this.showInfoOverlay, true;
-        if (this.aboutMe.isClicked(x, y)) return this.showAboutMe = !this.showAboutMe, true;
+        if (this.info.isClicked(x, y)) return this.overlayManager.toggleInfoOverlay(), true;
+        if (this.aboutMe.isClicked(x, y)) return  this.overlayManager.toggleAboutMeOverlay(), true;
         if (this.startButton.isClicked(x, y)) return  this.startGameWithLoading(), true;
         if (this.fullScreenButton.isClicked(x, y)) return toggleFullScreen(this.canvas), true;
         if(this.impressum.isClicked(x,y)) return this.impressum.isVisible = !this.impressum.isVisible, true;
@@ -301,95 +290,103 @@ class HomeScreen extends DrawableObject {
         localStorage.setItem('soundEnabled', this.soundEnabled);
     }
  
-async startGameWithLoading() {
-    this.showOverlay = false;       
-    this.canvas.style.cursor = 'default';
-    const preloader = new Preloader();
-    addImagesFromObject(GameAssets, preloader); 
-    const loadingScreen = new LoadingScreen(this.canvas, preloader);
-    const loadPromise = loadingScreen.load();
-    await new Promise(resolve => {
-        const drawLoop = () => {
-            loadingScreen.updateProgress();
-            if (preloader.getProgress() < 1) {
-                requestAnimationFrame(drawLoop);
-            } else {
-                resolve(); 
-            }
-        };
-        drawLoop();
-    });
-
-    await loadPromise; 
-    this.startGameAfterLoading();
-}
-
-/**
-* Draws the "About Me" screen with information about the developer.
-*/
-    drawAboutMe() {
-        const ctx = this.ctx;
-        ctx.save();
-        ctx.fillStyle = "rgba(0,0,0,1)";
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawAboutMeTitle(ctx);
-        this.drawAboutMeText(ctx);
-        ctx.restore();
+    /**
+    * Starts the game with a loading screen.
+    */
+    async startGameWithLoading() {
+        this.hideOverlay();
+        const preloader = this.setupPreloader();
+        const loadingScreen = new LoadingScreen(this.canvas, preloader);
+        const loadPromise = loadingScreen.load();
+        await this.showLoadingScreen(loadingScreen, preloader);
+        await loadPromise;
+        this.startGameAfterLoading();
     }
 
-/**
-* Draws the title section on the "About Me" overlay.
-* @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-*/    
-    drawAboutMeTitle(ctx) {
-        ctx.font = 'bold 60px Lucky';
-        ctx.fillStyle = '#FDF8FB';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillText('SHARKIE - THE GAME', this.canvas.width / 2, 50);
+    /**
+    * Hides the main overlay and resets cursor.
+    */
+    hideOverlay() {
+        this.canvas.style.cursor = 'default';
     }
 
-/**
-* Draws text content on the "About Me" screen.
-* @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-*/    
-    drawAboutMeText(ctx) {
-        ctx.font = '24px Lucky';
-        ctx.fillStyle = '#ffffff';
-        const textLines = [
-            "This game was created by Zeljko Alakovic as part of my studies at Developer Akademie.",
-            "It showcases my skills in JavaScript, Canvas, and game development.",
-            "I hope you enjoy playing it as much as I enjoyed creating it!"
-        ];
+    /**
+    * Prepares the preloader with game assets.
+    * @returns {Preloader} The prepared preloader instance.
+    */
+    setupPreloader() {
+        const preloader = new Preloader();
+        addImagesFromObject(GameAssets, preloader);
+        return preloader;
+    }
 
-        let startY = 250;
-        const lineHeight = 35;
-        textLines.forEach(line => {
-            ctx.fillText(line, this.canvas.width / 2, startY);
-            startY += lineHeight;
+    /**
+    * Animates the loading screen until all assets are loaded.
+    * @param {LoadingScreen} loadingScreen 
+    * @param {Preloader} preloader 
+    * @returns {Promise} Resolves when loading is complete.
+    */
+    showLoadingScreen(loadingScreen, preloader) {
+        return new Promise(resolve => {
+            const drawLoop = () => {
+                loadingScreen.updateProgress();
+                if (preloader.getProgress() < 1) {
+                    requestAnimationFrame(drawLoop);
+                } else {
+                 resolve();
+                }
+            };
+            drawLoop();
         });
+    }   
+
+    /**
+    * Starts the actual game after loading is complete.
+    */
+    startGameAfterLoading() {
+        if (this.isPortraitMobile()) return;
+        this.stopHomeMusic();
+        this.initWorld();
+        this.playWorldMusic();
     }
 
-
-/**
-* Starts the actual game by creating a World instance and playing background music.
-*/    
-   startGameAfterLoading() {
-    const isPortrait = window.innerHeight > window.innerWidth;
-    if (isPortrait && /Mobi|Android/i.test(navigator.userAgent)) {
-        alert("Please rotate your device to landscape mode before starting the game!");
-        return;
+    /**
+    * Checks if the device is a mobile in portrait mode.
+    * @returns {boolean} True if device is portrait mobile.
+    */
+    isPortraitMobile() {
+        const isPortrait = window.innerHeight > window.innerWidth;
+        if (isPortrait && /Mobi|Android/i.test(navigator.userAgent)) {
+            alert("Please rotate your device to landscape mode before starting the game!");
+            return true;
+        }
+        return false;
     }
+
+    /**
+    * Stops the home screen background music.
+    */
+    stopHomeMusic() {
     if (this.bgroundMusic) {
         this.bgroundMusic.pause();
-        this.bgroundMusic.currentTime = 0; 
-    }   
-    currentLevel = createLevel1();
-    world = new World(this.canvas, this.keyboard, currentLevel);
+        this.bgroundMusic.currentTime = 0;
+        }
+    }
 
+    /**
+    * Initializes the game world.
+    */
+    initWorld() {
+        currentLevel = createLevel1();
+        world = new World(this.canvas, this.keyboard, currentLevel);
+    }
+
+    /**
+    * Plays the world background music, if available.
+    */
+    playWorldMusic() {
     if (world.backgroundMusic) {
         world.backgroundMusic.play().catch(e => console.log("Autoplay blocked"));
+        }
     }
-}
-
 }
