@@ -1,42 +1,50 @@
 class ProgressBar extends DrawableObject {
   /**
-   * Generic progress bar for health, coins, poison, boss, etc.
-   * @param {string[]} imagesArray - Array of image paths for bar stages.
-   * @param {number} x - X position on canvas.
-   * @param {number} y - Y position on canvas.
-   * @param {number} width - Width of bar.
-   * @param {number} height - Height of bar.
-   * @param {number} initialPercentage - Initial percentage (0–100).
+   * Creates a new ProgressBar instance.
+   * @param {string[]} images - Array of image paths representing the bar frames.
+   * @param {number} x - The x position of the bar on the canvas.
+   * @param {number} y - The y position of the bar on the canvas.
+   * @param {number} width - The width of the bar.
+   * @param {number} height - The height of the bar.
+   * @param {boolean} [roundIndex=false] - Whether to use Math.round (true for health bars) or Math.floor (false for coin/poison bars) when calculating the image index.
+   * @param {number} [initialPercentage=0] - Initial percentage of the bar (0–100).
    */
-  constructor(imagesArray, x, y, width, height, initialPercentage = 0) {
+  constructor(images,x,y,width,height,roundIndex = false,initialPercentage = 0) {
     super();
-    this.imagesArray = imagesArray;
+    this.images = images;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.percentage = 0;
-    this.loadImages(imagesArray);
+    this.roundIndex = roundIndex;
+    this.loadImages(images);
     this.setPercentage(initialPercentage);
   }
 
   /**
-   * Sets the bar's percentage and updates the image.
-   * @param {number} percentage - Value from 0 to 100
+   * Sets the current percentage of the progress bar and updates the displayed image.
+   * @param {number} percentage - The new percentage value (0–100).
    */
   setPercentage(percentage) {
-    this.percentage = Math.min(Math.max(percentage, 0), 100);
+    this.percentage = percentage;
+    let index = this.resolveImageIndex();
+    let path = this.images[index];
+    this.img = this.imageCache[path];
+  }
 
-    // broj slika
-    const numImages = this.imagesArray.length;
-
-    // mapiranje procenta na index slike
-    let index = Math.floor((this.percentage / 100) * (numImages - 1));
-
-    // clamp za svaki slučaj
-    if (index >= numImages) index = numImages - 1;
+  /**
+   * Calculates the index of the image to display based on the current percentage.
+   * Uses Math.round for health bars and Math.floor for coin/poison bars.
+   * Ensures the index stays within the bounds of the images array.
+   * @returns {number} The index of the image to display.
+   */
+  resolveImageIndex() {
+    const maxIndex = this.images.length - 1;
+    let index = this.roundIndex
+      ? Math.round((this.percentage / 100) * maxIndex)
+      : Math.floor((this.percentage / 100) * maxIndex);
+    if (index > maxIndex) index = maxIndex;
     if (index < 0) index = 0;
-
-    this.img = this.imageCache[this.imagesArray[index]];
-}
+    return index;
+  }
 }

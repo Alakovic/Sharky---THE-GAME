@@ -5,11 +5,11 @@ class World {
   canvas;
   keyboard;
   camera_x = 0;
-  healthBar = new HealthBar();
-  coinBar = new CoinBar();
-  poisonBar = new PoisonBar();
+  healthBar = new ProgressBar(GameAssets.bars.health, 35, 10, 300, 60, true, 100);
+  coinBar =  new ProgressBar(GameAssets.bars.coin, 35, 60, 240, 60, false, 0);
+  poisonBar = new ProgressBar(GameAssets.bars.poison, 35, 110, 300, 60, false, 0);
   boss = new Boss();
-  healthBarBoss = new HealthBarBoss();
+  healthBarBoss =  new ProgressBar(GameAssets.bars.health_boss, 780, 10, 400, 60, true, 100);
   bubbles = [];
   second = 0;
   totalCoins;
