@@ -8,8 +8,8 @@ class CollisionManager {
    */
   checkAll() {
     if (this.world.character.isDead()) return;
-    this.checkCoinCollection();
-    this.checkPoisonCollection();
+    this.checkCollection(this.world.level.coin,"coinCount",this.world.totalCoins,this.world.coinBar,this.world.sound.coin,(coin) => coin.value);
+    this.checkCollection(this.world.level.poison,"poisonCount",this.world.totalPoison,this.world.poisonBar,this.world.sound.poison,() => 1);
     this.checkHearthCollection();
     this.checkEnemyCollision();
     this.checkBossTrigger();
@@ -19,39 +19,25 @@ class CollisionManager {
   }
 
   /**
-   * Checks if the character collects any coins.
-   * Updates coin count, HUD, and plays coin sound.
+   * Generic collection checker for coins, poison, etc.
+   * @param {Array} items - Array of collectible items
+   * @param {string} characterAttr - Character attribute to increase
+   * @param {number} maxValue - Maximum value for percentage calculation
+   * @param {DrawableObject} bar - HUD bar to update
+   * @param {string} sound - Sound to play
+   * @param {Function} valueFn - Function to calculate the value added
    */
-  checkCoinCollection() {
-    this.world.level.coin.forEach((coin, index) => {
-      if (this.world.character.isColliding(coin)) {
-        this.world.character.coinCount += coin.value;
+  checkCollection(items, characterAttr, maxValue, bar, sound, valueFn) {
+    items.forEach((item, index) => {
+      if (this.world.character.isColliding(item)) {
+        this.world.character[characterAttr] += valueFn(item);
         let percentage = Math.min(
-          (this.world.character.coinCount / this.world.totalCoins) * 100,
+          (this.world.character[characterAttr] / maxValue) * 100,
           100
         );
-        this.world.coinBar.setPercentage(percentage);
-        this.world.sound.play(this.world.sound.coin);
-        this.world.level.coin.splice(index, 1);
-      }
-    });
-  }
-
-  /**
-   * Checks if the character collects poison.
-   * Updates poison count, HUD, and plays poison sound.
-   */
-  checkPoisonCollection() {
-    this.world.level.poison.forEach((poison, index) => {
-      if (this.world.character.isColliding(poison)) {
-        this.world.character.poisonCount += 1;
-        this.world.sound.play(this.world.sound.poison);
-        let percentage = Math.min(
-          (this.world.character.poisonCount / this.world.totalPoison) * 100,
-          100
-        );
-        this.world.poisonBar.setPercentage(percentage);
-        this.world.level.poison.splice(index, 1);
+        bar.setPercentage(percentage);
+        this.world.sound.play(sound);
+        items.splice(index, 1);
       }
     });
   }
