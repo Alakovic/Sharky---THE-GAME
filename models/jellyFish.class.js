@@ -1,14 +1,7 @@
-class jellyFish extends MovableObject {
+class JellyFish extends MovableObject {
   height = 100;
   width = 100;
   damageType = "electro";
-
-  /**
-   * Creates a new jellyfish instance.
-   */
-  constructor() {
-    super();
-  }
 
   /**
    * @type {Object} Collision offsets for each side
@@ -19,6 +12,75 @@ class jellyFish extends MovableObject {
     left: 10,
     right: 10,
   };
+
+  /**
+   * Creates a new jellyfish instance.
+   * @param {"yellow" | "lila" | "pink" | "green"} type - Defines the jellyfish type.
+   * @param {number} x - Initial X position.
+   * @param {number} [y=250] - Initial Y position.
+   * @param {string} [option="option1"] - Movement option ("option1"–"option4").
+   * @param {string} [variant="variant1"] - Movement variant (used mainly by pink type).
+   * @param {number} [range=200] - Movement range (used by pink type).
+   * @param {string} [direction="up"] - Start direction (used by pink type).
+   */
+  constructor(type,x,y = 250,option = "option1",variant = "variant1",range = 200,direction = "up") {
+    super();
+    this.type = type;
+    this.x = x;
+    this.y = y;
+    this.option = option;
+    this.variant = variant;
+    this.range = range;
+    this.direction = direction;
+    this.configureByType(type);
+    this.loadAnimations();
+    this.animate(this.swimImages);
+    this.applyBehaviorByType();
+  }
+
+  /**
+   * Loads animations for the specific jellyfish type.
+   */
+  loadAnimations() {
+    const assets = GameAssets.enemies[`${this.type}JellyFish`];
+    this.loadImage(assets.swim[0]);
+    this.loadImages(assets.swim);
+    this.swimImages = assets.swim;
+  }
+
+  /**
+   * Sets type-specific attributes like damage or behavior.
+   */
+  configureByType(type) {
+    switch (type) {
+      case "yellow":
+        this.damage = 10;
+        break;
+      case "lila":
+        this.damage = 10;
+        break;
+      case "pink":
+        this.damage = 20;
+        break;
+      case "green":
+        this.damage = 15;
+        break;
+      default:
+        this.damage = 10;
+    }
+  }
+
+  /**
+   * Applies the correct movement logic based on type and parameters.
+   */
+  applyBehaviorByType() {
+    if (this.type === "pink" || this.type === "green") {
+      this.applyVariant(this.variant);
+      this.movingSquare();
+    } else {
+      this.applyOption(this.option);
+    }
+  }
 
   /**
    * Animates the jellyfish using the provided images.
@@ -33,18 +95,13 @@ class jellyFish extends MovableObject {
 
   /**
    * Applies a movement option pattern to the jellyfish.
-   * @param {string} option - The movement option to apply ("option1" to "option4").
+   * @param {"option1"|"option2"|"option3"|"option4"} option
    */
   applyOption(option) {
-    if (option === "option1") {
-      this.option1();
-    } else if (option === "option2") {
-      this.option2();
-    } else if (option === "option3") {
-      this.option3();
-    } else if (option === "option4") {
-      this.option4();
-    }
+    if (option === "option1") this.option1();
+    else if (option === "option2") this.option2();
+    else if (option === "option3") this.option3();
+    else if (option === "option4") this.option4();
   }
 
   /**
@@ -173,5 +230,21 @@ class jellyFish extends MovableObject {
   moveLeft() {
     this.x -= this.speed;
     if (this.x <= this.startX) this.direction = "up";
+  }
+
+  /**
+   * Creates an identical clone of the jellyfish instance.
+   * @returns {JellyFish} - A cloned instance.
+   */
+  clone() {
+    return new JellyFish(
+      this.type,
+      this.x,
+      this.y,
+      this.option,
+      this.variant,
+      this.range,
+      this.direction
+    );
   }
 }

@@ -5,11 +5,8 @@ class Fish extends MovableObject {
   energy = 20;
   acceleration = 0.5;
   speedX = 0;
-
-  constructor() {
-    super();
-    this.applyGravity();
-  }
+  knockbackApplied = false;
+  option = null;
 
   /**
    * @type {Object} Collision offsets for fine-tuned hit detection.
@@ -22,9 +19,55 @@ class Fish extends MovableObject {
   };
 
   /**
-   * Animates the fish using the provided images. Plays death animation if fish is dead.
-   * @param {string[]} images - Array of image paths for normal animation.
-   * @param {string[]} [deadImages=[]] - Optional array of image paths for death animation.
+   * Creates a new Fish instance.
+   *
+   * @param {"green" | "pink"} type - Defines the fish type and its stats.
+   * @param {number} x - Initial X position.
+   * @param {number} y - Initial Y position.
+   * @param {"option1" | "option2" | "option3"} [option="option2"] - Defines fish movement pattern.
+   */
+  constructor(type, x, y, option = "option2") {
+    super();
+    this.type = type;
+    this.x = x;
+    this.y = y;
+    this.option = option;
+    this.configureByType(type);
+    const assets = GameAssets.enemies[`${type}Fish`];
+    this.loadImage(assets.swim[0]);
+    this.loadImages(assets.swim);
+    this.loadImages(assets.dead);
+    this.animate(assets.swim, assets.dead);
+    this.applyOption(option);
+    this.applyGravity();
+  }
+
+  /**
+   * Configures fish speed and damage based on its type.
+   * @param {"green" | "pink"} type
+   */
+  configureByType(type) {
+    switch (type) {
+      case "green":
+        this.speed = 2.4;
+        this.damage = 10;
+        break;
+      case "pink":
+        this.speed = 3;
+        this.damage = 8;
+        break;
+      default:
+        this.speed = 2.5;
+        this.damage = 10;
+    }
+  }
+
+  /**
+   * Handles fish animation loop.
+   * Plays normal or death animation depending on state.
+   *
+   * @param {string[]} images - Array of normal animation frames.
+   * @param {string[]} [deadImages=[]] - Optional death animation frames.
    */
   animate(images, deadImages = []) {
     setInterval(() => {
@@ -43,8 +86,8 @@ class Fish extends MovableObject {
   }
 
   /**
-   * Applies one of several preset movement options.
-   * @param {string} option - The movement option to apply ("option1", "option2", "option3").
+   * Applies one of the predefined movement patterns.
+   * @param {"option1" | "option2" | "option3"} option
    */
   applyOption(option) {
     if (option === "option1") {
@@ -120,5 +163,13 @@ class Fish extends MovableObject {
         this.y += this.speedY;
       }
     }, 1000 / 60);
+  }
+
+  /**
+   * Creates a new identical fish instance.
+   * @returns {Fish} - A cloned Fish object.
+   */
+  clone() {
+    return new Fish(this.type, this.x, this.y, this.option);
   }
 }
