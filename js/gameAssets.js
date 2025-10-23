@@ -1,276 +1,284 @@
 const GameAssets = {
-   character : {
-    idle : [
-        'assets/images/character/idle/1.png',
-        'assets/images/character/idle/2.png',
-        'assets/images/character/idle/3.png',
-        'assets/images/character/idle/4.png',
-        'assets/images/character/idle/5.png',
-        'assets/images/character/idle/6.png',
-        'assets/images/character/idle/7.png',
-        'assets/images/character/idle/8.png',
-        'assets/images/character/idle/9.png',
-        'assets/images/character/idle/10.png',
-        'assets/images/character/idle/11.png',
-        'assets/images/character/idle/12.png',
-        'assets/images/character/idle/13.png',
-        'assets/images/character/idle/14.png',
-        'assets/images/character/idle/15.png',
-        'assets/images/character/idle/16.png',
-        'assets/images/character/idle/17.png',
-        'assets/images/character/idle/18.png'
+  character: {
+    idle: [
+      "assets/images/character/idle/1.png",
+      "assets/images/character/idle/2.png",
+      "assets/images/character/idle/3.png",
+      "assets/images/character/idle/4.png",
+      "assets/images/character/idle/5.png",
+      "assets/images/character/idle/6.png",
+      "assets/images/character/idle/7.png",
+      "assets/images/character/idle/8.png",
+      "assets/images/character/idle/9.png",
+      "assets/images/character/idle/10.png",
+      "assets/images/character/idle/11.png",
+      "assets/images/character/idle/12.png",
+      "assets/images/character/idle/13.png",
+      "assets/images/character/idle/14.png",
+      "assets/images/character/idle/15.png",
+      "assets/images/character/idle/16.png",
+      "assets/images/character/idle/17.png",
+      "assets/images/character/idle/18.png",
     ],
-    swim : [
-        'assets/images/character/swim/1.png',
-        'assets/images/character/swim/2.png',
-        'assets/images/character/swim/3.png',
-        'assets/images/character/swim/4.png',
-        'assets/images/character/swim/5.png',
-        'assets/images/character/swim/6.png'
+    swim: [
+      "assets/images/character/swim/1.png",
+      "assets/images/character/swim/2.png",
+      "assets/images/character/swim/3.png",
+      "assets/images/character/swim/4.png",
+      "assets/images/character/swim/5.png",
+      "assets/images/character/swim/6.png",
     ],
-    poisoned : [
-        'assets/images/character/hurt/poisoned/1.png',
-        'assets/images/character/hurt/poisoned/2.png',
-        'assets/images/character/hurt/poisoned/3.png',
-        'assets/images/character/hurt/poisoned/4.png',
-        'assets/images/character/hurt/poisoned/5.png'
+    poisoned: [
+      "assets/images/character/hurt/poisoned/1.png",
+      "assets/images/character/hurt/poisoned/2.png",
+      "assets/images/character/hurt/poisoned/3.png",
+      "assets/images/character/hurt/poisoned/4.png",
+      "assets/images/character/hurt/poisoned/5.png",
     ],
-    electrified : [
-        'assets/images/character/hurt/electric shock/1.png',
-        'assets/images/character/hurt/electric shock/2.png',
-        'assets/images/character/hurt/electric shock/3.png'
+    electrified: [
+      "assets/images/character/hurt/electric shock/1.png",
+      "assets/images/character/hurt/electric shock/2.png",
+      "assets/images/character/hurt/electric shock/3.png",
     ],
-    deathPoison : [
-        'assets/images/character/dead/poisoned/1.png',
-        'assets/images/character/dead/poisoned/2.png',
-        'assets/images/character/dead/poisoned/3.png',
-        'assets/images/character/dead/poisoned/4.png',
-        'assets/images/character/dead/poisoned/5.png',
-        'assets/images/character/dead/poisoned/6.png',
-        'assets/images/character/dead/poisoned/7.png',
-        'assets/images/character/dead/poisoned/8.png',
-        'assets/images/character/dead/poisoned/9.png',
-        'assets/images/character/dead/poisoned/10.png',
-        'assets/images/character/dead/poisoned/11.png',
-        'assets/images/character/dead/poisoned/12.png'
+    deathPoison: [
+      "assets/images/character/dead/poisoned/1.png",
+      "assets/images/character/dead/poisoned/2.png",
+      "assets/images/character/dead/poisoned/3.png",
+      "assets/images/character/dead/poisoned/4.png",
+      "assets/images/character/dead/poisoned/5.png",
+      "assets/images/character/dead/poisoned/6.png",
+      "assets/images/character/dead/poisoned/7.png",
+      "assets/images/character/dead/poisoned/8.png",
+      "assets/images/character/dead/poisoned/9.png",
+      "assets/images/character/dead/poisoned/10.png",
+      "assets/images/character/dead/poisoned/11.png",
+      "assets/images/character/dead/poisoned/12.png",
     ],
-    deathElectro : [
-        'assets/images/character/dead/electrified/1.png',
-        'assets/images/character/dead/electrified/2.png',
-        'assets/images/character/dead/electrified/3.png',
-        'assets/images/character/dead/electrified/4.png',
-        'assets/images/character/dead/electrified/5.png',
-        'assets/images/character/dead/electrified/6.png',
-        'assets/images/character/dead/electrified/7.png',
-        'assets/images/character/dead/electrified/8.png',
-        'assets/images/character/dead/electrified/9.png',
-        'assets/images/character/dead/electrified/10.png'
+    deathElectro: [
+      "assets/images/character/dead/electrified/1.png",
+      "assets/images/character/dead/electrified/2.png",
+      "assets/images/character/dead/electrified/3.png",
+      "assets/images/character/dead/electrified/4.png",
+      "assets/images/character/dead/electrified/5.png",
+      "assets/images/character/dead/electrified/6.png",
+      "assets/images/character/dead/electrified/7.png",
+      "assets/images/character/dead/electrified/8.png",
+      "assets/images/character/dead/electrified/9.png",
+      "assets/images/character/dead/electrified/10.png",
     ],
-    attackFinSlap : [
-        'assets/images/character/attack/finSlap/1.png',
-        'assets/images/character/attack/finSlap/2.png',
-        'assets/images/character/attack/finSlap/3.png',
-        'assets/images/character/attack/finSlap/4.png',
-        'assets/images/character/attack/finSlap/5.png',
-        'assets/images/character/attack/finSlap/6.png',
-        'assets/images/character/attack/finSlap/7.png',
-        'assets/images/character/attack/finSlap/8.png'
+    attackFinSlap: [
+      "assets/images/character/attack/finSlap/1.png",
+      "assets/images/character/attack/finSlap/2.png",
+      "assets/images/character/attack/finSlap/3.png",
+      "assets/images/character/attack/finSlap/4.png",
+      "assets/images/character/attack/finSlap/5.png",
+      "assets/images/character/attack/finSlap/6.png",
+      "assets/images/character/attack/finSlap/7.png",
+      "assets/images/character/attack/finSlap/8.png",
     ],
-    attackWithoutBubble : [
-        'assets/images/character/attack/bubble/withoutBubble/1.png',
-        'assets/images/character/attack/bubble/withoutBubble/2.png',
-        'assets/images/character/attack/bubble/withoutBubble/3.png',
-        'assets/images/character/attack/bubble/withoutBubble/4.png',
-        'assets/images/character/attack/bubble/withoutBubble/5.png',
-        'assets/images/character/attack/bubble/withoutBubble/6.png',
-        'assets/images/character/attack/bubble/withoutBubble/7.png',
-        'assets/images/character/attack/bubble/withoutBubble/8.png'
+    attackWithoutBubble: [
+      "assets/images/character/attack/bubble/withoutBubble/1.png",
+      "assets/images/character/attack/bubble/withoutBubble/2.png",
+      "assets/images/character/attack/bubble/withoutBubble/3.png",
+      "assets/images/character/attack/bubble/withoutBubble/4.png",
+      "assets/images/character/attack/bubble/withoutBubble/5.png",
+      "assets/images/character/attack/bubble/withoutBubble/6.png",
+      "assets/images/character/attack/bubble/withoutBubble/7.png",
+      "assets/images/character/attack/bubble/withoutBubble/8.png",
     ],
-    attackWithBubble : [
-        'assets/images/character/attack/bubble/withBubble/1.png',
-        'assets/images/character/attack/bubble/withBubble/2.png',
-        'assets/images/character/attack/bubble/withBubble/3.png',
-        'assets/images/character/attack/bubble/withBubble/4.png',
-        'assets/images/character/attack/bubble/withBubble/5.png',
-        'assets/images/character/attack/bubble/withBubble/6.png',
-        'assets/images/character/attack/bubble/withBubble/7.png',
-        'assets/images/character/attack/bubble/withBubble/8.png'
-    ]
-   },
-   boss : {
-    attack : [
-        'assets/images/enemies/boss/attack/1.png',
-        'assets/images/enemies/boss/attack/2.png',
-        'assets/images/enemies/boss/attack/3.png',
-        'assets/images/enemies/boss/attack/4.png',
-        'assets/images/enemies/boss/attack/5.png',
-        'assets/images/enemies/boss/attack/6.png'
+    attackWithBubble: [
+      "assets/images/character/attack/bubble/withBubble/1.png",
+      "assets/images/character/attack/bubble/withBubble/2.png",
+      "assets/images/character/attack/bubble/withBubble/3.png",
+      "assets/images/character/attack/bubble/withBubble/4.png",
+      "assets/images/character/attack/bubble/withBubble/5.png",
+      "assets/images/character/attack/bubble/withBubble/6.png",
+      "assets/images/character/attack/bubble/withBubble/7.png",
+      "assets/images/character/attack/bubble/withBubble/8.png",
     ],
-    dead : [
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 6.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 7.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 8.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 9.png',
-        'assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 10.png'
+  },
+  boss: {
+    attack: [
+      "assets/images/enemies/boss/attack/1.png",
+      "assets/images/enemies/boss/attack/2.png",
+      "assets/images/enemies/boss/attack/3.png",
+      "assets/images/enemies/boss/attack/4.png",
+      "assets/images/enemies/boss/attack/5.png",
+      "assets/images/enemies/boss/attack/6.png",
     ],
-    float :  [
-        'assets/images/enemies/boss/float/1.png',
-        'assets/images/enemies/boss/float/2.png',
-        'assets/images/enemies/boss/float/3.png',
-        'assets/images/enemies/boss/float/4.png',
-        'assets/images/enemies/boss/float/5.png',
-        'assets/images/enemies/boss/float/6.png',
-        'assets/images/enemies/boss/float/7.png',
-        'assets/images/enemies/boss/float/8.png',
-        'assets/images/enemies/boss/float/9.png',
-        'assets/images/enemies/boss/float/10.png',
-        'assets/images/enemies/boss/float/11.png',
-        'assets/images/enemies/boss/float/12.png',
-        'assets/images/enemies/boss/float/13.png'
+    dead: [
+      "assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 6.png",
+      "assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 7.png",
+      "assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 8.png",
+      "assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 9.png",
+      "assets/images/enemies/boss/dead/Mesa de trabajo 2 copia 10.png",
     ],
-    hurt : [
-        'assets/images/enemies/boss/hurt/1.png',
-        'assets/images/enemies/boss/hurt/2.png',
-        'assets/images/enemies/boss/hurt/3.png',
-        'assets/images/enemies/boss/hurt/4.png'
+    float: [
+      "assets/images/enemies/boss/float/1.png",
+      "assets/images/enemies/boss/float/2.png",
+      "assets/images/enemies/boss/float/3.png",
+      "assets/images/enemies/boss/float/4.png",
+      "assets/images/enemies/boss/float/5.png",
+      "assets/images/enemies/boss/float/6.png",
+      "assets/images/enemies/boss/float/7.png",
+      "assets/images/enemies/boss/float/8.png",
+      "assets/images/enemies/boss/float/9.png",
+      "assets/images/enemies/boss/float/10.png",
+      "assets/images/enemies/boss/float/11.png",
+      "assets/images/enemies/boss/float/12.png",
+      "assets/images/enemies/boss/float/13.png",
     ],
-    introduce : [
-        'assets/images/enemies/boss/introduce/1.png',
-        'assets/images/enemies/boss/introduce/2.png',
-        'assets/images/enemies/boss/introduce/3.png',
-        'assets/images/enemies/boss/introduce/4.png',
-        'assets/images/enemies/boss/introduce/5.png',
-        'assets/images/enemies/boss/introduce/6.png',
-        'assets/images/enemies/boss/introduce/7.png',
-        'assets/images/enemies/boss/introduce/8.png',
-        'assets/images/enemies/boss/introduce/9.png',
-        'assets/images/enemies/boss/introduce/10.png'
-    ]
-   },
-   coin : {
-    spin : [
-        'assets/images/coin/1.png',
-        'assets/images/coin/2.png',
-        'assets/images/coin/3.png',
-        'assets/images/coin/4.png'
-    ]
-   },
-   hearth : {
-    spin : [
-        'assets/images/hearth/1.png',
-        'assets/images/hearth/2.png',
-        'assets/images/hearth/3.png',
-        'assets/images/hearth/4.png',
-        'assets/images/hearth/5.png',
-        'assets/images/hearth/6.png'
-    ]
-   },
-   poison : {
-    spin : [
-        'assets/images/poison/1.png',
-        'assets/images/poison/2.png',
-        'assets/images/poison/3.png',
-        'assets/images/poison/4.png',
-        'assets/images/poison/5.png',
-        'assets/images/poison/6.png',
-        'assets/images/poison/7.png',
-        'assets/images/poison/8.png'
-    ]
-   },
-   enemies : {
-    greenFish : {
-        swim : [
-            'assets/images/enemies/greenFish/1.swim1.png',
-            'assets/images/enemies/greenFish/1.swim2.png',
-            'assets/images/enemies/greenFish/1.swim3.png',
-            'assets/images/enemies/greenFish/1.swim4.png',
-            'assets/images/enemies/greenFish/1.swim5.png'
-        ],
-        dead : [
-            'assets/images/enemies/greenFish/dead/1.png',
-            'assets/images/enemies/greenFish/dead/2.png',
-            'assets/images/enemies/greenFish/dead/3.png'
-        ]
-        },
-    pinkFish : {
-        swim : [
-            'assets/images/enemies/pinkFish/2.swim1.png',
-            'assets/images/enemies/pinkFish/2.swim2.png',
-            'assets/images/enemies/pinkFish/2.swim3.png',
-            'assets/images/enemies/pinkFish/2.swim4.png',
-            'assets/images/enemies/pinkFish/2.swim5.png'
-            ],
-        dead : [
-            'assets/images/enemies/pinkFish/dead/2.2.png',
-            'assets/images/enemies/pinkFish/dead/2.3.png',
-            'assets/images/enemies/pinkFish/dead/2.png'
-            ]
-        },
-    pinkJellyFish : {
-        swim : [
-            'assets/images/enemies/pinkJellyFish/Pink 1.png',
-            'assets/images/enemies/pinkJellyFish/Pink 2.png',
-            'assets/images/enemies/pinkJellyFish/Pink 3.png',
-            'assets/images/enemies/pinkJellyFish/Pink 4.png'
-            ]
-        },
-    greenJellyFish : {
-        swim : [
-            'assets/images/enemies/greenJellyFish/Green 1.png',
-            'assets/images/enemies/greenJellyFish/Green 2.png',
-            'assets/images/enemies/greenJellyFish/Green 3.png',
-            'assets/images/enemies/greenJellyFish/Green 4.png'
-            ]
-        },
-    lilaJellyFish : {
-        swim : [
-            'assets/images/enemies/lilaJellyFish/Lila 1.png',
-            'assets/images/enemies/lilaJellyFish/Lila 2.png',
-            'assets/images/enemies/lilaJellyFish/Lila 3.png',
-            'assets/images/enemies/lilaJellyFish/Lila 4.png'
-            ]
-        }
-   },
-   controls: {
-        up: ['assets/images/game_interface/buttons/up.png'],
-        down: ['assets/images/game_interface/buttons/down.png'],
-        left: ['assets/images/game_interface/buttons/left.png'],
-        right: ['assets/images/game_interface/buttons/right.png'],
-        tailAttack: ['assets/images/game_interface/buttons/Space Bar key.png'],
-        bubbleAttack: ['assets/images/game_interface/buttons/D key.png']
+    hurt: [
+      "assets/images/enemies/boss/hurt/1.png",
+      "assets/images/enemies/boss/hurt/2.png",
+      "assets/images/enemies/boss/hurt/3.png",
+      "assets/images/enemies/boss/hurt/4.png",
+    ],
+    introduce: [
+      "assets/images/enemies/boss/introduce/1.png",
+      "assets/images/enemies/boss/introduce/2.png",
+      "assets/images/enemies/boss/introduce/3.png",
+      "assets/images/enemies/boss/introduce/4.png",
+      "assets/images/enemies/boss/introduce/5.png",
+      "assets/images/enemies/boss/introduce/6.png",
+      "assets/images/enemies/boss/introduce/7.png",
+      "assets/images/enemies/boss/introduce/8.png",
+      "assets/images/enemies/boss/introduce/9.png",
+      "assets/images/enemies/boss/introduce/10.png",
+    ],
+  },
+  coin: {
+    spin: [
+      "assets/images/coin/1.png",
+      "assets/images/coin/2.png",
+      "assets/images/coin/3.png",
+      "assets/images/coin/4.png",
+    ],
+  },
+  hearth: {
+    spin: [
+      "assets/images/hearth/1.png",
+      "assets/images/hearth/2.png",
+      "assets/images/hearth/3.png",
+      "assets/images/hearth/4.png",
+      "assets/images/hearth/5.png",
+      "assets/images/hearth/6.png",
+    ],
+  },
+  poison: {
+    spin: [
+      "assets/images/poison/1.png",
+      "assets/images/poison/2.png",
+      "assets/images/poison/3.png",
+      "assets/images/poison/4.png",
+      "assets/images/poison/5.png",
+      "assets/images/poison/6.png",
+      "assets/images/poison/7.png",
+      "assets/images/poison/8.png",
+    ],
+  },
+  enemies: {
+    greenFish: {
+      swim: [
+        "assets/images/enemies/greenFish/1.swim1.png",
+        "assets/images/enemies/greenFish/1.swim2.png",
+        "assets/images/enemies/greenFish/1.swim3.png",
+        "assets/images/enemies/greenFish/1.swim4.png",
+        "assets/images/enemies/greenFish/1.swim5.png",
+      ],
+      dead: [
+        "assets/images/enemies/greenFish/dead/1.png",
+        "assets/images/enemies/greenFish/dead/2.png",
+        "assets/images/enemies/greenFish/dead/3.png",
+      ],
     },
-   bars : {
-        poison : [
-            'assets/images/game_interface/poison_bar/0.png',
-            'assets/images/game_interface/poison_bar/20.png',
-            'assets/images/game_interface/poison_bar/40.png',
-            'assets/images/game_interface/poison_bar/60.png',
-            'assets/images/game_interface/poison_bar/80.png',
-            'assets/images/game_interface/poison_bar/100.png',
-        ],
-        health : [
-            'assets/images/game_interface/health_bar/0.png',
-            'assets/images/game_interface/health_bar/20.png',
-            'assets/images/game_interface/health_bar/40.png',
-            'assets/images/game_interface/health_bar/60.png',
-            'assets/images/game_interface/health_bar/80.png',
-            'assets/images/game_interface/health_bar/100.png'
-        ],
-        coin : [
-            'assets/images/game_interface/coin_bar/0.png',
-            'assets/images/game_interface/coin_bar/20.png',
-            'assets/images/game_interface/coin_bar/40.png',
-            'assets/images/game_interface/coin_bar/60.png',
-            'assets/images/game_interface/coin_bar/80.png',
-            'assets/images/game_interface/coin_bar/100.png'
-        ],
-        health_boss : [
-        'assets/images/game_interface/health_barBoss/0.png',
-        'assets/images/game_interface/health_barBoss/20.png',
-        'assets/images/game_interface/health_barBoss/40.png',
-        'assets/images/game_interface/health_barBoss/60.png',
-        'assets/images/game_interface/health_barBoss/80.png',
-        'assets/images/game_interface/health_barBoss/100.png',
-        ]
-    }
+    pinkFish: {
+      swim: [
+        "assets/images/enemies/pinkFish/2.swim1.png",
+        "assets/images/enemies/pinkFish/2.swim2.png",
+        "assets/images/enemies/pinkFish/2.swim3.png",
+        "assets/images/enemies/pinkFish/2.swim4.png",
+        "assets/images/enemies/pinkFish/2.swim5.png",
+      ],
+      dead: [
+        "assets/images/enemies/pinkFish/dead/2.2.png",
+        "assets/images/enemies/pinkFish/dead/2.3.png",
+        "assets/images/enemies/pinkFish/dead/2.png",
+      ],
+    },
+    pinkJellyFish: {
+      swim: [
+        "assets/images/enemies/pinkJellyFish/Pink 1.png",
+        "assets/images/enemies/pinkJellyFish/Pink 2.png",
+        "assets/images/enemies/pinkJellyFish/Pink 3.png",
+        "assets/images/enemies/pinkJellyFish/Pink 4.png",
+      ],
+    },
+    greenJellyFish: {
+      swim: [
+        "assets/images/enemies/greenJellyFish/Green 1.png",
+        "assets/images/enemies/greenJellyFish/Green 2.png",
+        "assets/images/enemies/greenJellyFish/Green 3.png",
+        "assets/images/enemies/greenJellyFish/Green 4.png",
+      ],
+    },
+    lilaJellyFish: {
+      swim: [
+        "assets/images/enemies/lilaJellyFish/Lila 1.png",
+        "assets/images/enemies/lilaJellyFish/Lila 2.png",
+        "assets/images/enemies/lilaJellyFish/Lila 3.png",
+        "assets/images/enemies/lilaJellyFish/Lila 4.png",
+      ],
+    },
+    yellowJellyFish: {
+      swim: [
+        "assets/images/enemies/yellowJellyFish/Yellow 1.png",
+        "assets/images/enemies/yellowJellyFish/Yellow 2.png",
+        "assets/images/enemies/yellowJellyFish/Yellow 3.png",
+        "assets/images/enemies/yellowJellyFish/Yellow 4.png",
+      ],
+    },
+  },
+  controls: {
+    up: ["assets/images/game_interface/buttons/up.png"],
+    down: ["assets/images/game_interface/buttons/down.png"],
+    left: ["assets/images/game_interface/buttons/left.png"],
+    right: ["assets/images/game_interface/buttons/right.png"],
+    tailAttack: ["assets/images/game_interface/buttons/Space Bar key.png"],
+    bubbleAttack: ["assets/images/game_interface/buttons/D key.png"],
+  },
+  bars: {
+    poison: [
+      "assets/images/game_interface/poison_bar/0.png",
+      "assets/images/game_interface/poison_bar/20.png",
+      "assets/images/game_interface/poison_bar/40.png",
+      "assets/images/game_interface/poison_bar/60.png",
+      "assets/images/game_interface/poison_bar/80.png",
+      "assets/images/game_interface/poison_bar/100.png",
+    ],
+    health: [
+      "assets/images/game_interface/health_bar/0.png",
+      "assets/images/game_interface/health_bar/20.png",
+      "assets/images/game_interface/health_bar/40.png",
+      "assets/images/game_interface/health_bar/60.png",
+      "assets/images/game_interface/health_bar/80.png",
+      "assets/images/game_interface/health_bar/100.png",
+    ],
+    coin: [
+      "assets/images/game_interface/coin_bar/0.png",
+      "assets/images/game_interface/coin_bar/20.png",
+      "assets/images/game_interface/coin_bar/40.png",
+      "assets/images/game_interface/coin_bar/60.png",
+      "assets/images/game_interface/coin_bar/80.png",
+      "assets/images/game_interface/coin_bar/100.png",
+    ],
+    health_boss: [
+      "assets/images/game_interface/health_barBoss/0.png",
+      "assets/images/game_interface/health_barBoss/20.png",
+      "assets/images/game_interface/health_barBoss/40.png",
+      "assets/images/game_interface/health_barBoss/60.png",
+      "assets/images/game_interface/health_barBoss/80.png",
+      "assets/images/game_interface/health_barBoss/100.png",
+    ],
+  },
 };

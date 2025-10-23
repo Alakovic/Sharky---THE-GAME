@@ -4,13 +4,13 @@
  * @type {{img: Image, text: string, src: string}[]}
  */
 const instructionImages = [
-    { img: new Image(), text: "Move Character", src: 'assets/images/game_interface/buttons/arrow keys.png' },
-    { img: new Image(), text: "Fin Attack", src: 'assets/images/game_interface/buttons/Space Bar key.png' },
-    { img: new Image(), text: "Bubble / Poison Attack", src: 'assets/images/game_interface/buttons/D key.png' }
+  {img: new Image(),text: "Move Character",src: "assets/images/game_interface/buttons/arrow keys.png",width: 200,height: 150},
+  {img: new Image(),text: "Fin Attack",src: "assets/images/game_interface/buttons/Space Bar key.png",width: 300,height: 150},
+  {img: new Image(),text: "Bubble / Poison Attack",src: "assets/images/game_interface/buttons/D key.png",width: 200,height: 150},
 ];
 
 // Set the image sources
-instructionImages.forEach(item => item.img.src = item.src)
+instructionImages.forEach((item) => (item.img.src = item.src));
 
 /**
  * Draws a semi-transparent overlay showing game instructions.
@@ -19,42 +19,39 @@ instructionImages.forEach(item => item.img.src = item.src)
  * @param {{img: Image, text: string, src: string}[]} instructionImages - Array of instruction images and texts.
  */
 function drawInfoOverlay(ctx, canvas, instructionImages) {
-    ctx.save();
-    ctx.fillStyle = "rgba(0,0,0,0.6)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const startX = 100;
+  const startY = 250;
+  const padding = 150;
+  let currentX = startX;
+  instructionImages.forEach((item) => {
+    const imgWidth = drawInstructionItem(ctx, item, currentX, startY);
+    currentX += imgWidth + padding;
+  });
 
-    const startX = 200;
-    const startY = 250;
-    const imgHeight = 150;
-    const padding = 150;
-    let currentX = startX;
-
-    instructionImages.forEach(item => {
-        const imgWidth = drawInstructionItem(ctx, item, currentX, startY, imgHeight);
-        currentX += imgWidth + padding;
-    });
-
-    ctx.restore();
+  ctx.restore();
 }
 
 /**
  * Draws a single instruction item with its image and description.
  * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
- * @param {{img: Image, text: string}} item - Instruction item object.
+ * @param {{img: Image, text: string, width?: number, height?: number}} item - Instruction item object.
  * @param {number} x - X position to draw the item.
  * @param {number} y - Y position to draw the item.
- * @param {number} imgHeight - Height of the image.
  * @returns {number} The width of the drawn image.
  */
-function drawInstructionItem(ctx, item, x, y, imgHeight) {
-    let imgWidth = imgHeight;
-    if (item.text === "Fin Attack") imgWidth = 250;
-    ctx.drawImage(item.img, x, y, imgWidth, imgHeight);
-    ctx.font = "24px Lucky";
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "center";
-    ctx.fillText(item.text, x + imgWidth / 2, y + imgHeight + 25);
-    return imgWidth;
+function drawInstructionItem(ctx, item, x, y) {
+  const imgWidth = item.width || 250;
+  const imgHeight = item.height || 250;
+  ctx.drawImage(item.img, x, y, imgWidth, imgHeight);
+  ctx.font = "24px Lucky";
+  ctx.fillStyle = "#ffffff";
+  ctx.textAlign = "center";
+  ctx.fillText(item.text, x + imgWidth / 2, y + imgHeight + 25);
+
+  return imgWidth;
 }
 
 /**
@@ -62,17 +59,17 @@ function drawInstructionItem(ctx, item, x, y, imgHeight) {
  * @param {HTMLCanvasElement} canvas - The canvas element.
  */
 function toggleFullScreen(canvas) {
-    const container = canvas.parentElement;
-    if (!document.fullscreenElement) {
-        container.requestFullscreen()
-            .then(() => scaleCanvas(canvas))
-            .catch(err => {
-                console.error(`Fullscreen failed: ${err.message}`);
-            });
-    } else {
-        document.exitFullscreen()
-            .then(() => resetCanvasScale(canvas));
-    }
+  const container = canvas.parentElement;
+  if (!document.fullscreenElement) {
+    container
+      .requestFullscreen()
+      .then(() => scaleCanvas(canvas))
+      .catch((err) => {
+        console.error(`Fullscreen failed: ${err.message}`);
+      });
+  } else {
+    document.exitFullscreen().then(() => resetCanvasScale(canvas));
+  }
 }
 
 /**
@@ -80,17 +77,16 @@ function toggleFullScreen(canvas) {
  * Centers the canvas horizontally and vertically.
  * @param {HTMLCanvasElement} canvas - The canvas element.
  */
-
 function scaleCanvas(canvas) {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    const scaleX = screenWidth / canvas.width;
-    const scaleY = screenHeight / canvas.height;
-    const scaleFactor = Math.min(scaleX, scaleY);
-    canvas.style.width = `${canvas.width * scaleFactor}px`;
-    canvas.style.height = `${canvas.height * scaleFactor}px`;
-    canvas.style.marginLeft = `${(screenWidth - canvas.width * scaleFactor) / 2}px`;
-    canvas.style.marginTop = `${(screenHeight - canvas.height * scaleFactor) / 2}px`;
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const scaleX = screenWidth / canvas.width;
+  const scaleY = screenHeight / canvas.height;
+  const scaleFactor = Math.min(scaleX, scaleY);
+  canvas.style.width = `${canvas.width * scaleFactor}px`;
+  canvas.style.height = `${canvas.height * scaleFactor}px`;
+  canvas.style.marginLeft = `${(screenWidth - canvas.width * scaleFactor) / 2}px`;
+  canvas.style.marginTop = `${(screenHeight - canvas.height * scaleFactor) / 2}px`;
 }
 
 /**
@@ -98,9 +94,8 @@ function scaleCanvas(canvas) {
  * @param {HTMLCanvasElement} canvas - The canvas element.
  */
 function resetCanvasScale(canvas) {
-    canvas.style.width = '';
-    canvas.style.height = '';
-    canvas.style.marginLeft = '';
-    canvas.style.marginTop = '';
+  canvas.style.width = "";
+  canvas.style.height = "";
+  canvas.style.marginLeft = "";
+  canvas.style.marginTop = "";
 }
-
