@@ -23,7 +23,7 @@ class Controller {
    */
   checkDeviceType() {
     const wasMobileOrTablet = this.isMobileOrTablet;
-    this.isMobileOrTablet = window.innerWidth <= 1024;
+    this.isMobileOrTablet = window.innerWidth <= 1368;
     if (this.isMobileOrTablet && !wasMobileOrTablet) {
       this.initTouchButtons();
       this.addTouchEvents();
