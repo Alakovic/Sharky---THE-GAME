@@ -7,7 +7,6 @@ class HomeScreen extends DrawableObject {
   fullScreenButton = new FullScreen("assets/images/game_interface/startScreenButtons/fullscreen-black.png",1130,140,30,30);
   soundButtonOn = new SoundButton("assets/images/game_interface/startScreenButtons/speaker-filled-audio-tool.png",1130,30,40,40);
   info = new Info("assets/images/game_interface/startScreenButtons/info.png",1125,80,40,40);
-  aboutMe = new AboutMe();
   background = new Image();
   impressum = new Impressum();
   bgroundMusic;
@@ -125,7 +124,6 @@ class HomeScreen extends DrawableObject {
     this.addToMap(this.fullScreenButton);
     this.addToMap(this.soundButtonOn);
     this.addToMap(this.info);
-    this.addToMap(this.aboutMe);
     this.addToMap(this.impressum);
   }
 
@@ -142,7 +140,7 @@ class HomeScreen extends DrawableObject {
     const { mouseX, mouseY } = this.getMousePos(event);
     this.resetHover();
     this.updateHover(mouseX, mouseY);
-    if (this.startButton.isHovered ||this.fullScreenButton.isHovered ||this.soundButtonOn.isHovered ||this.info.isHovered ||this.aboutMe.isHovered ||this.impressum.isHovered) {
+    if (this.startButton.isHovered ||this.fullScreenButton.isHovered ||this.soundButtonOn.isHovered ||this.info.isHovered ||this.impressum.isHovered) {
       this.canvas.style.cursor = "pointer";
     } else {
       this.canvas.style.cursor = "default";
@@ -157,7 +155,6 @@ class HomeScreen extends DrawableObject {
     this.fullScreenButton.isHovered = false;
     this.soundButtonOn.isHovered = false;
     this.info.isHovered = false;
-    this.aboutMe.isHovered = false;
     this.impressum.isHovered = false;
   }
 
@@ -168,13 +165,9 @@ class HomeScreen extends DrawableObject {
    */
   updateHover(mouseX, mouseY) {
     this.startButton.isHovered = this.startButton.isClicked(mouseX, mouseY);
-    this.fullScreenButton.isHovered = this.fullScreenButton.isClicked(
-      mouseX,
-      mouseY
-    );
+    this.fullScreenButton.isHovered = this.fullScreenButton.isClicked(mouseX,mouseY);
     this.soundButtonOn.isHovered = this.soundButtonOn.isClicked(mouseX, mouseY);
     this.info.isHovered = this.info.isClicked(mouseX, mouseY);
-    this.aboutMe.isHovered = this.aboutMe.isClicked(mouseX, mouseY);
     this.impressum.isHovered = this.impressum.isClicked(mouseX, mouseY);
   }
 
@@ -265,8 +258,6 @@ class HomeScreen extends DrawableObject {
     if (this.soundButtonOn.isClicked(x, y)) return this.toggleSound(), true;
     if (this.info.isClicked(x, y))
       return this.overlayManager.toggleInfoOverlay(), true;
-    if (this.aboutMe.isClicked(x, y))
-      return this.overlayManager.toggleAboutMeOverlay(), true;
     if (this.startButton.isClicked(x, y))
       return this.startGameWithLoading(), true;
     if (this.fullScreenButton.isClicked(x, y))

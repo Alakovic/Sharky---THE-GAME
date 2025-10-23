@@ -5,7 +5,7 @@ class Impressum extends DrawableObject {
       "assets/images/game_interface/startScreenButtons/impressum.png"
     );
     this.x = 1120;
-    this.y = 250;
+    this.y = 180;
     this.width = 50;
     this.height = 50;
     this.isVisible = false;
