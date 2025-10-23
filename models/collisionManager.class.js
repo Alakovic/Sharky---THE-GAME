@@ -8,9 +8,9 @@ class CollisionManager {
    */
   checkAll() {
     if (this.world.character.isDead()) return;
-    this.checkCoinCollection();
-    this.checkPoisonCollection();
-    this.checkHearthCollection();
+    this.checkCollection("coin","coinCount",this.world.coinBar,this.world.totalCoins,"coin");
+    this.checkCollection("poison","poisonCount",this.world.poisonBar,this.world.totalPoison,"poison");
+    this.checkCollection("hearth","energy",this.world.healthBar,100,"heart");
     this.checkEnemyCollision();
     this.checkBossTrigger();
     this.checkBubbleFishCollision();
@@ -19,58 +19,25 @@ class CollisionManager {
   }
 
   /**
-   * Checks if the character collects any coins.
-   * Updates coin count, HUD, and plays coin sound.
+   * Generic collection checker for coins, poison, hearts, etc.
+   * @param {string} type - Type of item in level array ('coin', 'poison', 'hearth').
+   * @param {string} countKey - Character property to increment ('coinCount', 'poisonCount', 'energy').
+   * @param {object} bar - HUD bar to update (optional).
+   * @param {number} maxValue - Maximum value (optional, default 100).
+   * @param {string} soundKey - Sound to play on collection.
    */
-  checkCoinCollection() {
-    this.world.level.coin.forEach((coin, index) => {
-      if (this.world.character.isColliding(coin)) {
-        this.world.character.coinCount += coin.value;
-        let percentage = Math.min(
-          (this.world.character.coinCount / this.world.totalCoins) * 100,
-          100
-        );
-        this.world.coinBar.setPercentage(percentage);
-        this.world.sound.play(this.world.sound.coin);
-        this.world.level.coin.splice(index, 1);
-      }
-    });
-  }
-
-  /**
-   * Checks if the character collects poison.
-   * Updates poison count, HUD, and plays poison sound.
-   */
-  checkPoisonCollection() {
-    this.world.level.poison.forEach((poison, index) => {
-      if (this.world.character.isColliding(poison)) {
-        this.world.character.poisonCount += 1;
-        this.world.sound.play(this.world.sound.poison);
-        let percentage = Math.min(
-          (this.world.character.poisonCount / this.world.totalPoison) * 100,
-          100
-        );
-        this.world.poisonBar.setPercentage(percentage);
-        this.world.level.poison.splice(index, 1);
-      }
-    });
-  }
-
-  /**
-   * Checks if the character collects hearts.
-   * Increases character energy up to max 100, updates HUD and plays heart sound.
-   */
-  checkHearthCollection() {
-    this.world.level.hearth.forEach((hearth, index) => {
-      if (this.world.character.isColliding(hearth)) {
-        if (this.world.character.energy < 100) {
-          this.world.sound.play(this.world.sound.heart);
-          this.world.character.energy += hearth.value;
-          if (this.world.character.energy > 100)
-            this.world.character.energy = 100;
-          this.world.healthBar.setPercentage(this.world.character.energy);
-          this.world.level.hearth.splice(index, 1);
-        }
+  checkCollection(type, countKey, bar = null, maxValue = 100, soundKey) {
+    this.world.level[type].forEach((item, index) => {
+      if (this.world.character.isColliding(item)) {
+        if (countKey === "energy" && this.world.character.energy >= maxValue)
+          return;
+        const increment = item.value || 1; 
+        this.world.character[countKey] += increment;
+        if (this.world.character[countKey] > maxValue)
+          this.world.character[countKey] = maxValue;
+        if (bar) bar.setPercentage(this.world.character[countKey]);
+        this.world.sound.play(this.world.sound[soundKey]);
+        this.world.level[type].splice(index, 1);
       }
     });
   }
